@@ -9,6 +9,8 @@ import classnames from 'classnames'
 import { DynamicPageTransition } from '../components/dynamicComponents'
 import ErrorBoundary from '../components/error/ErrorBoundary'
 import AppSeo, { IAppSeoProps } from '../components/seo/AppSeo'
+import { national2Font } from '../utils/fonts'
+import classNames from 'classnames'
 
 export interface IPageLayoutData {}
 
@@ -39,7 +41,8 @@ const MyApp: NextPage<IProps> = props => {
         id={classnames('pageMain', {
           'pageMain-lock': appConfig.features.enableLandscapeMode,
         })}
-        className="pb-16 lg:pb-0">
+        className={classNames('pb-16 lg:pb-0')}
+        style={national2Font.style}>
         <ErrorBoundary key={router.route}>
           {appConfig.features.enablePageTransition ? (
             <DynamicPageTransition timeout={300} classNames="pageTransition">

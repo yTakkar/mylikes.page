@@ -1,4 +1,10 @@
+// include taiwind directories
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+// imports
+@import 'mixins';
+@import 'globals';
+@import 'loader';
 

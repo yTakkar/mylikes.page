@@ -1,16 +1,3 @@
-// Custom utilities
-.hide-scrollbar {
-  @include hide-scrollbar;
-}
-
-.blur {
-  filter: blur(1px);
-}
-
-.no-blur {
-  filter: blur(0px);
-}
-
 @keyframes shakeX {
   from,
   to {
@@ -36,57 +23,79 @@
   }
 }
 
-.animation-shakeX {
-  display: inline-block;
-  animation-name: shakeX;
-  animation-duration: 1.5s;
-  animation-iteration-count: 1;
-}
-
-.fade-in {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 0.5s linear;
-}
-
-.fade-out {
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0.5s, opacity 0.5s linear;
-}
-
-.no-padding {
-  padding: 0 !important;
-}
-
-.no-margin {
-  margin: 0 !important;
-}
-
-.no-hover-bg {
-  &:hover {
-    background: inherit !important;
+// base
+@layer base {
+  body {
+    @apply bg-white text-typo-paragraph font-primary;
   }
 }
 
-.no-focus-boxShadow {
-  &:focus {
-    box-shadow: none !important;
+// Custom utilities
+@layer utilities {
+  .hide-scrollbar {
+    @include hide-scrollbar;
   }
-}
 
-.mobile-view {
-  display: inherit;
-
-  @include desktop {
-    display: none;
+  .blur {
+    filter: blur(1px);
   }
-}
 
-.desktop-view {
-  display: none;
+  .no-blur {
+    filter: blur(0px);
+  }
 
-  @include desktop {
+  .animation-shakeX {
+    display: inline-block;
+    animation-name: shakeX;
+    animation-duration: 1.5s;
+    animation-iteration-count: 1;
+  }
+
+  .fade-in {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+  }
+
+  .fade-out {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s, opacity 0.5s linear;
+  }
+
+  .no-padding {
+    padding: 0 !important;
+  }
+
+  .no-margin {
+    margin: 0 !important;
+  }
+
+  .no-hover-bg {
+    &:hover {
+      background: inherit !important;
+    }
+  }
+
+  .no-focus-boxShadow {
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  .mobile-view {
     display: inherit;
+
+    @include desktop {
+      display: none;
+    }
+  }
+
+  .desktop-view {
+    display: none;
+
+    @include desktop {
+      display: inherit;
+    }
   }
 }

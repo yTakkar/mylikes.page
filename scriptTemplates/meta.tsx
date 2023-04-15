@@ -98,7 +98,6 @@ const MetaTags: React.FC<IProps> = () => (
     {appConfig.integrations.googleSiteVerification.enabled ? (
       <meta name="google-site-verification" content={appConfig.integrations.googleSiteVerification.code} />
     ) : null}
-
     <meta
       key="viewport"
       name="viewport"

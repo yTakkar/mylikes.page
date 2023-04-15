@@ -12,7 +12,7 @@ interface IProps extends IGlobalLayoutProps {
 const Home: NextPage<IProps> = () => {
   return (
     <PageContainer>
-      <div>Home</div>
+      <div className="font-primary-medium">Home</div>
     </PageContainer>
   )
 }

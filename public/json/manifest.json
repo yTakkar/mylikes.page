@@ -2,6 +2,7 @@
   "name": "MyLikes",
   "short_name": "MyLikes",
   "description": "A summary",
+  "start_url": "/?utm_source=pwa&utm_medium=homescreen",
   "orientation": "portrait",
   "display": "standalone",
   "icons": [

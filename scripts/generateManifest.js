@@ -41,7 +41,7 @@ const manifestJSON = {
   description: appConfig.global.app.summary,
   // theme_color: theme.colors.primary,
   // background_color: theme.colors.white,
-  // start_url: appConfig.pwa.startUrl,
+  start_url: appConfig.pwa.startUrl,
   orientation: 'portrait',
   display: 'standalone',
   icons: updatedManifestIcons.map(icon => {

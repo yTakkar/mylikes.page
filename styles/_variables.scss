@@ -1,0 +1,31 @@
+:root { 
+  --color-raw-white: 255, 255, 255;
+  --color-raw-black: 0, 0, 0;
+  --color-raw-red: 228, 66, 66;
+  --color-raw-blue: 3, 169, 244;
+  --color-raw-blue10: rgba(3, 169, 244, 0.1);
+  --color-raw-blue20: rgba(3, 169, 244, 0.2);
+  --color-raw-purple: 122, 65, 216;
+  --color-raw-green: 4, 194, 129;
+  --color-raw-green02: 0, 153, 68;
+  --color-raw-grey01: 249, 249, 251;
+  --color-raw-grey02: 246, 247, 248;
+  --color-raw-grey03: 237, 238, 240;
+  --color-raw-grey04: 220, 221, 223;
+  --color-raw-grey05: 203, 204, 206;
+  --color-raw-grey06: 165, 166, 167;
+  --color-raw-grey07: 108, 109, 111;
+  --color-raw-grey08: 72, 73, 74;
+  --color-raw-grey09: 43, 44, 45;
+  --color-raw-grey10: 29, 30, 31;
+
+  --color-brand-primary: 206, 46, 53;
+  --color-brand-secondary: 5, 199, 246;
+
+  --color-typo-title: 30, 30, 30;
+  --color-typo-paragraph: 113, 113, 113;
+}
+
+[data-color-theme='dark'] {
+  --color-brand-primary: 53, 186, 246;
+}

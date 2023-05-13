@@ -1,5 +1,10 @@
 import React from 'react'
 import appConfig from '../config/appConfig'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '../tailwind.config'
+
+const resolvedTailwindConfig = resolveConfig(tailwindConfig)
+const theme = resolvedTailwindConfig.theme as any
 
 const prepareAssetUrl = (urlPath: string) => {
   if (appConfig.global.assetBaseUrl) {
@@ -110,8 +115,8 @@ const MetaTags: React.FC<IProps> = () => (
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content={`${appConfig.global.app.name}`} />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    {/* <meta name="theme-color" content={theme.colors.primary} /> */}
-    {/* <meta name="msapplication-TileColor" content={theme.colors.primary} /> */}
+    <meta name="theme-color" content={theme.colors.brand.primary} />
+    <meta name="msapplication-TileColor" content={theme.colors.brand.primary} />
 
     <AppSplashScreens />
   </>

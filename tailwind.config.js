@@ -1,15 +1,3 @@
-const opacityFn = colorVariable => {
-  return ({ opacityVariable, opacityValue }) => {
-    if (opacityValue !== undefined) {
-      return `rgba(${colorVariable}, ${opacityValue})`
-    }
-    if (opacityVariable !== undefined) {
-      return `rgba(${colorVariable}, var(${opacityVariable}, 1))`
-    }
-    return `rgb(${colorVariable})`
-  }
-}
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
@@ -169,35 +157,13 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
-
-      raw: {
-        white: opacityFn('var(--color-raw-white)'),
-        black: opacityFn('var(--color-raw-black)'),
-        red: opacityFn('var(--color-raw-red)'),
-        blue: opacityFn('var(--color-raw-blue)'),
-        blue10: 'var(--color-raw-blue10)',
-        blue20: 'var(--color-raw-blue20)',
-        purple: opacityFn('var(--color-raw-purple)'),
-        green: opacityFn('var(--color-raw-green)'),
-        green02: opacityFn('var(--color-raw-green02)'),
-        grey01: opacityFn('var(--color-raw-grey01)'),
-        grey02: opacityFn('var(--color-raw-grey02)'),
-        grey03: opacityFn('var(--color-raw-grey03)'),
-        grey04: opacityFn('var(--color-raw-grey04)'),
-        grey05: opacityFn('var(--color-raw-grey05)'),
-        grey06: opacityFn('var(--color-raw-grey06)'),
-        grey07: opacityFn('var(--color-raw-grey07)'),
-        grey08: opacityFn('var(--color-raw-grey08)'),
-        grey09: opacityFn('var(--color-raw-grey09)'),
-        grey10: opacityFn('var(--color-raw-grey10)'),
-      },
       brand: {
-        primary: opacityFn('var(--color-brand-primary)'),
-        secondary: opacityFn('var(--color-brand-secondary)'),
+        primary: '#ce2e35',
+        secondary: '#05c7f6',
       },
       typo: {
-        title: opacityFn('var(--color-typo-title)'),
-        paragraph: opacityFn('var(--color-typo-paragraph)'),
+        title: '#1e1e1e',
+        paragraph: '#717171',
       },
     }),
     columns: {

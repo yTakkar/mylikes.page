@@ -6,8 +6,8 @@ require('dotenv').config({
 
 import fs from 'fs'
 import appConfig from '../config/appConfig.ts'
-// import resolveConfig from 'tailwindcss/resolveConfig'
-// import tailwindConfig from '../tailwind.config'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '../tailwind.config'
 import manifestIcons from '../public/json/manifest-icons.json'
 // import manifestScreenshots from '../public/json/manifest-screenshots.json'
 import { getAbsPath } from './fileSystem.js'
@@ -32,15 +32,15 @@ const updatedManifestIcons = manifestIcons.icons.map(icon => ({
 //   sizes: screenshot.sizes,
 // }))
 
-// const resolvedTailwindConfig = resolveConfig(tailwindConfig)
-// const theme = resolvedTailwindConfig.theme
+const resolvedTailwindConfig = resolveConfig(tailwindConfig)
+const theme = resolvedTailwindConfig.theme
 
 const manifestJSON = {
   name: appConfig.global.app.name,
   short_name: appConfig.global.app.shortName,
   description: appConfig.global.app.summary,
-  // theme_color: theme.colors.primary,
-  // background_color: theme.colors.white,
+  theme_color: theme.colors.brand.primary,
+  background_color: theme.colors.white,
   start_url: appConfig.pwa.startUrl,
   orientation: 'portrait',
   display: 'standalone',

@@ -113,6 +113,9 @@ module.exports = {
       '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
       inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
       none: 'none',
+      headerUserAddress:
+        '0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%)',
+      scrollToTop: '7.33333px 0.666667px 30.6667px rgb(0 0 0 / 22%)',
     },
     boxShadowColor: ({ theme }) => theme('colors'),
     brightness: {
@@ -136,7 +139,18 @@ module.exports = {
       black: colors.black,
       white: colors.white,
       slate: colors.slate,
-      gray: colors.gray,
+      gray: {
+        100: '#f9f9fb',
+        200: '#f1f2f3',
+        300: '#edeef0',
+        400: '#dcdddf',
+        500: '#cbccce',
+        600: '#a5a6a7',
+        700: '#6c6d6f',
+        800: '#48494a',
+        900: '#2b2c2d',
+        1000: '#1d1e1f',
+      },
       zinc: colors.zinc,
       neutral: colors.neutral,
       stone: colors.stone,
@@ -159,12 +173,17 @@ module.exports = {
       rose: colors.rose,
       brand: {
         primary: '#ce2e35',
+        primaryLight: 'rgba(206, 46, 53, 0.9)', // lighter version of brand.primary
         secondary: '#05c7f6',
       },
       typo: {
         title: '#1e1e1e',
-        paragraph: '#717171',
+        paragraph: '#282828',
+        paragraphLight: '#717171',
       },
+      blackLight: 'rgba(0, 0, 0, .5)',
+      whisper: '#F2F3F8',
+      denim: 'rgb(25 118 210 / 4%)',
     }),
     columns: {
       auto: 'auto',
@@ -307,9 +326,14 @@ module.exports = {
       DEFAULT: '1',
     },
     fontFamily: {
-      primary: ['"National2-Regular"', 'sans-serif'],
-      'primary-medium': ['"National2-Medium"', 'sans-serif'],
-      'primary-bold': ['"National2-Bold"', 'sans-serif'],
+      // primary: ['"National2-Regular"', 'sans-serif'],
+      // 'primary-medium': ['"National2-Medium"', 'sans-serif'],
+      // 'primary-bold': ['"National2-Bold"', 'sans-serif'],
+
+      primary: ['"BentonSans"', 'Arial', 'Noto Sans', 'sans-serif'],
+      'primary-bold': ['"BentonSans-Bold"', 'Arial', 'Noto Sans', 'sans-serif'],
+      'primary-medium': ['"BentonSans-Medium"', 'Arial', 'Noto Sans', 'sans-serif'],
+
       sans: [
         'ui-sans-serif',
         'system-ui',

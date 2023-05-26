@@ -1,26 +1,66 @@
+// @font-face {
+//   font-family: 'National2-Regular';
+//   src: url('/fonts/national2/national2-regular.woff2')
+//       format('woff2');
+//   font-weight: normal;
+//   font-style: normal;
+//   font-display: swap;
+// };
+
+// @font-face {
+//   font-family: 'National2-Medium';
+//   src: url('/fonts/national2/national2-medium.woff2')
+//       format('woff2');
+//   font-weight: 500;
+//   font-style: normal;
+//   font-display: swap;
+// };
+
+// @font-face {
+//   font-family: 'National2-Bold';
+//   src: url('/fonts/national2/national2-bold.woff2')
+//       format('woff2');
+//   font-weight: 700;
+//   font-style: normal;
+//   font-display: swap;
+// };
+
 @font-face {
-  font-family: 'National2-Regular';
-  src: url('/fonts/national2/national2-regular.woff2')
-      format('woff2');
+  font-family: 'BentonSans';
+  src: url('/fonts/BentonSans/BentonSans-Regular/BentonSans-Regular.woff')
+      format('woff'),
+    url('/fonts/BentonSans/BentonSans-Regular/BentonSans-Regular.tff')
+      format('ttf'),
+    url('/fonts/BentonSans/BentonSans-Regular/BentonSans-Regular.eot')
+      format('eot');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 };
 
 @font-face {
-  font-family: 'National2-Medium';
-  src: url('/fonts/national2/national2-medium.woff2')
-      format('woff2');
+  font-family: 'BentonSans-Medium';
+  src: url('/fonts/BentonSans/BentonSans-Medium/BentonSans-Medium.woff')
+      format('woff'),
+    url('/fonts/BentonSans/BentonSans-Medium/BentonSans-Medium.ttf')
+      format('ttf'),
+    url('/fonts/BentonSans/BentonSans-Medium/BentonSans-Medium.eot')
+      format('eot');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 };
 
 @font-face {
-  font-family: 'National2-Bold';
-  src: url('/fonts/national2/national2-bold.woff2')
-      format('woff2');
+  font-family: 'BentonSans-Bold';
+  src: url('/fonts/BentonSans/BentonSans-Bold/BentonSans-Bold.woff')
+      format('woff'),
+    url('/fonts/BentonSans/BentonSans-Bold/BentonSans-Bold.ttf')
+      format('ttf'),
+    url('/fonts/BentonSans/BentonSans-Bold/BentonSans-Bold.eot')
+      format('eot');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 };
+

@@ -10,8 +10,22 @@ import { DynamicPageTransition } from '../components/dynamicComponents'
 import ErrorBoundary from '../components/error/ErrorBoundary'
 import AppSeo, { IAppSeoProps } from '../components/seo/AppSeo'
 import classNames from 'classnames'
+import Header from '../components/header/Header'
+import CookieBanner from '../components/CookieBanner'
+import Toaster from '../components/Toaster'
+import Footer from '../components/footer/Footer'
 
-export interface IPageLayoutData {}
+export interface IPageLayoutData {
+  header: {
+    hideTopNav?: {
+      mobile: boolean
+      desktop: boolean
+    }
+  }
+  footer: {
+    show: boolean
+  }
+}
 
 export interface IGlobalLayoutProps {
   pageData: any
@@ -27,14 +41,32 @@ interface IProps {
 
 const MyApp: NextPage<IProps> = props => {
   const { Component, pageProps } = props
-  const { seo } = pageProps || {}
+  const { seo, layoutData } = pageProps || {}
+
+  const { header, footer } = layoutData || {}
+  const { hideTopNav } = header || {}
 
   const { applicationContext } = useApplicationContext()
   const router = useRouter()
 
+  let showTopNav = true
+
+  if (!hideTopNav) {
+    showTopNav = true
+  } else {
+    if (hideTopNav.desktop && hideTopNav.mobile) {
+      showTopNav = false
+    } else if (hideTopNav.desktop && !hideTopNav.mobile) {
+      showTopNav = !applicationContext.device.isDesktop
+    } else if (!hideTopNav.desktop && hideTopNav.mobile) {
+      showTopNav = !applicationContext.device.isMobile
+    }
+  }
+
   return (
     <ApplicationContext.Provider value={applicationContext}>
       <AppSeo {...seo} />
+      <Header topNavVisibility={showTopNav} />
 
       <main
         id={classnames('pageMain', {
@@ -49,11 +81,13 @@ const MyApp: NextPage<IProps> = props => {
           ) : (
             <Component {...pageProps} key={router.route} />
           )}
+
+          {footer?.show ? <Footer /> : null}
         </ErrorBoundary>
       </main>
 
-      {/* <CookieBanner /> */}
-      {/* <Toaster /> */}
+      <CookieBanner />
+      <Toaster />
       {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
       {/* {appConfig.features.enableLandscapeMode ? <OrientationLock /> : null} */}
     </ApplicationContext.Provider>

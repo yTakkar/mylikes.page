@@ -55,13 +55,27 @@ const appConfig = {
       storeUrl: '',
     },
   },
+  search: {
+    placeholder: {
+      header: `Search ${app.name}...`,
+      page: 'Search for influencers, recommendations & more',
+    },
+  },
   features: {
     enablePageTransition: process.env.ENV_ENABLE_PAGE_TRANSITION === 'true',
     enableLandscapeMode: process.env.ENV_ENABLE_LANDSCAPE_MODE === 'true',
+    enablePWAPromotions: process.env.ENV_ENABLE_PWA_PROMOTIONS === 'true',
+    enableAppPromotions: process.env.ENV_ENABLE_APP_PROMOTIONS === 'true',
+    enablePagesPrefetching: process.env.ENV_ENABLE_PAGES_PREFETCHING === 'true',
   },
   build: {
     pageRevalidateTimeInSec: {
       HOME: 15 * 60,
+      PRIVACY_POLICY: 60 * 60,
+      CONTACT: 60 * 60,
+      TERMS_CONDITIONS: 60 * 60,
+      404: 15 * 60,
+      ERROR: 15 * 60,
     },
     initialPageBuildCount: {},
   },
@@ -117,6 +131,15 @@ const appConfig = {
       { type: 'WHATSAPP', url: 'https://wa.me/+919999999999', name: 'WhatsApp', isExternal: true },
       { type: 'MAIL', url: 'mailto:ownstoreonlinee@gmail.com', name: 'Mail', isExternal: true },
     ],
+  },
+  footer: {
+    links: [
+      { label: 'FAQ', url: '/faq' },
+      { label: 'Privacy Policy', url: '/privacy-policy' },
+      { label: 'Terms of Use', url: '/terms-conditions' },
+      { label: 'Contact', url: '/contact' },
+    ],
+    copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
 }
 

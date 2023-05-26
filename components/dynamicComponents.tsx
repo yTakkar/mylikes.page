@@ -6,3 +6,13 @@ export const DynamicPageTransition: any = dynamic(() =>
     return resp.PageTransition
   })
 )
+
+export const DynamicToaster = dynamic(
+  () =>
+    import(/* webpackChunkName: "react-hot-toast" */ 'react-hot-toast').then(resp => {
+      return resp.Toaster
+    }),
+  {
+    ssr: false,
+  }
+)

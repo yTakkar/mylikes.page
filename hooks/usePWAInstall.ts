@@ -1,0 +1,73 @@
+import { useState, useRef, useEffect } from 'react'
+import debug from 'debug'
+import appConfig from '../config/appConfig'
+
+const log = debug('pwa-install')
+
+type PromptFn = (prompt: any) => void
+
+interface PromptEvent extends Event {
+  prompt: () => void
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+const usePWAInstall = () => {
+  const [show, toggle] = useState(false)
+  const prompt = useRef<PromptEvent | undefined>(undefined)
+
+  useEffect(() => {
+    if (appConfig.features.enablePWAPromotions) {
+      window.addEventListener('beforeinstallprompt', e => {
+        log('Received beforeinstallprompt event', e)
+        e.preventDefault() // hide in-built install UI
+        prompt.current = e as PromptEvent // store prompt object
+        toggle(true) // show custom UI
+      })
+
+      window.addEventListener('appinstalled', e => {
+        log('Received appinstalled event', e)
+        setTimeout(() => {
+          toggle(false)
+        }, 1000)
+      })
+    }
+  }, [])
+
+  const showPrompt = (onAccept?: PromptFn, onDecline?: PromptFn) => {
+    if (!prompt.current) {
+      return
+    }
+
+    prompt.current.prompt() // show prompt
+    prompt.current.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === 'accepted') {
+        log('User accepted the install prompt')
+        if (onAccept) {
+          onAccept(prompt)
+        }
+        // TODO: Faiyaz
+        // appAnalytics.sendEvent({
+        //   action: AnalyticsEventType.PWA_INSTALL_SUCCESS,
+        // })
+      } else {
+        log('User dismissed the install prompt')
+        if (onDecline) {
+          onDecline(prompt)
+        }
+        // TODO: Faiyaz
+        // appAnalytics.sendEvent({
+        //   action: AnalyticsEventType.PWA_INSTALL_FAILED,
+        // })
+      }
+    })
+  }
+
+  log('show custom install UI', show)
+
+  return {
+    showPWAInstall: show,
+    showPWAInstallPrompt: showPrompt,
+  }
+}
+
+export default usePWAInstall

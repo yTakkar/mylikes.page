@@ -1,3 +1,36 @@
+import { NextRouter } from 'next/router'
+import { getHomePageUrl } from './routes'
+
+export const addBlur = () => {
+  const pageWrapper = document.getElementById('pageMain')
+  const topNav = document.querySelector('.top-nav')
+  const mobileNav = document.querySelector('.mobile-nav')
+
+  const elements = [pageWrapper, topNav, mobileNav].filter(Boolean)
+
+  elements.forEach(element => {
+    if (element) {
+      element.classList.remove('no-blur')
+      element.classList.add('blur')
+    }
+  })
+}
+
+export const removeBlur = () => {
+  const pageWrapper = document.getElementById('pageMain')
+  const topNav = document.querySelector('.top-nav')
+  const mobileNav = document.querySelector('.mobile-nav')
+
+  const elements = [pageWrapper, topNav, mobileNav].filter(Boolean)
+
+  elements.forEach(element => {
+    if (element) {
+      element.classList.remove('blur')
+      element.classList.add('no-blur')
+    }
+  })
+}
+
 export const matchMinMaxMediaQuery = (min: number, max: number) => {
   return window.matchMedia(`(min-width: ${min}px) and (max-width: ${max}px)`).matches
 }
@@ -81,4 +114,16 @@ export const updateUrlParam = (uri: string, key: string, value: string | null) =
     uri = `${uri + separator + key}=${value}`
   }
   return uri + hash
+}
+
+export const routerPageBack = (router: NextRouter, backUrl?: string) => {
+  if (window.history.length > 1) {
+    if (backUrl) {
+      router.push(backUrl)
+    } else {
+      router.back()
+    }
+  } else {
+    router.push(getHomePageUrl())
+  }
 }

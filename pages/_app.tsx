@@ -14,6 +14,7 @@ import Header from '../components/header/Header'
 import CookieBanner from '../components/CookieBanner'
 import Toaster from '../components/Toaster'
 import Footer from '../components/footer/Footer'
+import OrientationLock from '../components/OrientationLock'
 
 export interface IPageLayoutData {
   header: {
@@ -70,7 +71,7 @@ const MyApp: NextPage<IProps> = props => {
 
       <main
         id={classnames('pageMain', {
-          'pageMain-lock': appConfig.features.enableLandscapeMode,
+          'pageMain-lock': !appConfig.features.enableLandscapeMode,
         })}
         className={classNames('pb-16 lg:pb-0')}>
         <ErrorBoundary key={router.route}>
@@ -89,7 +90,7 @@ const MyApp: NextPage<IProps> = props => {
       <CookieBanner />
       <Toaster />
       {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
-      {/* {appConfig.features.enableLandscapeMode ? <OrientationLock /> : null} */}
+      {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
     </ApplicationContext.Provider>
   )
 }

@@ -1,0 +1,22 @@
+// page transition
+.pageTransition {
+  &-enter {
+    @apply opacity-0;
+    transform: translate3d(0px, -20px, 0);
+  
+    &-active {
+      @apply opacity-100;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 300ms, transform 300ms;
+    }
+  }
+
+  &-exit {
+    @apply opacity-100;
+  
+    &-active {
+      @apply opacity-0;
+      transition: opacity 300ms;
+    }
+  }
+}

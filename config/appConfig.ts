@@ -72,7 +72,6 @@ const appConfig = {
     pageRevalidateTimeInSec: {
       HOME: 15 * 60,
       PRIVACY_POLICY: 60 * 60,
-      CONTACT: 60 * 60,
       TERMS_CONDITIONS: 60 * 60,
       404: 15 * 60,
       ERROR: 15 * 60,

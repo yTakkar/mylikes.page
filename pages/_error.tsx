@@ -21,6 +21,7 @@ const ErrorPage: NextPage<IProps> = () => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
+  // TODO: - get data
   return {
     props: {
       pageData: {},

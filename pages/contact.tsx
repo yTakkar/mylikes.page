@@ -120,7 +120,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       },
       analytics: null,
     },
-    revalidate: PAGE_REVALIDATE_TIME.CONTACT,
   }
 }
 

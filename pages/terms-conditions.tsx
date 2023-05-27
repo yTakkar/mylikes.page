@@ -50,6 +50,7 @@ const TnCPage: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
+  // TODO: - get data
   return {
     props: {
       pageData: {

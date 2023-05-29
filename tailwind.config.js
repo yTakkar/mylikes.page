@@ -116,6 +116,7 @@ module.exports = {
       headerUserAddress:
         '0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%)',
       scrollToTop: '7.33333px 0.666667px 30.6667px rgb(0 0 0 / 22%)',
+      modal: '0 0 10px 0 rgb(0 0 0 / 8%)',
     },
     boxShadowColor: ({ theme }) => theme('colors'),
     brightness: {

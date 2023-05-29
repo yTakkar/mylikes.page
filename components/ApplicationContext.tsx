@@ -9,6 +9,12 @@ export enum PlatformType {
   IOS = 'IOS',
 }
 
+export enum PopupType {
+  LOGIN = 'LOGIN',
+}
+
+export type PopupParams = any
+
 export interface IDeviceInfo {
   isDesktop: boolean
   isMobile: boolean
@@ -30,8 +36,14 @@ export interface IDeviceInfo {
   is2Xl: boolean
 }
 
+export interface IContextMethods {
+  togglePopup: (popup: PopupType, params: PopupParams) => void
+}
+
 export interface IApplicationContextProps {
   device: IDeviceInfo
+  popups: Partial<Record<PopupType, PopupParams>>
+  methods: IContextMethods
 }
 
 export const defaultApplicationContext: IApplicationContextProps = {
@@ -54,6 +66,10 @@ export const defaultApplicationContext: IApplicationContextProps = {
     isLg: false,
     isXl: false,
     is2Xl: false,
+  },
+  popups: {},
+  methods: {
+    togglePopup: () => null,
   },
 }
 

@@ -1,12 +1,32 @@
 import { NextRouter } from 'next/router'
 import { getHomePageUrl } from './routes'
 
+// Ref: last comment on this page: https://bugs.webkit.org/show_bug.cgi?id=153852#c43
+export const disablePageScrolling = () => {
+  const body = document.body
+  document.body.style.overflow = 'hidden'
+  const offsetY = window.pageYOffset
+  body.style.top = `${-offsetY}px`
+  body.style.width = '100vw'
+  body.classList.add('js-modal-lock-position')
+}
+
+export const enablePageScrolling = () => {
+  const body = document.body
+  body.style.overflow = 'auto'
+  const top = Number(body.style.top.replace('px', '')) || 0
+  const offsetY = Math.abs(top)
+  body.classList.remove('js-modal-lock-position')
+  body.style.removeProperty('top')
+  body.style.removeProperty('width')
+  window.scrollTo(0, offsetY || 0)
+}
+
 export const addBlur = () => {
   const pageWrapper = document.getElementById('pageMain')
   const topNav = document.querySelector('.top-nav')
-  const mobileNav = document.querySelector('.mobile-nav')
 
-  const elements = [pageWrapper, topNav, mobileNav].filter(Boolean)
+  const elements = [pageWrapper, topNav].filter(Boolean)
 
   elements.forEach(element => {
     if (element) {
@@ -19,9 +39,8 @@ export const addBlur = () => {
 export const removeBlur = () => {
   const pageWrapper = document.getElementById('pageMain')
   const topNav = document.querySelector('.top-nav')
-  const mobileNav = document.querySelector('.mobile-nav')
 
-  const elements = [pageWrapper, topNav, mobileNav].filter(Boolean)
+  const elements = [pageWrapper, topNav].filter(Boolean)
 
   elements.forEach(element => {
     if (element) {

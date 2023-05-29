@@ -15,6 +15,7 @@ import CookieBanner from '../components/CookieBanner'
 import Toaster from '../components/Toaster'
 import Footer from '../components/footer/Footer'
 import OrientationLock from '../components/OrientationLock'
+import PopupRenderer from '../components/popup/PopupRenderer'
 
 export interface IPageLayoutData {
   header: {
@@ -91,6 +92,7 @@ const MyApp: NextPage<IProps> = props => {
       <Toaster />
       {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
       {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
+      <PopupRenderer />
     </ApplicationContext.Provider>
   )
 }

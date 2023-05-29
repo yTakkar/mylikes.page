@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import CoreImage from '../core/CoreImage'
 import { MenuIcon as MenuIconSolid, UserIcon as UserIconSolid, PlusIcon as PlusIconSolid } from '@heroicons/react/solid'
 import {
@@ -12,7 +12,8 @@ import usePWAInstall from '../../hooks/usePWAInstall'
 import { APP_LOGO } from '../../constants/constants'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { DesktopView } from '../ResponsiveViews'
-import { getHomePageUrl, getMorePageUrl, getSearchPageUrl } from '../../utils/routes'
+import { getHomePageUrl, getMorePageUrl } from '../../utils/routes'
+import ApplicationContext, { PopupType } from '../ApplicationContext'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -21,6 +22,9 @@ interface INavbarProps {
 const Header: React.FC<INavbarProps> = props => {
   const { topNavVisibility } = props
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
+
+  const applicationContext = useContext(ApplicationContext)
+  const { methods } = applicationContext
 
   const pwaInstallLink: IHeaderLink = {
     label: 'Install',
@@ -37,16 +41,19 @@ const Header: React.FC<INavbarProps> = props => {
 
   const NAV_LINKS: IHeaderLink[] = [
     {
-      label: 'Search',
-      url: getSearchPageUrl(),
+      label: 'Account',
+      url: null,
       iconComponent: UserIconOutline,
       activeIconComponent: UserIconSolid,
       iconClassName: null,
       count: null,
-      onClick: null,
+      onClick: e => {
+        e.preventDefault()
+        methods.togglePopup(PopupType.LOGIN, {})
+      },
     },
     {
-      label: 'Other Links',
+      label: 'More',
       url: getMorePageUrl(),
       iconComponent: MenuIconOutline,
       activeIconComponent: MenuIconSolid,

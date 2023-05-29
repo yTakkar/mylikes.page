@@ -1,0 +1,6 @@
+// Header
+.searchInputPlaceholder {
+  &::placeholder {
+    @apply text-base lg:text-lg;
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { getDeviceInfo } from '../utils/applicationContext'
 import useApplicationContextReducer from './useApplicationContextReducer'
 import useOrientation from './useOrientation'
@@ -38,7 +38,7 @@ const useApplicationContext = () => {
     deleteLocalUserInfo()
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const localUserInfo = getLocalUserInfo()
     if (localUserInfo) {
       updateUser(localUserInfo)

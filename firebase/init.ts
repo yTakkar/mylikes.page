@@ -12,6 +12,5 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
-
-export default app
+const firebaseApp = initializeApp(firebaseConfig)
+export default firebaseApp

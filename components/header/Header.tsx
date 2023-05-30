@@ -13,7 +13,8 @@ import { APP_LOGO } from '../../constants/constants'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { DesktopView } from '../ResponsiveViews'
 import { getHomePageUrl, getMorePageUrl } from '../../utils/routes'
-import ApplicationContext, { PopupType } from '../ApplicationContext'
+import ApplicationContext from '../ApplicationContext'
+import { PopupType } from '../../interface/applicationContext'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -66,6 +67,8 @@ const Header: React.FC<INavbarProps> = props => {
   if (showPWAInstall) {
     NAV_LINKS.unshift(pwaInstallLink)
   }
+
+  console.log(applicationContext.user)
 
   const renderTopNav = () => {
     return (

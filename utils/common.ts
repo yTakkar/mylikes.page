@@ -1,5 +1,6 @@
 import { NextRouter } from 'next/router'
 import { getHomePageUrl } from './routes'
+import { VibratePatternType } from '../constants/constants'
 
 // Ref: last comment on this page: https://bugs.webkit.org/show_bug.cgi?id=153852#c43
 export const disablePageScrolling = () => {
@@ -144,5 +145,11 @@ export const routerPageBack = (router: NextRouter, backUrl?: string) => {
     }
   } else {
     router.push(getHomePageUrl())
+  }
+}
+
+export const vibrate = (pattern: VibratePatternType = VibratePatternType.DEFAULT) => {
+  if (navigator.vibrate) {
+    navigator.vibrate(pattern)
   }
 }

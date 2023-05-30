@@ -1,12 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { getDeviceInfo } from '../utils/applicationContext'
 import useApplicationContextReducer from './useApplicationContextReducer'
 import useOrientation from './useOrientation'
-import { IContextMethods } from '../components/ApplicationContext'
+import { IContextMethods } from '../interface/applicationContext'
+import { deleteLocalUserInfo, getLocalUserInfo } from '../utils/user'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
-
   const { isLandscapeMode } = useOrientation()
 
   useEffect(() => {
@@ -26,8 +26,29 @@ const useApplicationContext = () => {
     })
   }
 
+  const updateUser: IContextMethods['updateUser'] = userInfo => {
+    dispatchApplicationContext({
+      type: 'UPDATE_USER',
+      payload: userInfo,
+    })
+  }
+
+  const logout: IContextMethods['logout'] = () => {
+    updateUser(null)
+    deleteLocalUserInfo()
+  }
+
+  useLayoutEffect(() => {
+    const localUserInfo = getLocalUserInfo()
+    if (localUserInfo) {
+      updateUser(localUserInfo)
+    }
+  }, [])
+
   applicationContext.methods = {
     togglePopup,
+    updateUser,
+    logout,
   }
 
   return {

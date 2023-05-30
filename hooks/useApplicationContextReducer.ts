@@ -1,11 +1,12 @@
 import { Dispatch, useReducer } from 'react'
+import { defaultApplicationContext } from '../components/ApplicationContext'
 import {
-  defaultApplicationContext,
   IApplicationContextProps,
   IDeviceInfo,
+  IUserInfo,
   PopupParams,
   PopupType,
-} from '../components/ApplicationContext'
+} from '../interface/applicationContext'
 
 export type ApplicationContextAction =
   | {
@@ -14,6 +15,10 @@ export type ApplicationContextAction =
     }
   | {
       type: 'RESET'
+    }
+  | {
+      type: 'UPDATE_USER'
+      payload: IUserInfo | null
     }
   | {
       type: 'TOGGLE_POPUP'
@@ -32,6 +37,13 @@ const applicationReducer = (
       return {
         ...state,
         device: action.payload,
+      }
+    }
+
+    case 'UPDATE_USER': {
+      return {
+        ...state,
+        user: action.payload,
       }
     }
 

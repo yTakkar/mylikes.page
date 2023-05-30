@@ -73,3 +73,9 @@ export const SOCIAL_ICONS_SRC_MAP: Record<string, string> = {
   FORM: prepareImageUrl('/images/icons/social/form.svg', ImageSourceType.ASSET),
   REFRESH: prepareImageUrl('/images/icons/social/refresh.svg', ImageSourceType.ASSET),
 }
+
+export enum VibratePatternType {
+  SHORT = 100,
+  DEFAULT = 200,
+  LONG = 500,
+}

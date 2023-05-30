@@ -8,7 +8,7 @@ import Snackbar from '../components/header/Snackbar'
 import PageContainer from '../components/PageContainer'
 import { DesktopView, MobileView } from '../components/ResponsiveViews'
 import appConfig from '../config/appConfig'
-import { PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../constants/constants'
+import { SOCIAL_ICONS_SRC_MAP } from '../constants/constants'
 import { IGlobalLayoutProps } from './_app'
 import { prepareContactPageSeo } from '../utils/seo/pages/contact'
 

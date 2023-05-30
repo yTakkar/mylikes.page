@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "sass": "^1.62.0",
+    "unique-names-generator": "^4.7.1",
     "use-ssr": "^1.0.25"
   },
   "devDependencies": {

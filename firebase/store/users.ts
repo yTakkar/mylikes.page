@@ -1,12 +1,25 @@
 import firebaseStore from '.'
-import { collection, doc, getDoc, getDocs, limit, query, setDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, limit, query, setDoc, where } from 'firebase/firestore'
 import { IUserInfo } from '../../interface/applicationContext'
 
 const usersCollection = collection(firebaseStore, 'users')
 
-export const addUser = async (userInfo: IUserInfo) => {
-  const docRef = await setDoc(doc(usersCollection, userInfo.username), userInfo)
-  return docRef
+export const getUserByEmail = async (email: string): Promise<IUserInfo | null> => {
+  const q = query(usersCollection, where('email', '==', email))
+  const querySnapshot = (await getDocs(q)).docs
+  if (querySnapshot.length === 0) {
+    return null
+  }
+  return querySnapshot[0].data() as IUserInfo
+}
+
+export const addUser = async (userInfo: IUserInfo): Promise<IUserInfo> => {
+  const userWithSameEmail = await getUserByEmail(userInfo.email)
+  if (userWithSameEmail) {
+    return userWithSameEmail
+  }
+  await setDoc(doc(usersCollection, userInfo.username), userInfo)
+  return userInfo
 }
 
 interface IListUsersParams {

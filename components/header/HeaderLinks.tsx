@@ -10,6 +10,7 @@ export interface IHeaderLink {
   iconClassName: string | null
   count: string | null
   onClick: ((e: any) => void) | null
+  show: boolean
 }
 
 interface IHeaderLinksProps {
@@ -18,6 +19,10 @@ interface IHeaderLinksProps {
 
 const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
   const mappedLinks = props.links.map((navLink, index) => {
+    if (!navLink.show) {
+      return null
+    }
+
     return (
       <CoreActiveLink
         key={index}

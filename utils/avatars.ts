@@ -7,5 +7,5 @@ export const getAvatarsList = async (): Promise<string[]> => {
 
 export const getRandomAvatar = async (): Promise<string> => {
   const avatarsList = await getAvatarsList()
-  return avatarsList[Math.floor(Math.random() * avatarsList.length)]
+  return avatarsList[~~(Math.random() * avatarsList.length)]
 }

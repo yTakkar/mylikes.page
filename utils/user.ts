@@ -1,8 +1,8 @@
 import { User } from 'firebase/auth'
 import { IUserInfo } from '../interface/applicationContext'
-import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
 import appConfig from '../config/appConfig'
 import { getRandomAvatar } from './avatars'
+import { dynamicUniqueNamesGenerator } from '../components/dynamicModules'
 
 const key = `${appConfig.global.app.key}-USER-INFO`
 
@@ -23,10 +23,16 @@ export const deleteLocalUserInfo = () => {
 }
 
 export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
-  const username = uniqueNamesGenerator({
-    dictionaries: [adjectives, colors, animals],
+  const uniqueNamesGenerator = await dynamicUniqueNamesGenerator()
+
+  const numberDictionary = uniqueNamesGenerator.NumberDictionary.generate({ min: 100, max: 1e5 })
+  const username = uniqueNamesGenerator.uniqueNamesGenerator({
+    dictionaries: [uniqueNamesGenerator.adjectives, uniqueNamesGenerator.names, numberDictionary],
     separator: '_',
+    style: 'lowerCase',
   })
+
+  const avatar = await getRandomAvatar()
 
   return {
     id: user.uid,
@@ -34,7 +40,7 @@ export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
     name: user.displayName!,
     email: user.email!,
     createdAt: new Date(),
-    avatarUrl: await getRandomAvatar(),
+    avatarUrl: avatar,
     bio: null,
     websiteUrl: null,
     socialUsernames: {

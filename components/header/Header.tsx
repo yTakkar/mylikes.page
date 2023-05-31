@@ -1,10 +1,16 @@
 import React, { useContext } from 'react'
 import CoreImage from '../core/CoreImage'
-import { MenuIcon as MenuIconSolid, UserIcon as UserIconSolid, PlusIcon as PlusIconSolid } from '@heroicons/react/solid'
+import {
+  MenuIcon as MenuIconSolid,
+  UserIcon as UserIconSolid,
+  PlusIcon as PlusIconSolid,
+  LoginIcon as LoginIconSolid,
+} from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
   UserIcon as UserIconOutline,
   PlusIcon as PlusIconOutline,
+  LoginIcon as LoginIconOutline,
 } from '@heroicons/react/outline'
 import HeaderSearch from './HeaderSearch'
 import CoreLink from '../core/CoreLink'
@@ -12,7 +18,7 @@ import usePWAInstall from '../../hooks/usePWAInstall'
 import { APP_LOGO } from '../../constants/constants'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { DesktopView } from '../ResponsiveViews'
-import { getHomePageUrl, getMorePageUrl } from '../../utils/routes'
+import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/applicationContext'
 
@@ -25,7 +31,7 @@ const Header: React.FC<INavbarProps> = props => {
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
 
   const applicationContext = useContext(ApplicationContext)
-  const { methods } = applicationContext
+  const { user, methods } = applicationContext
 
   const pwaInstallLink: IHeaderLink = {
     label: 'Install',
@@ -38,20 +44,32 @@ const Header: React.FC<INavbarProps> = props => {
       e.preventDefault()
       showPWAInstallPrompt()
     },
+    show: true,
   }
 
   const NAV_LINKS: IHeaderLink[] = [
     {
       label: 'Account',
-      url: null,
+      url: getProfilePageUrl(user!),
       iconComponent: UserIconOutline,
       activeIconComponent: UserIconSolid,
+      iconClassName: null,
+      count: null,
+      onClick: () => null,
+      show: !!user,
+    },
+    {
+      label: 'Login',
+      url: null,
+      iconComponent: LoginIconOutline,
+      activeIconComponent: LoginIconSolid,
       iconClassName: null,
       count: null,
       onClick: e => {
         e.preventDefault()
         methods.togglePopup(PopupType.LOGIN, {})
       },
+      show: !user,
     },
     {
       label: 'More',
@@ -61,6 +79,7 @@ const Header: React.FC<INavbarProps> = props => {
       iconClassName: null,
       count: null,
       onClick: null,
+      show: true,
     },
   ]
 

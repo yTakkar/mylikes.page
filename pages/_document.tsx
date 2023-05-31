@@ -2,6 +2,7 @@ import React from 'react'
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import MetaTags from '../scriptTemplates/meta'
 import PreconnectUrls from '../scriptTemplates/preConnects'
+import { AnalyticsScripts } from '../scriptTemplates/analytics'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -14,6 +15,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <PreconnectUrls />
+          <AnalyticsScripts />
           <MetaTags />
         </Head>
         <body>

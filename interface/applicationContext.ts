@@ -41,7 +41,7 @@ export interface IUserInfo {
   email: string
   name: string
   createdAt: Date
-  photoUrl: string
+  avatarUrl: string
   bio: string | null
   websiteUrl: string | null
   socialUsernames: {

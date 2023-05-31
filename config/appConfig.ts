@@ -15,6 +15,7 @@ const appConfig = {
     baseUrl: process.env.ENV_BASE_URL,
     assetBaseUrl: process.env.ENV_ASSETS_BASE_URL,
     cloudImageBaseUrl: process.env.ENV_CLOUD_IMAGE_BASE_URL,
+    avatarsBaseUrl: process.env.ENV_AVATARS_BASE_URL,
     // apiResponseTimeout: 5 * 1000,
   },
   seo: {

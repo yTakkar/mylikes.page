@@ -2,26 +2,27 @@ import { User } from 'firebase/auth'
 import { IUserInfo } from '../interface/applicationContext'
 import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
 import appConfig from '../config/appConfig'
+import { getRandomAvatar } from './avatars'
 
 const key = `${appConfig.global.app.key}-USER-INFO`
 
 export const getLocalUserInfo = (): IUserInfo | null => {
   const data = localStorage.getItem(key)
   if (data) {
-    return JSON.parse(data)
+    return JSON.parse(window.atob(data))
   }
   return null
 }
 
 export const setLocalUserInfo = (userInfo: IUserInfo) => {
-  localStorage.setItem(key, JSON.stringify(userInfo))
+  localStorage.setItem(key, window.btoa(JSON.stringify(userInfo)))
 }
 
 export const deleteLocalUserInfo = () => {
   localStorage.removeItem(key)
 }
 
-export const prepareUserInfo = (user: User): IUserInfo => {
+export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
   const username = uniqueNamesGenerator({
     dictionaries: [adjectives, colors, animals],
     separator: '_',
@@ -33,7 +34,7 @@ export const prepareUserInfo = (user: User): IUserInfo => {
     name: user.displayName!,
     email: user.email!,
     createdAt: new Date(),
-    photoUrl: user.photoURL!,
+    avatarUrl: await getRandomAvatar(),
     bio: null,
     websiteUrl: null,
     socialUsernames: {

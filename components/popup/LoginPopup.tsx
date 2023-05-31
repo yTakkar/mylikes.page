@@ -23,7 +23,7 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
     const processCommands = async () => {
       try {
         const user = await signInWithGoogle()
-        const userInfo = prepareUserInfo(user)
+        const userInfo = await prepareUserInfo(user)
         await addUser(userInfo)
         methods.updateUser(userInfo)
         setLocalUserInfo(userInfo)

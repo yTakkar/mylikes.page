@@ -2,7 +2,6 @@ import React from 'react'
 import { IGlobalLayoutProps } from './_app'
 import { GetStaticProps, NextPage } from 'next'
 import PageContainer from '../components/PageContainer'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 import Error from '../components/error/Error'
 import { prepareErrorPageSeo } from '../utils/seo/pages/error'
 
@@ -34,7 +33,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       },
       analytics: null,
     },
-    revalidate: PAGE_REVALIDATE_TIME.ERROR,
   }
 }
 

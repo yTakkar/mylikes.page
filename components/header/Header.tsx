@@ -87,8 +87,6 @@ const Header: React.FC<INavbarProps> = props => {
     NAV_LINKS.unshift(pwaInstallLink)
   }
 
-  console.log(applicationContext.user)
-
   const renderTopNav = () => {
     return (
       <div>

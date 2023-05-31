@@ -81,8 +81,8 @@ const appConfig = {
   build: {
     pageRevalidateTimeInSec: {
       HOME: 15 * 60,
-      PRIVACY_POLICY: 60 * 60,
-      TERMS_CONDITIONS: 60 * 60,
+      PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
+      TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
       404: 15 * 60,
       ERROR: 15 * 60,
     },

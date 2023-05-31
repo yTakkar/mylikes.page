@@ -5,7 +5,6 @@ import ApplicationContext from '../components/ApplicationContext'
 import PageContainer from '../components/PageContainer'
 import CoreImage, { ImageSourceType } from '../components/core/CoreImage'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../components/core/CoreButton'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 import { prepareImageUrl } from '../utils/image'
 import { getHomePageUrl } from '../utils/routes'
 import { prepareNotFoundPageSeo } from '../utils/seo/pages/error'
@@ -71,7 +70,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       },
       analytics: null,
     },
-    revalidate: PAGE_REVALIDATE_TIME[404],
   }
 }
 

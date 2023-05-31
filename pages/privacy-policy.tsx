@@ -8,10 +8,12 @@ import PageContainer from '../components/PageContainer'
 import BackTitle from '../components/BackTitle'
 import EscapeHTML from '../components/EscapeHTML'
 import { preparePrivacyPolicyPageSeo } from '../utils/seo/pages/privacyPolicy'
+import { getPrivacyPolicyDetail } from '../firebase/store/static'
+import { IStaticPageDetail } from '../interface/static'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
-    privacyPolicyDetail: any // TODO:
+    privacyPolicyDetail: IStaticPageDetail
   }
 }
 
@@ -34,7 +36,12 @@ const PrivacyPolicyPage: NextPage<IProps> = props => {
             {privacyPolicyDetail.updatedDateTime ? (
               <div className="mb-3">
                 <div className="font-medium font-primary-medium">
-                  Date of last revision: {new Date(privacyPolicyDetail.updatedDateTime).toLocaleDateString()}
+                  <EscapeHTML
+                    element="span"
+                    html={`Date of last revision: ${new Date(
+                      privacyPolicyDetail.updatedDateTime
+                    ).toLocaleDateString()}`}
+                  />
                 </div>
               </div>
             ) : null}
@@ -50,14 +57,12 @@ const PrivacyPolicyPage: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  // TODO: - get data
+  const privacyPolicyDetail = await getPrivacyPolicyDetail()
+
   return {
     props: {
       pageData: {
-        privacyPolicyDetail: {
-          title: 'Privacy Policy',
-          body: '<p>Body</p>',
-        },
+        privacyPolicyDetail,
       },
       seo: preparePrivacyPolicyPageSeo(),
       layoutData: {

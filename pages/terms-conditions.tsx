@@ -8,10 +8,12 @@ import PageContainer from '../components/PageContainer'
 import BackTitle from '../components/BackTitle'
 import EscapeHTML from '../components/EscapeHTML'
 import { prepareTnCPageSeo } from '../utils/seo/pages/tnc'
+import { getTnCDetail } from '../firebase/store/static'
+import { IStaticPageDetail } from '../interface/static'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
-    tncDetail: any // TODO:
+    tncDetail: IStaticPageDetail
   }
 }
 
@@ -34,7 +36,10 @@ const TnCPage: NextPage<IProps> = props => {
             {tncDetail.updatedDateTime ? (
               <div className="mb-3">
                 <div className="font-medium font-primary-medium">
-                  Date of last revision: {new Date(tncDetail.updatedDateTime).toLocaleDateString()}
+                  <EscapeHTML
+                    element="span"
+                    html={`Date of last revision: ${new Date(tncDetail.updatedDateTime).toLocaleDateString()}`}
+                  />
                 </div>
               </div>
             ) : null}
@@ -50,14 +55,12 @@ const TnCPage: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  // TODO: - get data
+  const tncDetail = await getTnCDetail()
+
   return {
     props: {
       pageData: {
-        tncDetail: {
-          title: 'Terms & Conditions',
-          body: 'Body',
-        },
+        tncDetail,
       },
       seo: prepareTnCPageSeo(),
       layoutData: {

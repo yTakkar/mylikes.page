@@ -19,9 +19,9 @@ const Footer: React.FC<IFooterProps> = () => {
             <div className="flex flex-col">
               <div>
                 <div className="font-medium font-primary-medium mb-2">{appConfig.global.app.name}</div>
-                <div className="flex flex-col lg:flex-row text-typo-paragraphLight font-medium">
+                <div className="flex flex-col lg:flex-row text-typo-paragraphLight text-sm font-medium">
                   {appConfig.footer.links.map((link, index) => (
-                    <CoreLink key={index} url={link.url} className="py-1 lg:py-0 lg:mr-2">
+                    <CoreLink key={index} url={link.url} className="py-1 lg:py-0 lg:mr-2 hover:underline">
                       {link.label}
                     </CoreLink>
                   ))}
@@ -71,14 +71,14 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-8 text-typo-paragraphLight">
+          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
             This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising
             program designed to provide a means for sites to earn advertising fees by advertising and linking to
             Amazon.com.
           </div>
 
           {appConfig.footer.copyrightText ? (
-            <div className="mt-10 lg:mt-8 text-typo-paragraphLight">
+            <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
               <EscapeHTML html={appConfig.footer.copyrightText} element="span" />
             </div>
           ) : null}

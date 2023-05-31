@@ -27,3 +27,7 @@ export const getTnCPageUrl = () => {
 export const getProfilePageUrl = (userInfo: IUserInfo) => {
   return `/profile/${userInfo?.username}`
 }
+
+export const get404PageUrl = () => {
+  return '/not-found'
+}

@@ -39,7 +39,7 @@ export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
     username: username,
     name: user.displayName!,
     email: user.email!,
-    createdAt: new Date(),
+    createdAt: new Date().getTime(),
     avatarUrl: avatar,
     bio: null,
     websiteUrl: null,

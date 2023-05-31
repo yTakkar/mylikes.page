@@ -1,4 +1,4 @@
-import { Timestamp, collection, doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc } from 'firebase/firestore'
 import firebaseStore from '.'
 import { IStaticPageDetail } from '../../interface/static'
 
@@ -6,11 +6,7 @@ const staticCollection = collection(firebaseStore, 'static')
 
 const getStaticDetail = async (ref: string): Promise<IStaticPageDetail> => {
   const docRef = doc(staticCollection, ref)
-  const document = (await getDoc(docRef)).data() as IStaticPageDetail
-  return {
-    ...document,
-    updatedDateTime: (document.updatedDateTime as unknown as Timestamp).toMillis(),
-  }
+  return (await getDoc(docRef)).data() as IStaticPageDetail
 }
 
 export const getPrivacyPolicyDetail = (): Promise<IStaticPageDetail> => {

@@ -19,6 +19,8 @@ const NotFoundPage: NextPage<IProps> = () => {
     device: { isMobile },
   } = applicationContext
 
+  // TODO: Update content
+
   return (
     <div>
       <PageContainer>
@@ -57,7 +59,7 @@ const NotFoundPage: NextPage<IProps> = () => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  // TODO: - get data
+  // TODO: - get data, revalidate
   return {
     props: {
       pageData: {},

@@ -85,8 +85,11 @@ const appConfig = {
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
       404: 15 * 60,
       ERROR: 15 * 60,
+      PROFILE: 5 * 60, // TODO: think?
     },
-    initialPageBuildCount: {},
+    initialPageBuildCount: {
+      PROFILE: 100,
+    },
   },
   integrations: {
     googleAnalytics: {

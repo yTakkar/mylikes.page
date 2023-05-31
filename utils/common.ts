@@ -1,6 +1,7 @@
 import { NextRouter } from 'next/router'
 import { getHomePageUrl } from './routes'
 import { VibratePatternType } from '../constants/constants'
+import { Timestamp } from 'firebase/firestore'
 
 // Ref: last comment on this page: https://bugs.webkit.org/show_bug.cgi?id=153852#c43
 export const disablePageScrolling = () => {
@@ -153,3 +154,5 @@ export const vibrate = (pattern: VibratePatternType = VibratePatternType.DEFAULT
     navigator.vibrate(pattern)
   }
 }
+
+export const timestampToMillis = (timestamp: Timestamp) => (timestamp as unknown as Timestamp).toMillis()

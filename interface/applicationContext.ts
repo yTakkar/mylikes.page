@@ -40,7 +40,7 @@ export interface IUserInfo {
   username: string
   email: string
   name: string
-  createdAt: Date
+  createdAt: number // date mills
   avatarUrl: string
   bio: string | null
   websiteUrl: string | null

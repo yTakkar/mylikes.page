@@ -20,7 +20,7 @@ const ErrorPage: NextPage<IProps> = () => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  // TODO: - get data
+  // TODO: - get data, revalidate
   return {
     props: {
       pageData: {},

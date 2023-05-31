@@ -8,6 +8,7 @@ import { toastError, toastSuccess } from '../Toaster'
 import { addUser } from '../../firebase/store/users'
 import { prepareUserInfo, setLocalUserInfo } from '../../utils/user'
 import ApplicationContext from '../ApplicationContext'
+import { vibrate } from '../../utils/common'
 
 interface ILoginPopupProps {
   onClose: () => void
@@ -25,6 +26,7 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
         const user = await signInWithGoogle()
         const userInfo = await prepareUserInfo(user)
         await addUser(userInfo)
+        vibrate()
         methods.updateUser(userInfo)
         setLocalUserInfo(userInfo)
         onClose()

@@ -33,6 +33,13 @@ const PreconnectUrls = () => (
       type="font/woff"
       crossOrigin="anonymous"
     />
+    <link
+      rel="preload"
+      href={prepareAssetUrl(`/fonts/domaine/domaine-bold.woff`)}
+      as="font"
+      type="font/woff"
+      crossOrigin="anonymous"
+    />
 
     {/* <link rel="preconnect" href={appConfig.global.apiBaseUrl} crossOrigin="anonymous" /> */}
   </>

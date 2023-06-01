@@ -176,6 +176,7 @@ module.exports = {
         primary: '#ce2e35',
         primaryLight: 'rgba(206, 46, 53, 0.9)', // lighter version of brand.primary
         secondary: '#05c7f6',
+        logo: '#f4b52e',
       },
       typo: {
         title: '#1e1e1e',
@@ -185,6 +186,7 @@ module.exports = {
       blackLight: 'rgba(0, 0, 0, .5)',
       whisper: '#F2F3F8',
       denim: 'rgb(25 118 210 / 4%)',
+      mineShaft: '#282828',
     }),
     columns: {
       auto: 'auto',
@@ -334,6 +336,8 @@ module.exports = {
       primary: ['"BentonSans"', 'Arial', 'Noto Sans', 'sans-serif'],
       'primary-bold': ['"BentonSans-Bold"', 'Arial', 'Noto Sans', 'sans-serif'],
       'primary-medium': ['"BentonSans-Medium"', 'Arial', 'Noto Sans', 'sans-serif'],
+
+      'domaine-bold': ['"Domaine-Bold"', 'Georgia', 'Serif'],
 
       sans: [
         'ui-sans-serif',

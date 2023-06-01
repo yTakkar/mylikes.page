@@ -1,26 +1,24 @@
 import React, { useContext } from 'react'
-import CoreImage from '../core/CoreImage'
 import {
   MenuIcon as MenuIconSolid,
-  UserIcon as UserIconSolid,
   PlusIcon as PlusIconSolid,
   LoginIcon as LoginIconSolid,
 } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
-  UserIcon as UserIconOutline,
   PlusIcon as PlusIconOutline,
   LoginIcon as LoginIconOutline,
 } from '@heroicons/react/outline'
 import HeaderSearch from './HeaderSearch'
 import CoreLink from '../core/CoreLink'
 import usePWAInstall from '../../hooks/usePWAInstall'
-import { APP_LOGO } from '../../constants/constants'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { DesktopView } from '../ResponsiveViews'
 import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/applicationContext'
+import TextLogo from '../logo/TextLogo'
+import HeaderProfileIcon from './HeaderProfileIcon'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -51,8 +49,8 @@ const Header: React.FC<INavbarProps> = props => {
     {
       label: 'Account',
       url: getProfilePageUrl(user!),
-      iconComponent: UserIconOutline,
-      activeIconComponent: UserIconSolid,
+      iconComponent: ({ className }) => <HeaderProfileIcon className={className} active={false} />,
+      activeIconComponent: ({ className }) => <HeaderProfileIcon className={className} active />,
       iconClassName: null,
       count: null,
       onClick: () => null,
@@ -90,12 +88,12 @@ const Header: React.FC<INavbarProps> = props => {
   const renderTopNav = () => {
     return (
       <div>
-        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-3 z-10">
+        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-4 lg:py-3 z-10">
           <div className="container mx-auto">
             <div className="flex justify-between w-full items-center">
-              <div className="flex items-center w-9/12 md:w-10/12 lg:w-auto">
+              <div className="flex items-center w-7/12 md:w-10/12 lg:w-auto">
                 <CoreLink url={getHomePageUrl()} className="mr-6">
-                  <CoreImage url={APP_LOGO.DEFAULT} alt="App Logo" disableLazyload className="w-11 h-11" />
+                  <TextLogo />
                 </CoreLink>
 
                 <DesktopView useCSS>

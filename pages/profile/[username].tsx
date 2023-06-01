@@ -60,7 +60,12 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
       },
       seo: prepareProfilePageSeo(profileInfo),
       layoutData: {
-        header: {},
+        header: {
+          hideTopNav: {
+            desktop: false,
+            mobile: false,
+          },
+        },
         footer: {
           show: true,
         },

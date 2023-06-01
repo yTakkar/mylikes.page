@@ -6,7 +6,7 @@ export interface IHeaderLink {
   label: string
   url: string | null
   iconComponent: React.FC<any>
-  activeIconComponent: React.FC<any>
+  activeIconComponent: React.FC<any> | null
   iconClassName: string | null
   count: string | null
   onClick: ((e: any) => void) | null
@@ -27,7 +27,7 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
       <CoreActiveLink
         key={index}
         url={navLink.url}
-        className="flex font-primary-medium text-typo-paragraph text-sm items-center group relative"
+        className="flex font-primary-medium text-typo-paragraph text-sm items-center group relative ml-4 lg:ml-5"
         title={navLink.label}
         onClick={e => {
           if (navLink.onClick) {
@@ -35,13 +35,14 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
           }
         }}>
         {(isActive: boolean) => {
-          const IconComponent = isActive ? navLink.activeIconComponent : navLink.iconComponent
+          const IconComponent =
+            isActive && navLink.activeIconComponent ? navLink.activeIconComponent : navLink.iconComponent
 
           return (
             <React.Fragment>
               <IconComponent
                 className={classnames(
-                  'w-[24px] ml-3 lg:ml-5 transform transition-transform group-hover:scale-110',
+                  'w-[24px] transform transition-transform group-hover:scale-110',
                   navLink.iconClassName
                 )}
               />

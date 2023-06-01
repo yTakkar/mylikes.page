@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useRouter } from 'next/router'
 import CoreLink from '../core/CoreLink'
 import classnames from 'classnames'
 import { routerPageBack } from '../../utils/common'
 import usePWAInstall from '../../hooks/usePWAInstall'
-import { getSearchPageUrl } from '../../utils/routes'
-import { ArrowLeftIcon, PlusIcon, UserIcon } from '@heroicons/react/outline'
+import { getProfilePageUrl } from '../../utils/routes'
+import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/outline'
+import HeaderProfileIcon from './HeaderProfileIcon'
+import ApplicationContext from '../ApplicationContext'
+import { UserIcon } from '@heroicons/react/outline'
+import { PopupType } from '../../interface/applicationContext'
 
 interface ISnackbarProps {
   title?: React.ReactNode
@@ -17,8 +21,10 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
   const { title, showBackIcon = true, backUrl } = props
 
   const router = useRouter()
-
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
+
+  const applicationContext = useContext(ApplicationContext)
+  const { user, methods } = applicationContext
 
   const handleBackIconClick = () => {
     routerPageBack(router, backUrl)
@@ -32,7 +38,7 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
             <ArrowLeftIcon className="w-6" />
           </div>
         ) : null}
-        <div className="w-11/12">
+        <div className="w-10/12">
           <div className="text-base truncate">{title}</div>
         </div>
       </div>
@@ -43,9 +49,20 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
           </span>
         ) : null}
 
-        <CoreLink url={getSearchPageUrl()} className="text-typo-paragraph">
-          <UserIcon className="w-5 " />
-        </CoreLink>
+        {!user && (
+          <UserIcon
+            className="w-5"
+            onClick={() => {
+              methods.togglePopup(PopupType.LOGIN, {})
+            }}
+          />
+        )}
+
+        {user && (
+          <CoreLink url={getProfilePageUrl(user)} className="text-typo-paragraph">
+            <HeaderProfileIcon className="w-6" active={false} />
+          </CoreLink>
+        )}
       </div>
     </div>
   )

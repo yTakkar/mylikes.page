@@ -21,6 +21,7 @@ const HeaderProfileIcon: React.FC<IHeaderProfileIconProps> = props => {
         'ring-2 ring-brand-primary': active,
       })}
       alt={user?.name || ''}
+      useTransparentPlaceholder
     />
   )
 }

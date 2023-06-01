@@ -47,6 +47,7 @@ export interface IUserInfo {
   socialUsernames: {
     twitter: string | null
     instagram: string | null
+    youtube: string | null
   }
 }
 

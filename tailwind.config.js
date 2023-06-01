@@ -187,6 +187,7 @@ module.exports = {
       whisper: '#F2F3F8',
       denim: 'rgb(25 118 210 / 4%)',
       mineShaft: '#282828',
+      gallery: '#ECECEC',
     }),
     columns: {
       auto: 'auto',
@@ -368,6 +369,7 @@ module.exports = {
       ],
     },
     fontSize: {
+      xxs: ['0.625rem', { lineHeight: '1rem' }],
       xs: ['0.75rem', { lineHeight: '1rem' }],
       sm: ['0.875rem', { lineHeight: '1.25rem' }],
       base: ['1rem', { lineHeight: '1.5rem' }],

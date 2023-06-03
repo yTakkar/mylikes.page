@@ -28,6 +28,10 @@ export const getProfilePageUrl = (userInfo: IUserInfo) => {
   return `/profile/${userInfo?.username}`
 }
 
+export const getProfileEditPageUrl = () => {
+  return `/profile/edit`
+}
+
 export const get404PageUrl = () => {
   return '/not-found'
 }

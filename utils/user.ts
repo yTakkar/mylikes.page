@@ -46,6 +46,7 @@ export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
     socialUsernames: {
       instagram: null,
       twitter: null,
+      youtube: null,
     },
   }
 }

@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { use, useEffect } from 'react'
 import { getDeviceInfo } from '../utils/applicationContext'
 import useApplicationContextReducer from './useApplicationContextReducer'
 import useOrientation from './useOrientation'
 import { IContextMethods } from '../interface/applicationContext'
-import { deleteLocalUserInfo, getLocalUserInfo } from '../utils/user'
+import { deleteLocalUserInfo, getLocalUserInfo, setLocalUserInfo } from '../utils/user'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
@@ -31,6 +31,10 @@ const useApplicationContext = () => {
       type: 'UPDATE_USER',
       payload: userInfo,
     })
+    deleteLocalUserInfo()
+    if (userInfo !== null) {
+      setLocalUserInfo(userInfo!)
+    }
   }
 
   const logout: IContextMethods['logout'] = () => {

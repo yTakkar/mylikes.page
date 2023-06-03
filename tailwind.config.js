@@ -187,7 +187,7 @@ module.exports = {
       whisper: '#F2F3F8',
       denim: 'rgb(25 118 210 / 4%)',
       mineShaft: '#282828',
-      gallery: '#ECECEC',
+      gallery: '#eaeaea',
     }),
     columns: {
       auto: 'auto',

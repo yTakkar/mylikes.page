@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
-import React from 'react'
+import React, { useContext } from 'react'
 import { IGlobalLayoutProps } from './_app'
 import classnames from 'classnames'
 import PageContainer from '../components/PageContainer'
@@ -19,15 +19,20 @@ import { getContactPageUrl, getHomePageUrl, getPrivacyPageUrl, getTnCPageUrl } f
 import { prepareHomePageSeo } from '../utils/seo/pages/home'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
+import ApplicationContext from '../components/ApplicationContext'
+import { useRouter } from 'next/router'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
 }
 
 const MorePage: NextPage<IProps> = () => {
-  // TODO:
-  const user = null
+  const applicationContext = useContext(ApplicationContext)
+  const { user, methods } = applicationContext
 
+  const router = useRouter()
+
+  // TODO:
   const LINKS = [
     {
       label: 'Account',
@@ -78,9 +83,9 @@ const MorePage: NextPage<IProps> = () => {
       icon: LogoutIcon,
       show: !!user,
       onClick: () => {
-        // logout()
+        methods.updateUser(null)
         toastSuccess('Logged out')
-        // router.push(getLoginPageUrl())
+        router.push(getHomePageUrl())
       },
     },
   ]
@@ -88,7 +93,7 @@ const MorePage: NextPage<IProps> = () => {
   return (
     <div>
       <MobileView>
-        <Snackbar title={'Explore'} />
+        <Snackbar title="Explore" />
       </MobileView>
 
       <PageContainer>

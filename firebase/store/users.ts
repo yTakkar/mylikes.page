@@ -1,11 +1,18 @@
 import firebaseStore from '.'
-import { collection, doc, getDoc, getDocs, limit, query, setDoc, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { IUserInfo } from '../../interface/applicationContext'
 
+// Document reference: email
 const usersCollection = collection(firebaseStore, 'users')
 
 export const getUserByEmail = async (email: string): Promise<IUserInfo | null> => {
-  const q = query(usersCollection, where('email', '==', email))
+  const docRef = doc(usersCollection, email)
+  const docSnap = await getDoc(docRef)
+  return (docSnap.data() as IUserInfo) || null
+}
+
+export const getUserByUsername = async (username: string): Promise<IUserInfo | null> => {
+  const q = query(usersCollection, where('username', '==', username))
   const querySnapshot = (await getDocs(q)).docs
   if (querySnapshot.length === 0) {
     return null
@@ -18,7 +25,7 @@ export const addUser = async (userInfo: IUserInfo): Promise<IUserInfo> => {
   if (userWithSameEmail) {
     return userWithSameEmail
   }
-  await setDoc(doc(usersCollection, userInfo.username), userInfo)
+  await setDoc(doc(usersCollection, userInfo.email), userInfo)
   return userInfo
 }
 
@@ -32,12 +39,12 @@ export const listUsers = async (params: IListUsersParams): Promise<IUserInfo[]> 
   return querySnapshot.docs.map(doc => doc.data() as IUserInfo)
 }
 
-export const getUserByUsername = async (username: string): Promise<IUserInfo | null> => {
-  const docRef = doc(usersCollection, username)
-  const docSnap = await getDoc(docRef)
-  if (docSnap.exists()) {
-    return docSnap.data() as IUserInfo
-  } else {
-    return null
-  }
+export const usernameExists = async (username: string): Promise<boolean> => {
+  const user = await getUserByUsername(username)
+  return !!user
+}
+
+export const updateUser = async (email: string, partialUserInfo: Partial<IUserInfo>): Promise<null> => {
+  await updateDoc(doc(usersCollection, email), partialUserInfo as any)
+  return null
 }

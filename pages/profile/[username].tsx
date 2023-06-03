@@ -1,15 +1,19 @@
-import React from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useContext } from 'react'
 import { IGlobalLayoutProps } from '../_app'
 import PageContainer from '../../components/PageContainer'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { getUserByUsername, listUsers } from '../../firebase/store/users'
-import { get404PageUrl } from '../../utils/routes'
+import { get404PageUrl, getProfileEditPageUrl } from '../../utils/routes'
 import { IUserInfo } from '../../interface/applicationContext'
 import { PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
 import { prepareProfilePageSeo } from '../../utils/seo/pages/profile'
 import CoreImage from '../../components/core/CoreImage'
 import appConfig from '../../config/appConfig'
 import CoreLink from '../../components/core/CoreLink'
+import ApplicationContext from '../../components/ApplicationContext'
+import { useRouter } from 'next/router'
+import PageLoader from '../../components/loader/PageLoader'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -18,34 +22,45 @@ interface IProps extends IGlobalLayoutProps {
 }
 
 const Home: NextPage<IProps> = (props: IProps) => {
+  const router = useRouter()
+
+  if (router.isFallback || !props.pageData) {
+    return <PageLoader />
+  }
+
   const {
     pageData: { profileInfo },
   } = props
+
+  const applicationContext = useContext(ApplicationContext)
+  const { user } = applicationContext
 
   const DEFAULT_BIO = 'This bio is super empty at the moment.'
 
   const socialLinks = [
     {
-      url: '',
+      url: profileInfo.websiteUrl,
       name: 'Website',
       iconSrc: SOCIAL_ICONS_SRC_MAP.GLOBE,
     },
     {
-      url: '',
+      url: `https://twitter.com/${profileInfo.socialUsernames.twitter}`,
       name: 'Twitter',
       iconSrc: SOCIAL_ICONS_SRC_MAP.TWITTER,
     },
     {
-      url: '',
+      url: `https://instagram.com/${profileInfo.socialUsernames.instagram}`,
       name: 'Instagram',
       iconSrc: SOCIAL_ICONS_SRC_MAP.INSTAGRAM,
     },
     {
-      url: '',
+      url: `https://www.youtube.com/@${profileInfo.socialUsernames.instagram}`,
       name: 'YouTube',
       iconSrc: SOCIAL_ICONS_SRC_MAP.YOUTUBE,
     },
   ]
+
+  const currentUserProfile = profileInfo.username === user?.username
 
   return (
     <PageContainer>
@@ -61,22 +76,36 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <div className="text-center lg:text-left lg:ml-8">
           <div className="flex flex-col items-center mt-4 lg:flex-row lg:mt-0">
             <div className="font-domaine-bold font-bold text-3xl tracking-wide lg:text-4xl">{profileInfo.name}</div>
-            <div className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2">Edit profile</div>
+            {currentUserProfile && (
+              <div
+                className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2"
+                onClick={() => {
+                  router.push(getProfileEditPageUrl())
+                }}>
+                Edit profile
+              </div>
+            )}
           </div>
           <div className="mt-4 lg:mt-1">@{profileInfo.username}</div>
           <div className="text-gray-500 mt-4">{profileInfo.bio || DEFAULT_BIO}</div>
 
           <div className="flex justify-center items-center mt-4 lg:items-start lg:justify-normal">
-            {socialLinks.map(socialLink => (
-              <CoreLink
-                key={socialLink.name}
-                url={socialLink.url}
-                isExternal
-                className="w-5 mr-3 transform transition-transform hover:scale-110"
-                title={`${socialLink.name}`}>
-                <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
-              </CoreLink>
-            ))}
+            {socialLinks.map(socialLink => {
+              if (!socialLink.url) {
+                return null
+              }
+
+              return (
+                <CoreLink
+                  key={socialLink.name}
+                  url={socialLink.url}
+                  isExternal
+                  className="w-5 mr-3 transform transition-transform hover:scale-110"
+                  title={`${socialLink.name}`}>
+                  <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
+                </CoreLink>
+              )
+            })}
           </div>
         </div>
       </div>

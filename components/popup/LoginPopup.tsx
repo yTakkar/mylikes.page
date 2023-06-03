@@ -6,7 +6,7 @@ import { prepareImageUrl } from '../../utils/image'
 import { signInWithGoogle } from '../../firebase/auth/auth'
 import { toastError, toastSuccess } from '../Toaster'
 import { addUser } from '../../firebase/store/users'
-import { prepareUserInfo, setLocalUserInfo } from '../../utils/user'
+import { prepareUserInfo } from '../../utils/user'
 import ApplicationContext from '../ApplicationContext'
 import { vibrate } from '../../utils/common'
 
@@ -28,7 +28,6 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
         const userInfo = await addUser(preparedUserInfo)
         vibrate()
         methods.updateUser(userInfo)
-        setLocalUserInfo(userInfo)
         onClose()
         toastSuccess('Login successful!')
       } catch (e) {

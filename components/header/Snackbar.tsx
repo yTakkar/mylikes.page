@@ -1,15 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import CoreLink from '../core/CoreLink'
 import classnames from 'classnames'
 import { routerPageBack } from '../../utils/common'
 import usePWAInstall from '../../hooks/usePWAInstall'
-import { getProfilePageUrl } from '../../utils/routes'
-import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/outline'
-import HeaderProfileIcon from './HeaderProfileIcon'
-import ApplicationContext from '../ApplicationContext'
-import { UserIcon } from '@heroicons/react/outline'
-import { PopupType } from '../../interface/applicationContext'
+import { getMorePageUrl } from '../../utils/routes'
+import { ArrowLeftIcon, MenuIcon, PlusIcon } from '@heroicons/react/outline'
 
 interface ISnackbarProps {
   title?: React.ReactNode
@@ -22,9 +18,6 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
 
   const router = useRouter()
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
-
-  const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
 
   const handleBackIconClick = () => {
     routerPageBack(router, backUrl)
@@ -49,20 +42,24 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
           </span>
         ) : null}
 
-        {!user && (
+        {/* {!user && (
           <UserIcon
             className="w-5"
             onClick={() => {
               methods.togglePopup(PopupType.LOGIN, {})
             }}
           />
-        )}
+        )} */}
 
-        {user && (
-          <CoreLink url={getProfilePageUrl(user)} className="text-typo-paragraph">
+        {/* {user && (
+          <CoreLink url={getProfilePageUrl(user)} className="text-typo-paragraph mr-3">
             <HeaderProfileIcon className="w-6" active={false} />
           </CoreLink>
-        )}
+        )} */}
+
+        <CoreLink url={getMorePageUrl()} className="text-typo-paragraph">
+          <MenuIcon className="w-6" />
+        </CoreLink>
       </div>
     </div>
   )

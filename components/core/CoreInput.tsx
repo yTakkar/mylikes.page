@@ -67,7 +67,7 @@ const CoreTextInput = React.forwardRef<any, ICoreInputProps>((props, ref) => {
       {value && showClearIcon ? (
         <div className="absolute right-2 top-1/2 w-6 -translate-y-1/2 transform cursor-pointer" title="Clear">
           <BackspaceIcon
-            className="transform text-mineShaft transition-transform hover:scale-110"
+            className="transform text-typo-title transition-transform hover:scale-110"
             onClick={() => {
               if (onClearClick) onClearClick(value)
               inputRef.current.focus()

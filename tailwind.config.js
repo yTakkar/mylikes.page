@@ -186,8 +186,9 @@ module.exports = {
       blackLight: 'rgba(0, 0, 0, .5)',
       whisper: '#F2F3F8',
       denim: 'rgb(25 118 210 / 4%)',
-      mineShaft: '#282828',
       gallery: '#eaeaea',
+      alabaster: '#F7F7F7',
+      mercury: '#e3e3e3',
     }),
     columns: {
       auto: 'auto',

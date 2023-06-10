@@ -1,5 +1,6 @@
 import React from 'react'
-import { IApplicationContextProps, PlatformType } from '../interface/applicationContext'
+import { IApplicationContextProps } from '../interface/applicationContext'
+import { PlatformType } from '../interface/device'
 
 export const defaultApplicationContext: IApplicationContextProps = {
   device: {

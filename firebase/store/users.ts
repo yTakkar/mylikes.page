@@ -1,6 +1,6 @@
 import firebaseStore from '.'
 import { collection, doc, getDoc, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore'
-import { IUserInfo } from '../../interface/applicationContext'
+import { IUserInfo } from '../../interface/user'
 
 // Document reference: email
 const usersCollection = collection(firebaseStore, 'users')

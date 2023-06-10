@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth'
-import { IUserInfo } from '../interface/applicationContext'
+import { IUserInfo } from '../interface/user'
 import appConfig from '../config/appConfig'
 import { getRandomAvatar } from './avatars'
 import { dynamicUniqueNamesGenerator } from '../components/dynamicModules'

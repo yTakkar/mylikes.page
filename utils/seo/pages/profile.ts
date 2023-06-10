@@ -1,6 +1,6 @@
 import { IAppSeoProps } from '../../../components/seo/AppSeo'
 import appConfig from '../../../config/appConfig'
-import { IUserInfo } from '../../../interface/applicationContext'
+import { IUserInfo } from '../../../interface/user'
 import { getProfileEditPageUrl, getProfilePageUrl } from '../../routes'
 
 export const prepareProfilePageSeo = (profileInfo: IUserInfo): IAppSeoProps => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
   MenuIcon as MenuIconSolid,
   PlusIcon as PlusIconSolid,
@@ -16,7 +16,7 @@ import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { DesktopView } from '../ResponsiveViews'
 import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
-import { PopupType } from '../../interface/applicationContext'
+import { PopupType } from '../../interface/popup'
 import TextLogo from '../logo/TextLogo'
 import HeaderProfileIcon from './HeaderProfileIcon'
 
@@ -30,10 +30,6 @@ const Header: React.FC<INavbarProps> = props => {
 
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
-
-  useEffect(() => {
-    methods.togglePopup(PopupType.CREATE_LIST, {})
-  }, [])
 
   const pwaInstallLink: IHeaderLink = {
     label: 'Install',

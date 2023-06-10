@@ -1,12 +1,9 @@
 import { Dispatch, useReducer } from 'react'
 import { defaultApplicationContext } from '../components/ApplicationContext'
-import {
-  IApplicationContextProps,
-  IDeviceInfo,
-  IUserInfo,
-  PopupParams,
-  PopupType,
-} from '../interface/applicationContext'
+import { IApplicationContextProps } from '../interface/applicationContext'
+import { IDeviceInfo } from '../interface/device'
+import { IUserInfo } from '../interface/user'
+import { PopupParams, PopupType } from '../interface/popup'
 
 export type ApplicationContextAction =
   | {

@@ -1,4 +1,4 @@
-import { IUserInfo } from '../interface/applicationContext'
+import { IUserInfo } from '../interface/user'
 
 export const getHomePageUrl = () => {
   return '/'
@@ -34,4 +34,8 @@ export const getProfileEditPageUrl = () => {
 
 export const get404PageUrl = () => {
   return '/not-found'
+}
+
+export const getListPageUrl = () => {
+  return `/list/something`
 }

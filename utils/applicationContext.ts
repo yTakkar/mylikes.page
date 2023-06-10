@@ -1,5 +1,5 @@
 import { SCREEN_SIZE } from '../constants/constants'
-import { IDeviceInfo, PlatformType } from '../interface/applicationContext'
+import { IDeviceInfo, PlatformType } from '../interface/device'
 import { matchMinMaxMediaQuery } from './common'
 import { isPwa, isTouchDevice } from './deviceDetect'
 

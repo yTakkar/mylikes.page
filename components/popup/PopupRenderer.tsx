@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { DynamicChangeAvatarPopup, DynamicCreateListPopup, DynamicLoginPopup } from '../dynamicComponents'
 import ApplicationContext from '../ApplicationContext'
-import { PopupType } from '../../interface/applicationContext'
+import { PopupType } from '../../interface/popup'
 
 function PopupRenderer() {
   const applicationContext = useContext(ApplicationContext)

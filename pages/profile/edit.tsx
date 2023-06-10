@@ -17,10 +17,11 @@ import classNames from 'classnames'
 import useOnEnter from '../../hooks/useOnEnter'
 import CoreTextarea from '../../components/core/CoreTextarea'
 import CoreDivider from '../../components/core/CoreDivider'
-import { IUserInfo, PopupType } from '../../interface/applicationContext'
+import { PopupType } from '../../interface/popup'
 import { REGEX_MAP } from '../../constants/constants'
 import { toastError, toastSuccess } from '../../components/Toaster'
 import { updateUser, usernameExists } from '../../firebase/store/users'
+import { IUserInfo } from '../../interface/user'
 
 enum FieldKeyType {
   EMAIL = 'EMAIL',

@@ -1,0 +1,18 @@
+.quotes-wrapper {
+  @apply italic relative;
+
+  &::after,
+  &::before {
+    @apply absolute font-domaine-bold text-2xl;
+  }
+
+  &::before {
+    content: "“";
+    // margin-left: -14px;
+  }
+
+  &::after {
+    content: "”";
+    // margin-left: -16px;
+  }
+}

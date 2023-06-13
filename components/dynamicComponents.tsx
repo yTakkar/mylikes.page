@@ -38,3 +38,10 @@ export const DynamicCreateListPopup = dynamic(
     ssr: false,
   }
 )
+
+export const DynamicAddRecommendationPopup = dynamic(
+  () => import(/* webpackChunkName: "AddRecommendationPopup" */ 'components/popup/AddRecommendationPopup'),
+  {
+    ssr: false,
+  }
+)

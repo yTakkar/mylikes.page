@@ -1,0 +1,16 @@
+.add-recommendation {
+  @apply relative overflow-hidden;
+
+  & > div {
+    @apply pt-4 pb-2 px-3;
+  }
+
+  & .add {
+    @apply absolute top-0 transform translate-x-full transition-transform bg-slate-300 w-full h-[400px];
+
+    &.shown {
+      @apply transform-none;
+    }
+  }
+}
+

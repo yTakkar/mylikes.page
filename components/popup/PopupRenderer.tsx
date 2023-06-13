@@ -1,5 +1,10 @@
 import React, { useContext } from 'react'
-import { DynamicChangeAvatarPopup, DynamicCreateListPopup, DynamicLoginPopup } from '../dynamicComponents'
+import {
+  DynamicAddRecommendationPopup,
+  DynamicChangeAvatarPopup,
+  DynamicCreateListPopup,
+  DynamicLoginPopup,
+} from '../dynamicComponents'
 import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/popup'
 
@@ -11,6 +16,7 @@ function PopupRenderer() {
     [PopupType.LOGIN]: DynamicLoginPopup,
     [PopupType.CHANGE_AVATAR]: DynamicChangeAvatarPopup,
     [PopupType.CREATE_LIST]: DynamicCreateListPopup,
+    [PopupType.ADD_RECOMMENDATION]: DynamicAddRecommendationPopup,
   }
 
   const popupMemo = (

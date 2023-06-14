@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef } from 'react'
+import React, { PropsWithChildren, ReactNode, useEffect, useRef } from 'react'
 import useEscape from '../../hooks/useEscape'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import usePortal from '../../hooks/usePortal'
@@ -9,8 +9,8 @@ import useDisablePageScrolling from '../../hooks/useDisablePageScrolling'
 
 export interface IModalProps extends PropsWithChildren {
   dismissModal: () => void
-  title?: string
-  subTitle?: string
+  title?: ReactNode
+  subTitle?: ReactNode
   className?: string
   showCrossIcon?: boolean
   disableOutsideClick?: boolean
@@ -61,7 +61,7 @@ const Modal: React.FC<IModalProps> = props => {
           <div className="flex justify-between items-start p-3 modal-header">
             <div>
               <div className="font-medium font-primary-medium text-typo-title">{title}</div>
-              <div className="text-sm mt-1">{subTitle}</div>
+              {subTitle && <div className="text-sm mt-1">{subTitle}</div>}
             </div>
             {showCrossIcon ? (
               <XIcon

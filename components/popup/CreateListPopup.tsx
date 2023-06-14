@@ -5,10 +5,10 @@ import Loader, { LoaderType } from '../loader/Loader'
 import useOnEnter from '../../hooks/useOnEnter'
 import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
 import { REGEX_MAP } from '../../constants/constants'
-import { toastError } from '../Toaster'
 import classNames from 'classnames'
 import CoreTextarea from '../core/CoreTextarea'
 import { CheckIcon } from '@heroicons/react/solid'
+import { handleValidation } from '../../utils/form'
 
 enum FieldKeyType {
   NAME = 'NAME',
@@ -53,14 +53,14 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
   const FIELD_VALIDATION_MAPPING = {
     [FieldKeyType.NAME]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid name',
+      error: 'Invalid Name',
       value: fields.NAME,
       key: FieldKeyType.NAME,
       optional: false,
     },
     [FieldKeyType.DESCRIPTION]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid description',
+      error: 'Invalid Description',
       value: fields.DESCRIPTION,
       key: FieldKeyType.DESCRIPTION,
       optional: true,
@@ -74,44 +74,6 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
     })
   }
 
-  const handleValidation = (onSuccess: () => void) => {
-    const validatedFields = Object.values(FIELD_VALIDATION_MAPPING).map(field => {
-      let valid = false
-
-      if (!field.optional) {
-        valid = field.regex.test(field.value)
-      } else {
-        if (field.value) {
-          valid = field.regex.test(field.value)
-        } else {
-          valid = true
-        }
-      }
-
-      return {
-        ...field,
-        valid: valid,
-      }
-    })
-
-    const updatedFieldsWithError = validatedFields.reduce((acc, cur) => {
-      return {
-        ...acc,
-        [cur.key]: !cur.valid,
-      }
-    }, fieldsWithError)
-
-    setFieldsWithError(updatedFieldsWithError)
-
-    const invalidFields = validatedFields.filter(field => !field.valid)
-
-    if (invalidFields.length) {
-      toastError(invalidFields[0].error)
-    } else {
-      onSuccess()
-    }
-  }
-
   const handleSubmit = () => {
     if (loading) {
       return null
@@ -121,7 +83,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       console.log('submit')
     }
 
-    handleValidation(onSuccess)
+    handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onSuccess)
   }
 
   useOnEnter(formRef, handleSubmit)

@@ -14,10 +14,10 @@ export interface IRecommendationInfo {
   id: string
   url: string
   title: string
-  description: string
   imageUrl: string
   isAdult: boolean
   createdAt: number | null // date mills
+  notes: string | null
   type: RecommendationType
   owner: IUserInfo
 }

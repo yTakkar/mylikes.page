@@ -9,7 +9,10 @@ import { IListDetail } from '../../interface/list'
 import { PlusIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
-import RecommendationInfo, { RecommendationInfoLayoutType } from '../../components/recommendation/RecommendationInfo'
+import RecommendationInfo, {
+  RecommendationInfoLayoutType,
+  RecommendationInfoSourceType,
+} from '../../components/recommendation/RecommendationInfo'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -65,7 +68,11 @@ const List: NextPage<IProps> = (props: IProps) => {
 
         <div>
           {Array.from({ length: 10 }).map((_, index) => (
-            <RecommendationInfo key={index} layout={RecommendationInfoLayoutType.INLINE} />
+            <RecommendationInfo
+              key={index}
+              layout={RecommendationInfoLayoutType.INLINE}
+              source={RecommendationInfoSourceType.LIST}
+            />
           ))}
         </div>
       </div>

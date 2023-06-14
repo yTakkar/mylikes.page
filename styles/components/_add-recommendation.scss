@@ -1,12 +1,12 @@
-.add-recommendation {
-  @apply relative overflow-hidden;
+.addRecommendation {
+  @apply relative overflow-hidden h-full;
 
   & > div {
     @apply pt-4 pb-2 px-3;
   }
 
   & .add {
-    @apply absolute top-0 transform translate-x-full transition-transform bg-slate-300 w-full h-[400px];
+    @apply absolute top-0 transform translate-x-full transition-transform w-full bg-white;
 
     &.shown {
       @apply transform-none;

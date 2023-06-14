@@ -1,7 +1,5 @@
 // User form
 .user-input {
-  @apply py-2;
-
   &::placeholder {
     @apply text-base;
   }

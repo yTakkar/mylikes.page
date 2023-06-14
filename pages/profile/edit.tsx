@@ -22,6 +22,7 @@ import { REGEX_MAP } from '../../constants/constants'
 import { toastError, toastSuccess } from '../../components/Toaster'
 import { updateUser, usernameExists } from '../../firebase/store/users'
 import { IUserInfo } from '../../interface/user'
+import { handleValidation } from '../../utils/form'
 
 enum FieldKeyType {
   EMAIL = 'EMAIL',
@@ -83,98 +84,60 @@ const ProfileEdit: NextPage<IProps> = () => {
   const FIELD_VALIDATION_MAPPING = {
     [FieldKeyType.NAME]: {
       regex: REGEX_MAP.NAME,
-      error: 'Invalid name (must be between 3-50 letters)',
+      error: 'Invalid Name (must be between 3-50 letters)',
       value: fields.NAME,
       key: FieldKeyType.NAME,
       optional: false,
     },
     [FieldKeyType.USERNAME]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid username',
+      error: 'Invalid Username',
       value: fields.USERNAME,
       key: FieldKeyType.USERNAME,
       optional: false,
     },
     [FieldKeyType.EMAIL]: {
       regex: REGEX_MAP.EMAIL,
-      error: 'Invalid email',
+      error: 'Invalid Email',
       value: fields.EMAIL,
       key: FieldKeyType.EMAIL,
       optional: false,
     },
     [FieldKeyType.BIO]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid bio',
+      error: 'Invalid Bio',
       value: fields.BIO,
       key: FieldKeyType.BIO,
       optional: true,
     },
     [FieldKeyType.WEBSITE]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid website',
+      error: 'Invalid Website',
       value: fields.WEBSITE,
       key: FieldKeyType.WEBSITE,
       optional: true,
     },
     [FieldKeyType.INSTAGRAM_USERNAME]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid username',
+      error: 'Invalid Instagram username',
       value: fields.INSTAGRAM_USERNAME,
       key: FieldKeyType.INSTAGRAM_USERNAME,
       optional: true,
     },
     [FieldKeyType.TWITTER_USERNAME]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid username',
+      error: 'Invalid Twitter username',
       value: fields.TWITTER_USERNAME,
       key: FieldKeyType.TWITTER_USERNAME,
       optional: true,
     },
     [FieldKeyType.YOUTUBE_USERNAME]: {
       regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid username',
+      error: 'Invalid YouTube username',
       value: fields.YOUTUBE_USERNAME,
       key: FieldKeyType.YOUTUBE_USERNAME,
       optional: true,
     },
-  }
-
-  const handleValidation = (onSuccess: () => void) => {
-    const validatedFields = Object.values(FIELD_VALIDATION_MAPPING).map(field => {
-      let valid = false
-
-      if (!field.optional) {
-        valid = field.regex.test(field.value)
-      } else {
-        if (field.value) {
-          valid = field.regex.test(field.value)
-        } else {
-          valid = true
-        }
-      }
-
-      return {
-        ...field,
-        valid: valid,
-      }
-    })
-
-    const updatedFieldsWithError = validatedFields.reduce((acc, cur) => {
-      return {
-        ...acc,
-        [cur.key]: !cur.valid,
-      }
-    }, fieldsWithError)
-
-    setFieldsWithError(updatedFieldsWithError)
-
-    const invalidFields = validatedFields.filter(field => !field.valid)
-
-    if (invalidFields.length) {
-      toastError(invalidFields[0].error)
-    } else {
-      onSuccess()
-    }
   }
 
   const handleSubmit = () => {
@@ -224,7 +187,7 @@ const ProfileEdit: NextPage<IProps> = () => {
       }
     }
 
-    handleValidation(onSuccess)
+    handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onSuccess)
   }
 
   useOnEnter(formRef, handleSubmit)

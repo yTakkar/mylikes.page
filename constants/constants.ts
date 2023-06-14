@@ -1,5 +1,6 @@
 import { ImageSourceType } from '../components/core/CoreImage'
 import appConfig from '../config/appConfig'
+import { RecommendationType } from '../interface/recommendation'
 import { prepareImageUrl } from '../utils/image'
 
 export const SCREEN_SIZE = {
@@ -86,5 +87,14 @@ export const REGEX_MAP = {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   PASSWORD: /^[a-zA-Z0-9]{3,30}$/,
   PHONE_NUMBER: /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
+  URL: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
   NOT_EMPTY: /(.|\s)*\S(.|\s)*/,
+}
+
+export const RECOMMENDATION_TYPE_LABEL_MAP = {
+  [RecommendationType.PRODUCT]: 'Product',
+  [RecommendationType.BLOG]: 'Blog',
+  [RecommendationType.VIDEO]: 'Video',
+  [RecommendationType.MUSIC]: 'Music',
+  [RecommendationType.OTHER]: 'Other',
 }

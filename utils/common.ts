@@ -98,8 +98,8 @@ export const toPascalCase = (string: string) => {
 }
 
 export const pluralize = (word: string, count: number) => {
-  if (count > 1) return `${word}s`
-  return word
+  if (count === 1) return word
+  return `${count} ${word}s`
 }
 
 export const getUrlParams = (uri: string) => {

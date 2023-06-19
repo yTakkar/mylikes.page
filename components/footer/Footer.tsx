@@ -74,7 +74,10 @@ const Footer: React.FC<IFooterProps> = () => {
           <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
             This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising
             program designed to provide a means for sites to earn advertising fees by advertising and linking to
-            Amazon.com.
+            Amazon.com.{' '}
+            <CoreLink url="https://clearbit.com" isExternal className="underline">
+              Logos provided by Clearbit
+            </CoreLink>
           </div>
 
           {appConfig.footer.copyrightText ? (

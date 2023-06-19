@@ -1,5 +1,3 @@
-import { IUserInfo } from './user'
-
 export enum RecommendationType {
   PRODUCT = 'PRODUCT',
   BLOG = 'BLOG',
@@ -19,10 +17,5 @@ export interface IRecommendationInfo {
   createdAt: number | null // date mills
   notes: string | null
   type: RecommendationType
-  owner: IUserInfo
-}
-
-export interface IListRecommendationInfo extends IRecommendationInfo {
-  notes: string | null
-  addedAt: number | null // date mills
+  ownerEmail: string
 }

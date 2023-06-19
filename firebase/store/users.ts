@@ -1,9 +1,9 @@
 import firebaseStore from '.'
 import { collection, doc, getDoc, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore'
-import { IUserInfo } from '../../interface/user'
+import { IListUsersParams, IUserInfo } from '../../interface/user'
 
 // Document reference: email
-const usersCollection = collection(firebaseStore, 'users')
+export const usersCollection = collection(firebaseStore, 'users')
 
 export const getUserByEmail = async (email: string): Promise<IUserInfo | null> => {
   const docRef = doc(usersCollection, email)
@@ -27,10 +27,6 @@ export const addUser = async (userInfo: IUserInfo): Promise<IUserInfo> => {
   }
   await setDoc(doc(usersCollection, userInfo.email), userInfo)
   return userInfo
-}
-
-interface IListUsersParams {
-  limit: number
 }
 
 export const listUsers = async (params: IListUsersParams): Promise<IUserInfo[]> => {

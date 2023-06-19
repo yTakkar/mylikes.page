@@ -25,7 +25,7 @@ export const deleteLocalUserInfo = () => {
 export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
   const uniqueNamesGenerator = await dynamicUniqueNamesGenerator()
 
-  const numberDictionary = uniqueNamesGenerator.NumberDictionary.generate({ min: 100, max: 1e5 })
+  const numberDictionary = uniqueNamesGenerator.NumberDictionary.generate({ min: 100, max: 1e10 })
   const username = uniqueNamesGenerator.uniqueNamesGenerator({
     dictionaries: [uniqueNamesGenerator.adjectives, uniqueNamesGenerator.names, numberDictionary],
     separator: '_',

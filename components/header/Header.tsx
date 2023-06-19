@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   MenuIcon as MenuIconSolid,
   PlusIcon as PlusIconSolid,
@@ -32,7 +32,7 @@ const Header: React.FC<INavbarProps> = props => {
   const { user, methods } = applicationContext
 
   useEffect(() => {
-    methods.togglePopup(PopupType.ADD_RECOMMENDATION, {})
+    // methods.togglePopup(PopupType.CREATE_LIST, {})
   }, [])
 
   const pwaInstallLink: IHeaderLink = {

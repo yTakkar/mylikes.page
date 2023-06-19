@@ -23,7 +23,7 @@
 
   @include desktop {
     & .content {
-      height: 550px;
+      height: 570px;
       @apply pb-16 overflow-y-auto;
     }
   }

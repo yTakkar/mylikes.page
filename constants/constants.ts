@@ -87,12 +87,12 @@ export const REGEX_MAP = {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   PASSWORD: /^[a-zA-Z0-9]{3,30}$/,
   PHONE_NUMBER: /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
-  URL: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+  URL: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
   NOT_EMPTY: /(.|\s)*\S(.|\s)*/,
 }
 
 export const RECOMMENDATION_TYPE_LABEL_MAP = {
-  [RecommendationType.PRODUCT]: 'Product',
+  [RecommendationType.PRODUCT]: 'Online Product',
   [RecommendationType.BLOG]: 'Blog',
   [RecommendationType.VIDEO]: 'Video',
   [RecommendationType.MUSIC]: 'Music',

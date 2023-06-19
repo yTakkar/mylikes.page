@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
 import classNames from 'classnames'
 import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
@@ -8,28 +8,43 @@ import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { CheckIcon } from '@heroicons/react/outline'
 import useOnEnter from '../../hooks/useOnEnter'
 import { handleValidation } from '../../utils/form'
+import CoreCheckbox from '../core/CoreCheckbox'
+import { addSavedRecommendation } from '../../firebase/store/saved-recommendations'
+import { nanoid } from 'nanoid'
+import ApplicationContext from '../ApplicationContext'
+import { toastError, toastSuccess } from '../Toaster'
+import { generateRecommendationImageUrl } from '../../utils/recommendation'
 
 enum FieldKeyType {
   URL = 'URL',
   TITLE = 'TITLE',
   TYPE = 'TYPE',
   NOTES = 'NOTES',
+  IS_ADULT = 'IS_ADULT',
 }
 
-interface IAddRecommendationFormProps {}
+interface IAddRecommendationFormProps {
+  onSuccess?: () => void
+}
 
 const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
-  const defaultFields = Object.keys(FieldKeyType).reduce((acc: any, key: any) => {
-    acc[key] = ''
-    return acc
-  }, {})
+  const { onSuccess } = props
+
+  const applicationContext = useContext(ApplicationContext)
+  const { user } = applicationContext
 
   const defaultFieldsWithError = Object.keys(FieldKeyType).reduce((acc: any, key: any) => {
     acc[key] = false
     return acc
   }, {})
 
-  const [fields, setFields] = useState<Record<FieldKeyType, string>>(defaultFields)
+  const [fields, setFields] = useState<Record<FieldKeyType, any>>({
+    URL: '',
+    TITLE: '',
+    TYPE: '',
+    NOTES: '',
+    IS_ADULT: false,
+  })
   const [fieldsWithError, setFieldsWithError] = useState<Record<FieldKeyType, boolean>>(defaultFieldsWithError)
   const [loading, toggleLoading] = useState(false)
 
@@ -78,11 +93,31 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       return null
     }
 
-    const onSuccess = async () => {
-      console.log('on success')
+    const onValidationSuccess = async () => {
+      toggleLoading(true)
+      try {
+        await addSavedRecommendation({
+          id: nanoid(),
+          url: fields.URL,
+          title: fields.TITLE,
+          imageUrl: generateRecommendationImageUrl(fields.URL),
+          isAdult: fields.IS_ADULT,
+          createdAt: new Date().getTime(),
+          notes: fields.NOTES,
+          type: fields.TYPE,
+          ownerEmail: user!.email,
+        })
+        onSuccess?.()
+        toastSuccess('Recommendation is saved!')
+      } catch (e) {
+        console.error('recommendation:add:error', e)
+        toastError('Something went wrong! Please try again.')
+      } finally {
+        toggleLoading(false)
+      }
     }
 
-    handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onSuccess)
+    handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onValidationSuccess)
   }
 
   useOnEnter(formRef, handleSubmit)
@@ -96,11 +131,11 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
 
   return (
     <div ref={formRef}>
-      <div className="user-input-group">
+      {/* <div className="user-input-group">
         <div className="text-typo-paragraphLight text-sm">
           You can edit the recommendation at any time from the settings page.
         </div>
-      </div>
+      </div> */}
 
       <div className="user-input-group">
         <div className="user-input-label">URL *</div>
@@ -132,6 +167,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
 
       <div className="user-input-group ">
         <div className="user-input-label">Type *</div>
+        <div className="text-typo-paragraphLight text-sm mb-2 -mt-1">What kind of recommendation is this?</div>
         <CoreSelectInput
           value={fields.TYPE}
           onChange={updateField(FieldKeyType.TYPE)}
@@ -151,6 +187,15 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
           className={classNames('user-input h-24', {
             'user-input-error': fieldsWithError.NOTES,
           })}
+        />
+      </div>
+
+      <div className="user-input-group">
+        <CoreCheckbox
+          id="primary"
+          onChange={updateField(FieldKeyType.IS_ADULT) as any}
+          checked={fields.IS_ADULT}
+          label="Does this recommendation contain adult content?"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import { ArrowLeftIcon, CogIcon, PlusIcon } from '@heroicons/react/outline'
 import RecommendationInfo, {
@@ -10,40 +10,102 @@ import classNames from 'classnames'
 import AddRecommendationForm from '../recommendation/AddRecommendationForm'
 import NoContent from '../NoContent'
 import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
+import { IRecommendationInfo } from '../../interface/recommendation'
+import { listSavedRecommendationsByEmail } from '../../firebase/store/saved-recommendations'
+import ApplicationContext from '../ApplicationContext'
+import Loader, { LoaderType } from '../loader/Loader'
+import { IListDetail, IListRecommendationInfo } from '../../interface/list'
+import { updateList } from '../../firebase/store/list'
+import { toastError, toastSuccess } from '../Toaster'
 
-interface ICreateListPopupProps {
+interface IAddRecommendationPopupProps {
+  list: IListDetail
   onClose: () => void
+  onSuccess?: () => void
 }
 
-const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
-  const { onClose } = props
+const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => {
+  const { list, onClose, onSuccess } = props
 
+  const applicationContext = useContext(ApplicationContext)
+  const { user } = applicationContext
+
+  const [loading, toggleLoading] = useState(false)
   const [panel, setPanel] = useState<'saved' | 'add'>('saved')
 
-  // const recommendations = Array.from({ length: 10 })
-  const recommendations = []
+  const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
+  const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
+
+  const fetchRecommendations = async () => {
+    toggleLoading(true)
+    const recommendations = await listSavedRecommendationsByEmail(user!.email)
+    setSavedRecommendations(recommendations)
+    toggleLoading(false)
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchRecommendations()
+    }
+  }, [user])
+
+  const handleOnSuccess = () => {
+    if (onSuccess) {
+      onSuccess()
+    }
+  }
+
+  const handleAddToList = (recommendation: IRecommendationInfo) => {
+    const listRecommendation: IListRecommendationInfo = {
+      ...recommendation,
+      addedAt: new Date().getTime(),
+    }
+    const updatedList = [listRecommendation, ...listRecommendations]
+
+    updateList(list.id, {
+      recommendations: updatedList,
+    })
+      .then(() => {
+        setListRecommendations(updatedList)
+        toastSuccess('Added to the list')
+        handleOnSuccess()
+      })
+      .catch(() => {
+        toastError('Failed to add to the list')
+      })
+  }
 
   const renderSavedRecommendations = () => {
+    if (loading) {
+      return <Loader type={LoaderType.ELLIPSIS} />
+    }
+
     return (
       <div className="saved">
-        <div className="flex justify-between items-center">
-          <div className="font-medium font-primary-medium">Choose from the saved list</div>
-          {recommendations.length > 0 && (
-            <div
-              className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium"
-              onClick={() => setPanel('add')}>
+        <div className="flex items-center">
+          {/* <div className="font-medium font-primary-medium">Choose from the saved list</div> */}
+          {savedRecommendations.length > 0 && (
+            <div className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
               <div className="flex">
                 <CogIcon className="w-4 mr-1" />
                 Manage
               </div>
             </div>
           )}
+          <div
+            className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium ml-2"
+            onClick={() => setPanel('add')}>
+            <div className="flex">
+              <PlusIcon className="w-4 mr-1" />
+              Add new
+            </div>
+          </div>
         </div>
 
         <CoreDivider className="my-5" />
 
         <div className="mt-4">
-          {recommendations.length === 0 ? (
+          {savedRecommendations.length === 0 ? (
             <NoContent
               message="No saved recommendations found."
               actions={[
@@ -56,11 +118,13 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
               ]}
             />
           ) : (
-            recommendations.map((_, index) => (
+            savedRecommendations.map(recommendationInfo => (
               <RecommendationInfo
-                key={index}
+                key={recommendationInfo.id}
                 layout={RecommendationInfoLayoutType.INLINE}
                 source={RecommendationInfoSourceType.ADD}
+                recommendationInfo={recommendationInfo}
+                onAddToList={() => handleAddToList(recommendationInfo)}
               />
             ))
           )}
@@ -75,7 +139,11 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
         className={classNames('add', {
           shown: panel === 'add',
         })}>
-        <AddRecommendationForm />
+        <AddRecommendationForm
+          onSuccess={() => {
+            setPanel('saved')
+          }}
+        />
       </div>
     )
   }
@@ -87,10 +155,11 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
         title: (
           <div className="flex items-center">
             {panel === 'add' && <ArrowLeftIcon className="w-5 mr-3 cursor-pointer" onClick={() => setPanel('saved')} />}
-            {panel === 'saved' ? 'Add recommendations to the list' : 'Add a new recommendation'}
+            {panel === 'saved' ? 'Select from your saved list' : 'Add a new recommendation'}
           </div>
         ),
         disableOutsideClick: true,
+        showCrossIcon: panel === 'saved',
       }}>
       <div className="addRecommendation">
         {renderSavedRecommendations()}
@@ -100,4 +169,4 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
   )
 }
 
-export default CreateListPopup
+export default AddRecommendationPopup

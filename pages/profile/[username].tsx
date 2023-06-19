@@ -6,7 +6,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { getUserByUsername, listUsers } from '../../firebase/store/users'
 import { get404PageUrl, getProfileEditPageUrl } from '../../utils/routes'
 import { IUserInfo } from '../../interface/user'
-import { PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
+import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
 import { prepareProfilePageSeo } from '../../utils/seo/pages/profile'
 import CoreImage from '../../components/core/CoreImage'
 import appConfig from '../../config/appConfig'
@@ -78,7 +78,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
             <div className="font-domaine-bold font-bold text-3xl tracking-wide lg:text-4xl">{profileInfo.name}</div>
             {currentUserProfile && (
               <div
-                className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2"
+                className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2 cursor-pointer"
                 onClick={() => {
                   router.push(getProfileEditPageUrl())
                 }}>
@@ -115,7 +115,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const users = await listUsers({
-    limit: 100,
+    limit: INITIAL_PAGE_BUILD_COUNT.PROFILE,
   })
 
   const paths: any = users.map(user => ({

@@ -86,9 +86,11 @@ const appConfig = {
       404: 15 * 60,
       ERROR: 15 * 60,
       PROFILE: 5 * 60, // TODO: think?
+      LIST: 5 * 60, // TODO: think?
     },
     initialPageBuildCount: {
       PROFILE: 100,
+      LIST: 100,
     },
   },
   integrations: {

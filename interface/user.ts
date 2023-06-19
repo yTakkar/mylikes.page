@@ -13,3 +13,7 @@ export interface IUserInfo {
     youtube: string | null
   }
 }
+
+export interface IListUsersParams {
+  limit: number
+}

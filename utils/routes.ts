@@ -36,6 +36,6 @@ export const get404PageUrl = () => {
   return '/not-found'
 }
 
-export const getListPageUrl = () => {
-  return `/list/something`
+export const getListPageUrl = (listId: string) => {
+  return `/list/${listId}`
 }

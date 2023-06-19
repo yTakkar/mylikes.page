@@ -18,7 +18,7 @@
     transform-origin: 0 0; /* see note above */
 
     & div {
-      // @apply absolute w-14 h-14 rounded-full top-12 left-12 box-content border-8 border-primaryText;
+      @apply absolute w-14 h-14 rounded-full top-12 left-12 box-content border-8 border-typo-paragraphLight;
       border-top-color: transparent;
       animation: spinner 1s linear infinite;
     }
@@ -37,7 +37,7 @@
 
       &:before {
         content: '';
-        // @apply block w-1/4 h-1/4 bg-primaryText rounded-full;
+        @apply block w-1/4 h-1/4 bg-typo-paragraphLight rounded-full;
         animation: sk-chase-dot-before 2s infinite ease-in-out both;
       }
 
@@ -123,7 +123,7 @@
 
 .lds-ellipsis div {
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  // @apply absolute top-[33px] w-[13px] h-[13px] rounded-full bg-primaryText
+  @apply absolute top-[33px] w-[13px] h-[13px] rounded-full bg-typo-paragraphLight
 }
 
 .lds-ellipsis div:nth-child(1) {

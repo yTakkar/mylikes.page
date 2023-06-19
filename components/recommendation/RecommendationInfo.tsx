@@ -21,11 +21,12 @@ export enum RecommendationInfoLayoutType {
 interface IRecommendationInfoProps {
   layout: RecommendationInfoLayoutType
   source: RecommendationInfoSourceType
-  // recommendationInfo: IRecommendationInfo
+  recommendationInfo: IRecommendationInfo
+  onAddToList?: () => void
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
-  const { layout, source } = props
+  const { layout, source, onAddToList } = props
 
   if (layout === RecommendationInfoLayoutType.BLOCK) {
     return null
@@ -37,6 +38,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   // TODO:
   /**
    * a way to show type
+   * is 18+?
    */
 
   const renderNote = () => {
@@ -77,9 +79,13 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
         className="w-20 h-20"
       />
       <div className="ml-3 flex-grow">
-        <CoreLink url={'google.com'} isExternal className="font-medium font-primary-medium">
-          The Ministry for the Future
-        </CoreLink>
+        {source === RecommendationInfoSourceType.ADD ? (
+          <span className="font-medium font-primary-medium">The Ministry for the Future</span>
+        ) : (
+          <CoreLink url={'google.com'} isExternal className="font-medium font-primary-medium">
+            The Ministry for the Future
+          </CoreLink>
+        )}
         {source === RecommendationInfoSourceType.ADD ? null : (
           <div className="text-typo-paragraphLight text-sm">Faiyaz</div>
         )}
@@ -91,6 +97,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             icon={getCTAIcon()}
             size={CoreButtonSize.SMALL}
             type={CoreButtonType.SOLID_PRIMARY}
+            onClick={() => onAddToList?.()}
           />
         </div>
       </div>

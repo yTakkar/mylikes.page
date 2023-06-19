@@ -49,6 +49,7 @@ const Alert: React.FC<IAlertProps> = props => {
             type={CoreButtonType.SOLID_PRIMARY}
             loading={cta.primary.loading}
             onClick={cta.primary.onClick}
+            disabled={cta.primary.loading}
             className="ml-1"
           />
         ) : null}

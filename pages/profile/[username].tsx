@@ -14,6 +14,7 @@ import CoreLink from '../../components/core/CoreLink'
 import ApplicationContext from '../../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import PageLoader from '../../components/loader/PageLoader'
+import ListInfos from '../../components/list/ListInfos'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -64,49 +65,55 @@ const Home: NextPage<IProps> = (props: IProps) => {
 
   return (
     <PageContainer>
-      <div className="bg-white p-4 py-6 flex flex-col justify-center items-center lg:flex-row lg:justify-normal">
-        <div>
-          <CoreImage
-            url={profileInfo.avatarUrl}
-            alt={`${profileInfo.name}'s profile on ${appConfig.global.app.name}`}
-            className="w-40 h-40 rounded-full"
-          />
+      <div className=" p-4 py-6">
+        <div className="bg-whit flex flex-col justify-center items-center lg:flex-row lg:justify-normal">
+          <div>
+            <CoreImage
+              url={profileInfo.avatarUrl}
+              alt={`${profileInfo.name}'s profile on ${appConfig.global.app.name}`}
+              className="w-40 h-40 rounded-full"
+            />
+          </div>
+
+          <div className="text-center lg:text-left lg:ml-8">
+            <div className="flex flex-col items-center mt-4 lg:flex-row lg:mt-0">
+              <div className="font-domaine-bold font-bold text-3xl tracking-wide lg:text-4xl">{profileInfo.name}</div>
+              {currentUserProfile && (
+                <div
+                  className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2 cursor-pointer"
+                  onClick={() => {
+                    router.push(getProfileEditPageUrl())
+                  }}>
+                  Edit profile
+                </div>
+              )}
+            </div>
+            <div className="mt-4 lg:mt-1">@{profileInfo.username}</div>
+            <div className="text-gray-500 mt-4">{profileInfo.bio || DEFAULT_BIO}</div>
+
+            <div className="flex justify-center items-center mt-4 lg:items-start lg:justify-normal">
+              {socialLinks.map(socialLink => {
+                if (!socialLink.url) {
+                  return null
+                }
+
+                return (
+                  <CoreLink
+                    key={socialLink.name}
+                    url={socialLink.url}
+                    isExternal
+                    className="w-5 mr-3 transform transition-transform hover:scale-110"
+                    title={`${socialLink.name}`}>
+                    <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
+                  </CoreLink>
+                )
+              })}
+            </div>
+          </div>
         </div>
 
-        <div className="text-center lg:text-left lg:ml-8">
-          <div className="flex flex-col items-center mt-4 lg:flex-row lg:mt-0">
-            <div className="font-domaine-bold font-bold text-3xl tracking-wide lg:text-4xl">{profileInfo.name}</div>
-            {currentUserProfile && (
-              <div
-                className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2 cursor-pointer"
-                onClick={() => {
-                  router.push(getProfileEditPageUrl())
-                }}>
-                Edit profile
-              </div>
-            )}
-          </div>
-          <div className="mt-4 lg:mt-1">@{profileInfo.username}</div>
-          <div className="text-gray-500 mt-4">{profileInfo.bio || DEFAULT_BIO}</div>
-
-          <div className="flex justify-center items-center mt-4 lg:items-start lg:justify-normal">
-            {socialLinks.map(socialLink => {
-              if (!socialLink.url) {
-                return null
-              }
-
-              return (
-                <CoreLink
-                  key={socialLink.name}
-                  url={socialLink.url}
-                  isExternal
-                  className="w-5 mr-3 transform transition-transform hover:scale-110"
-                  title={`${socialLink.name}`}>
-                  <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
-                </CoreLink>
-              )
-            })}
-          </div>
+        <div className="mt-10">
+          <ListInfos />
         </div>
       </div>
     </PageContainer>

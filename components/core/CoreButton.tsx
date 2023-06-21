@@ -41,8 +41,8 @@ const CoreButton: React.FC<ICoreButtonProps> = props => {
       {IconComponent ? (
         <IconComponent
           className={classnames({
-            'w-4 ml-1': size === CoreButtonSize.SMALL || size === CoreButtonSize.MEDIUM,
-            'w-5 ml-1': size === CoreButtonSize.LARGE,
+            'w-4 ml-1': size === CoreButtonSize.SMALL,
+            'w-5 ml-1': size === CoreButtonSize.MEDIUM || size === CoreButtonSize.LARGE,
           })}
         />
       ) : null}

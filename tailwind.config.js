@@ -117,6 +117,9 @@ module.exports = {
         '0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%)',
       scrollToTop: '7.33333px 0.666667px 30.6667px rgb(0 0 0 / 22%)',
       modal: '0 0 10px 0 rgb(0 0 0 / 8%)',
+      listInfo: '0 8px 2px -7px #e0e0e0',
+      listInfoImages: '0 1px 3px 0 #e3e3e3',
+      listInfoImage: '0 2px 2px -1px #414141',
     },
     boxShadowColor: ({ theme }) => theme('colors'),
     brightness: {

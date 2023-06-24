@@ -98,7 +98,7 @@ export const toPascalCase = (string: string) => {
 }
 
 export const pluralize = (word: string, count: number) => {
-  if (count === 1) return word
+  if (count === 1) return `${count} ${word}`
   return `${count} ${word}s`
 }
 

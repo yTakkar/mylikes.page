@@ -15,10 +15,13 @@ import ApplicationContext from '../../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import PageLoader from '../../components/loader/PageLoader'
 import ListInfos from '../../components/list/ListInfos'
+import { listListsByUser } from '../../firebase/store/list'
+import { IListDetail } from '../../interface/list'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
     profileInfo: IUserInfo
+    lists: IListDetail[]
   }
 }
 
@@ -30,7 +33,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   }
 
   const {
-    pageData: { profileInfo },
+    pageData: { profileInfo, lists },
   } = props
 
   const applicationContext = useContext(ApplicationContext)
@@ -43,23 +46,29 @@ const Home: NextPage<IProps> = (props: IProps) => {
       url: profileInfo.websiteUrl,
       name: 'Website',
       iconSrc: SOCIAL_ICONS_SRC_MAP.GLOBE,
+      show: !!profileInfo.websiteUrl,
     },
     {
       url: `https://twitter.com/${profileInfo.socialUsernames.twitter}`,
       name: 'Twitter',
       iconSrc: SOCIAL_ICONS_SRC_MAP.TWITTER,
+      show: !!profileInfo.socialUsernames.twitter,
     },
     {
       url: `https://instagram.com/${profileInfo.socialUsernames.instagram}`,
       name: 'Instagram',
       iconSrc: SOCIAL_ICONS_SRC_MAP.INSTAGRAM,
+      show: !!profileInfo.socialUsernames.instagram,
     },
     {
       url: `https://www.youtube.com/@${profileInfo.socialUsernames.instagram}`,
       name: 'YouTube',
       iconSrc: SOCIAL_ICONS_SRC_MAP.YOUTUBE,
+      show: !!profileInfo.socialUsernames.youtube,
     },
   ]
+
+  const socialLinksToShow = socialLinks.filter(socialLink => socialLink.show)
 
   const currentUserProfile = profileInfo.username === user?.username
 
@@ -91,29 +100,27 @@ const Home: NextPage<IProps> = (props: IProps) => {
             <div className="mt-4 lg:mt-1">@{profileInfo.username}</div>
             <div className="text-gray-500 mt-4">{profileInfo.bio || DEFAULT_BIO}</div>
 
-            <div className="flex justify-center items-center mt-4 lg:items-start lg:justify-normal">
-              {socialLinks.map(socialLink => {
-                if (!socialLink.url) {
-                  return null
-                }
-
-                return (
-                  <CoreLink
-                    key={socialLink.name}
-                    url={socialLink.url}
-                    isExternal
-                    className="w-5 mr-3 transform transition-transform hover:scale-110"
-                    title={`${socialLink.name}`}>
-                    <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
-                  </CoreLink>
-                )
-              })}
-            </div>
+            {socialLinksToShow.length > 0 && (
+              <div className="flex justify-center items-center mt-4 lg:items-start lg:justify-normal">
+                {socialLinksToShow.map(socialLink => {
+                  return (
+                    <CoreLink
+                      key={socialLink.name}
+                      url={socialLink.url}
+                      isExternal
+                      className="w-5 mr-3 transform transition-transform hover:scale-110"
+                      title={`${socialLink.name}`}>
+                      <CoreImage url={socialLink.iconSrc} alt={socialLink.name} useTransparentPlaceholder />
+                    </CoreLink>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
 
         <div className="mt-10">
-          <ListInfos />
+          <ListInfos lists={lists} profileUser={profileInfo} />
         </div>
       </div>
     </PageContainer>
@@ -151,10 +158,13 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
     }
   }
 
+  const listsByUser = await listListsByUser(profileInfo)
+
   return {
     props: {
       pageData: {
         profileInfo,
+        lists: listsByUser,
       },
       seo: prepareProfilePageSeo(profileInfo),
       layoutData: {

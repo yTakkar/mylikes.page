@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore'
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import firebaseStore from '.'
 import { IRecommendationInfo } from '../../interface/recommendation'
 

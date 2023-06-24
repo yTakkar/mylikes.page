@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
 import { AnnotationIcon, BookmarkIcon as BookmarkIconOutline, DocumentAddIcon } from '@heroicons/react/outline'
-import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/solid'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
+import { IUserInfo } from '../../interface/user'
+import { IListDetail } from '../../interface/list'
+import ApplicationContext from '../ApplicationContext'
+import { isSessionUser } from '../../utils/user'
+import AddRecommendationNote from './AddRecommendationNote'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -22,18 +26,28 @@ interface IRecommendationInfoProps {
   layout: RecommendationInfoLayoutType
   source: RecommendationInfoSourceType
   recommendationInfo: IRecommendationInfo
+  recommendationOwner: IUserInfo
+  showAddToList: boolean
+  list?: IListDetail
   onAddToList?: () => void
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
-  const { layout, source, onAddToList } = props
+  const { layout, source, recommendationInfo, recommendationOwner, list, showAddToList, onAddToList } = props
+
+  const applicationContext = useContext(ApplicationContext)
+  const { user } = applicationContext
+
+  const [note, setNote] = useState(recommendationInfo.notes || '')
+  const [addNote, setAddNote] = useState(false)
+
+  useEffect(() => {
+    setNote(recommendationInfo.notes || '')
+  }, [recommendationInfo.notes])
 
   if (layout === RecommendationInfoLayoutType.BLOCK) {
     return null
   }
-
-  const notes =
-    'This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.'
 
   // TODO:
   /**
@@ -43,25 +57,43 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
   const renderNote = () => {
     if (source === RecommendationInfoSourceType.ADD) {
+      if (!note) {
+        return null
+      }
+      return <QuotesWrapper text={note} />
+    }
+
+    if (addNote) {
       return (
-        <div className="mt-1">
-          <QuotesWrapper text={notes} />
-        </div>
+        <AddRecommendationNote
+          note={note}
+          list={list!}
+          recommendationInfo={recommendationInfo}
+          onCancel={() => setAddNote(false)}
+          onSuccess={v => {
+            setAddNote(false)
+            setNote(v)
+          }}
+        />
       )
     }
 
-    return (
-      <div className="mt-2">
-        {!!notes ? (
-          <QuotesWrapper text={notes} />
-        ) : (
-          <div className="text-typo-paragraphLight inline-flex items-center border-b cursor-pointer">
+    if (!!note) {
+      return <QuotesWrapper text={note} className="cursor-pointer" onClick={() => setAddNote(true)} allowEdit />
+    } else {
+      if (isSessionUser(user, list?.owner || null)) {
+        return (
+          <div
+            className="text-typo-paragraphLight inline-flex items-center border-b cursor-pointer"
+            onClick={() => setAddNote(true)}>
             <AnnotationIcon className="w-4 mr-1" />
             <span className="">Add a note</span>
           </div>
-        )}
-      </div>
-    )
+        )
+      }
+
+      return null
+    }
   }
 
   const getCTAIcon = () => {
@@ -74,32 +106,32 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   return (
     <div className="flex items-start mb-6">
       <CoreImage
-        url="https://avatars.mylikes.page/avatars/croodles-neutral/harley.svg"
-        alt={`name recommendation on ${appConfig.global.app.name}`}
-        className="w-20 h-20"
+        url={recommendationInfo.imageUrl}
+        alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
+        className="w-20 h-20 shadow-listInfoImage"
       />
       <div className="ml-3 flex-grow">
         {source === RecommendationInfoSourceType.ADD ? (
-          <span className="font-medium font-primary-medium">The Ministry for the Future</span>
+          <span className="font-medium font-primary-medium">{recommendationInfo.title}</span>
         ) : (
-          <CoreLink url={'google.com'} isExternal className="font-medium font-primary-medium">
-            The Ministry for the Future
+          <CoreLink url={recommendationInfo.url} isExternal className="font-medium font-primary-medium">
+            {recommendationInfo.title}
           </CoreLink>
         )}
-        {source === RecommendationInfoSourceType.ADD ? null : (
-          <div className="text-typo-paragraphLight text-sm">Faiyaz</div>
-        )}
-        <div className="text-sm">{renderNote()}</div>
+        <div className="text-typo-paragraphLight text-sm">by {recommendationOwner?.name}</div>
+        <div className="text-sm mt-2">{renderNote()}</div>
 
-        <div className="flex items-center justify-end mt-2 lg:mt-3">
-          <CoreButton
-            label={'Add to list'}
-            icon={getCTAIcon()}
-            size={CoreButtonSize.SMALL}
-            type={CoreButtonType.SOLID_PRIMARY}
-            onClick={() => onAddToList?.()}
-          />
-        </div>
+        {showAddToList ? (
+          <div className="flex items-center justify-end mt-2 lg:mt-3">
+            <CoreButton
+              label={'Add to list'}
+              icon={getCTAIcon()}
+              size={CoreButtonSize.SMALL}
+              type={CoreButtonType.SOLID_PRIMARY}
+              onClick={onAddToList}
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   )

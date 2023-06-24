@@ -50,3 +50,7 @@ export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
     },
   }
 }
+
+export const isSessionUser = (user: IUserInfo | null, profileInfo: IUserInfo | null) => {
+  return user?.email === profileInfo?.email
+}

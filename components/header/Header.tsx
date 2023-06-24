@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
   MenuIcon as MenuIconSolid,
   PlusIcon as PlusIconSolid,
@@ -9,11 +9,9 @@ import {
   PlusIcon as PlusIconOutline,
   LoginIcon as LoginIconOutline,
 } from '@heroicons/react/outline'
-import HeaderSearch from './HeaderSearch'
 import CoreLink from '../core/CoreLink'
 import usePWAInstall from '../../hooks/usePWAInstall'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
-import { DesktopView } from '../ResponsiveViews'
 import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/popup'
@@ -30,10 +28,6 @@ const Header: React.FC<INavbarProps> = props => {
 
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
-
-  useEffect(() => {
-    // methods.togglePopup(PopupType.CREATE_LIST, {})
-  }, [])
 
   const pwaInstallLink: IHeaderLink = {
     label: 'Install',
@@ -92,7 +86,7 @@ const Header: React.FC<INavbarProps> = props => {
   const renderTopNav = () => {
     return (
       <div>
-        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-4 lg:py-3 z-10">
+        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-4 lg:py-5 z-10">
           <div className="container mx-auto">
             <div className="flex justify-between w-full items-center">
               <div className="flex items-center w-7/12 md:w-10/12 lg:w-auto">
@@ -100,11 +94,11 @@ const Header: React.FC<INavbarProps> = props => {
                   <TextLogo />
                 </CoreLink>
 
-                <DesktopView useCSS>
+                {/* <DesktopView useCSS>
                   <div className="w-96">
                     <HeaderSearch />
                   </div>
-                </DesktopView>
+                </DesktopView> */}
               </div>
 
               <div style={{ display: 'inherit' }}>

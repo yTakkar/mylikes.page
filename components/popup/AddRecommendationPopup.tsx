@@ -84,14 +84,12 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
       <div className="saved">
         <div className="flex items-center">
           {/* <div className="font-medium font-primary-medium">Choose from the saved list</div> */}
-          {savedRecommendations.length > 0 && (
-            <div className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
-              <div className="flex">
-                <CogIcon className="w-4 mr-1" />
-                Manage
-              </div>
+          <div className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
+            <div className="flex">
+              <CogIcon className="w-4 mr-1" />
+              Manage
             </div>
-          )}
+          </div>
           <div
             className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium ml-2"
             onClick={() => setPanel('add')}>
@@ -124,6 +122,8 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
                 layout={RecommendationInfoLayoutType.INLINE}
                 source={RecommendationInfoSourceType.ADD}
                 recommendationInfo={recommendationInfo}
+                recommendationOwner={user!}
+                showAddToList={true}
                 onAddToList={() => handleAddToList(recommendationInfo)}
               />
             ))

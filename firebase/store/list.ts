@@ -10,6 +10,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore'
 import firebaseStore from '.'
 import { IListDetail, IListDetailAddParams, IListListsParams } from '../../interface/list'
@@ -39,6 +40,39 @@ export const listLists = async (params: IListListsParams) => {
   const q = query(listCollection, limit(params.limit))
   const querySnapshot = await getDocs(q)
   return querySnapshot.docs.map(doc => doc.data() as IListDetail)
+}
+
+export const listListsByUser = async (user: IUserInfo) => {
+  const userRef = doc(usersCollection, user.email)
+  const q = query(listCollection, where('owner', '==', userRef))
+  const querySnapshot = await getDocs(q)
+  return querySnapshot.docs.map(doc => {
+    const data = doc.data() as IListDetail
+    return {
+      ...data,
+      owner: user,
+    }
+  })
+}
+
+export const getListProfileInfoMap = async (list: IListDetail) => {
+  const uniqueUserEmails = new Set<string>()
+  const profileInfoMap: Record<string, IUserInfo> = {}
+  list.recommendations.forEach(recommendation => {
+    uniqueUserEmails.add(recommendation.ownerEmail)
+  })
+
+  if (uniqueUserEmails.size === 0) {
+    return profileInfoMap
+  }
+
+  const q = query(usersCollection, where('email', 'in', Array.from(uniqueUserEmails)))
+  const querySnapshot = await getDocs(q)
+  querySnapshot.docs.forEach(doc => {
+    const data = doc.data() as IUserInfo
+    profileInfoMap[data.email] = data
+  })
+  return profileInfoMap
 }
 
 export const getListById = async (id: string): Promise<IListDetail | null> => {

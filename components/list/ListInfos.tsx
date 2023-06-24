@@ -1,34 +1,56 @@
-import React from 'react'
-import { IListDetail } from '../../interface/list'
+import React, { useContext } from 'react'
+import { IListDetail, ListVisibilityType } from '../../interface/list'
 import ListInfo from './ListInfo'
 import { PlusIcon } from '@heroicons/react/solid'
 import NoContent from '../NoContent'
 import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
+import ApplicationContext from '../ApplicationContext'
+import { PopupType } from '../../interface/popup'
+import { IUserInfo } from '../../interface/user'
+import { isSessionUser } from '../../utils/user'
 
 interface IListInfoProps {
-  // lists: IListDetail[]
+  lists: IListDetail[]
+  profileUser: IUserInfo
 }
 
 const ListInfos: React.FC<IListInfoProps> = props => {
-  const list = Array.from({ length: 0 })
+  const { lists, profileUser } = props
 
-  if (list.length === 0) {
+  const applicationContext = useContext(ApplicationContext)
+  const { user, methods } = applicationContext
+
+  const sessionUser = isSessionUser(user, profileUser)
+
+  const handleNewList = () => {
+    methods.togglePopup(PopupType.CREATE_LIST, {})
+  }
+
+  const listsToShow = sessionUser ? lists : lists.filter(list => list.visibility === ListVisibilityType.PUBLIC)
+
+  if (listsToShow.length === 0) {
     return (
       <NoContent
-        message="You don't have any lists yet. Create one now!"
-        actions={[
-          {
-            label: (
-              <div className="flex">
-                <PlusIcon className="w-5 mr-1" />
-                New List
-              </div>
-            ),
-            size: CoreButtonSize.MEDIUM,
-            type: CoreButtonType.SOLID_PRIMARY,
-            // onClick: handleNewRecommendation,
-          },
-        ]}
+        message={
+          sessionUser ? `You don't have any lists yet. Create one now!` : `This user doesn't have any lists yet.`
+        }
+        actions={
+          sessionUser
+            ? [
+                {
+                  label: (
+                    <div className="flex">
+                      <PlusIcon className="w-5 mr-1" />
+                      New List
+                    </div>
+                  ),
+                  size: CoreButtonSize.MEDIUM,
+                  type: CoreButtonType.SOLID_PRIMARY,
+                  onClick: handleNewList,
+                },
+              ]
+            : undefined
+        }
         imageClassName="w-full lg:w-[700px]"
       />
     )
@@ -36,18 +58,22 @@ const ListInfos: React.FC<IListInfoProps> = props => {
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-4">
-        <div className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium">
-          <div className="flex">
-            <PlusIcon className="w-6 mr-1" />
-            New List
+      {sessionUser && (
+        <div className="flex items-center justify-end mb-4">
+          <div
+            className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
+            onClick={handleNewList}>
+            <div className="flex">
+              <PlusIcon className="w-6 mr-1" />
+              New List
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6 mt-4 lg:mt-0">
-        {list.map((_, i) => (
-          <ListInfo key={i} />
+        {listsToShow.map(list => (
+          <ListInfo key={list.id} list={list} />
         ))}
       </div>
     </div>

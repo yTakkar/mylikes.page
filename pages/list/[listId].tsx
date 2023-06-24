@@ -5,27 +5,33 @@ import { useRouter } from 'next/router'
 import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
-import { IListDetail } from '../../interface/list'
-import { PlusIcon } from '@heroicons/react/outline'
+import { IListDetail, ListVisibilityType } from '../../interface/list'
+import { LibraryIcon, PlusIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
 } from '../../components/recommendation/RecommendationInfo'
-import { getListById, listLists } from '../../firebase/store/list'
+import { getListById, getListProfileInfoMap, listLists } from '../../firebase/store/list'
 import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME } from '../../constants/constants'
-import { get404PageUrl } from '../../utils/routes'
+import { get404PageUrl, getProfilePageUrl } from '../../utils/routes'
 import { pluralize } from '../../utils/common'
 import NoContent from '../../components/NoContent'
 import { CoreButtonSize, CoreButtonType } from '../../components/core/CoreButton'
 import ApplicationContext from '../../components/ApplicationContext'
 import { PopupType } from '../../interface/popup'
 import Loader, { LoaderType } from '../../components/loader/Loader'
+import { LockClosedIcon } from '@heroicons/react/solid'
+import { IUserInfo } from '../../interface/user'
+import { isSessionUser } from '../../utils/user'
+import NotFound from '../../components/NotFound'
+import CoreLink from '../../components/core/CoreLink'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
     listDetail: IListDetail
+    profileInfoMap: Record<string, IUserInfo>
   }
 }
 
@@ -39,7 +45,11 @@ const List: NextPage<IProps> = (props: IProps) => {
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
 
-  const [listDetail, setListDetail] = useState(props.pageData.listDetail)
+  const { listDetail: initialListDetail, profileInfoMap } = props.pageData
+
+  const sessionUser = isSessionUser(user, initialListDetail.owner)
+
+  const [listDetail, setListDetail] = useState(initialListDetail)
   const [loading, toggleLoading] = useState(false)
 
   const hasRecommendations = listDetail.recommendations.length > 0
@@ -62,6 +72,11 @@ const List: NextPage<IProps> = (props: IProps) => {
     })
   }
 
+  // TODO:
+  const handleAddToLibrary = () => {
+    console.log('Add to library')
+  }
+
   const actions = [
     {
       label: 'List Settings',
@@ -73,6 +88,7 @@ const List: NextPage<IProps> = (props: IProps) => {
           },
         })
       },
+      show: sessionUser,
     },
     {
       label: (
@@ -82,10 +98,25 @@ const List: NextPage<IProps> = (props: IProps) => {
         </div>
       ),
       onClick: handleNewRecommendation,
+      show: sessionUser,
+    },
+    {
+      label: (
+        <div className="flex">
+          <LibraryIcon className="w-4 mr-1" />
+          Add to your library
+        </div>
+      ),
+      onClick: handleAddToLibrary,
+      show: !sessionUser,
     },
   ]
 
   const renderContent = () => {
+    if (!sessionUser && listDetail.visibility === ListVisibilityType.PRIVATE) {
+      return <NotFound />
+    }
+
     if (loading) {
       return (
         <div>
@@ -99,21 +130,31 @@ const List: NextPage<IProps> = (props: IProps) => {
         <div className="lg:my-8 lg:text-center">
           <div className="font-domaine-bold font-bold text-3xl mb-1 lg:mb-3 lg:text-5xl">{listDetail.name}</div>
           {listDetail.description && <div className="my-2 text-gray-800">{listDetail.description}</div>}
-          <div className="text-typo-paragraphLight">
-            by {listDetail.owner.name} {listDetail.owner.email === user?.email ? '(You)' : null}
+          <div className="text-typo-paragraphLight flex items-center lg:justify-center">
+            by
+            <CoreLink url={getProfilePageUrl(listDetail.owner)} className="ml-1">
+              {listDetail.owner.name} {sessionUser ? '(You)' : null}
+            </CoreLink>{' '}
+            {listDetail.visibility === ListVisibilityType.PRIVATE && <LockClosedIcon className="w-4 ml-1" />}
           </div>
         </div>
 
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center">
-            {actions.map((action, index) => (
-              <div
-                key={index}
-                className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded-lg font-primary-medium mr-2"
-                onClick={action.onClick}>
-                {action.label}
-              </div>
-            ))}
+            {actions.map((action, index) => {
+              if (!action.show) {
+                return null
+              }
+
+              return (
+                <div
+                  key={index}
+                  className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded-lg font-primary-medium mr-2"
+                  onClick={action.onClick}>
+                  {action.label}
+                </div>
+              )
+            })}
           </div>
           <DesktopView useCSS>
             <div className="text-typo-paragraphLight">
@@ -132,6 +173,9 @@ const List: NextPage<IProps> = (props: IProps) => {
                 layout={RecommendationInfoLayoutType.INLINE}
                 source={RecommendationInfoSourceType.LIST}
                 recommendationInfo={recommendationInfo}
+                recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
+                list={listDetail}
+                showAddToList={!sessionUser}
               />
             ))
           ) : (
@@ -192,10 +236,13 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
     }
   }
 
+  const profileInfoMap = await getListProfileInfoMap(listDetail)
+
   return {
     props: {
       pageData: {
         listDetail,
+        profileInfoMap,
       },
       seo: prepareListPageSeo(listDetail),
       layoutData: {

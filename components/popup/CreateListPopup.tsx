@@ -40,7 +40,7 @@ const VISIBILITY_OPTIONS = [
 interface ICreateListPopupProps {
   listDetail?: IListDetail
   onClose: () => void
-  onSuccess?: () => void
+  onSuccess?: (name: string, description: string, visibility: ListVisibilityType) => void
 }
 
 const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
@@ -131,7 +131,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
 
   const handleOnSuccess = () => {
     if (onSuccess) {
-      onSuccess()
+      onSuccess(fields.NAME, fields.DESCRIPTION, fields.VISIBILITY as ListVisibilityType)
     }
   }
 

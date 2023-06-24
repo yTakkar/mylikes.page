@@ -1,6 +1,7 @@
 import { PencilIcon } from '@heroicons/react/solid'
 import classNames from 'classnames'
 import React from 'react'
+import Tooltip from './Tooltip'
 
 interface IQuotesWrapperProps {
   text: string
@@ -17,7 +18,14 @@ const QuotesWrapper: React.FC<IQuotesWrapperProps> = props => {
         &nbsp;&nbsp;&nbsp;&nbsp;{text}&nbsp;&nbsp;{' '}
       </span>
       {allowEdit && (
-        <PencilIcon className="w-4 ml-4 text-typo-paragraphLight cursor-pointer inline" onClick={onClick} />
+        <Tooltip content="Edit note">
+          <span>
+            <PencilIcon
+              className="w-4 ml-4 text-typo-paragraphLight cursor-pointer inline relative"
+              onClick={onClick}
+            />
+          </span>
+        </Tooltip>
       )}
     </>
   )

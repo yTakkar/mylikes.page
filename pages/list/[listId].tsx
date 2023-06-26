@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
-import { IListDetail, ListVisibilityType } from '../../interface/list'
+import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
 import { LibraryIcon, PlusIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
@@ -75,6 +75,15 @@ const List: NextPage<IProps> = (props: IProps) => {
   // TODO:
   const handleAddToLibrary = () => {
     console.log('Add to library')
+  }
+
+  const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
+    if (!sessionUser) {
+      methods.togglePopup(PopupType.ADD_TO_LIST, {
+        listRecommendation,
+      })
+      return
+    }
   }
 
   const actions = [
@@ -176,6 +185,7 @@ const List: NextPage<IProps> = (props: IProps) => {
                 recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
                 list={listDetail}
                 showAddToList={!sessionUser}
+                onAddToList={() => handleAddToList(recommendationInfo)}
               />
             ))
           ) : (

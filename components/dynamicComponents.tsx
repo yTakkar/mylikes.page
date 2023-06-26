@@ -45,3 +45,10 @@ export const DynamicAddRecommendationPopup = dynamic(
     ssr: false,
   }
 )
+
+export const DynamicAddToListPopup = dynamic(
+  () => import(/* webpackChunkName: "AddToListPopup" */ 'components/popup/AddToListPopup'),
+  {
+    ssr: false,
+  }
+)

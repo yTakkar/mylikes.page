@@ -3,6 +3,7 @@ export enum PopupType {
   CHANGE_AVATAR = 'CHANGE_AVATAR',
   CREATE_LIST = 'CREATE_LIST',
   ADD_RECOMMENDATION = 'ADD_RECOMMENDATION',
+  ADD_TO_LIST = 'ADD_TO_LIST',
 }
 
 export type PopupParams = any

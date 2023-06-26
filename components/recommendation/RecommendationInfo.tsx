@@ -26,7 +26,7 @@ interface IRecommendationInfoProps {
   layout: RecommendationInfoLayoutType
   source: RecommendationInfoSourceType
   recommendationInfo: IRecommendationInfo
-  recommendationOwner: IUserInfo
+  recommendationOwner?: IUserInfo
   showAddToList: boolean
   list?: IListDetail
   onAddToList?: () => void
@@ -40,6 +40,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
   const [note, setNote] = useState(recommendationInfo.notes || '')
   const [addNote, setAddNote] = useState(false)
+
+  const sessionUser = isSessionUser(user, list?.owner || null)
 
   useEffect(() => {
     setNote(recommendationInfo.notes || '')
@@ -79,9 +81,16 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
 
     if (!!note) {
-      return <QuotesWrapper text={note} className="cursor-pointer" onClick={() => setAddNote(true)} allowEdit />
+      return (
+        <QuotesWrapper
+          text={note}
+          className="cursor-pointer"
+          onClick={() => setAddNote(true)}
+          allowEdit={sessionUser}
+        />
+      )
     } else {
-      if (isSessionUser(user, list?.owner || null)) {
+      if (sessionUser) {
         return (
           <div
             className="text-typo-paragraphLight inline-flex items-center border-b cursor-pointer"
@@ -118,7 +127,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             {recommendationInfo.title}
           </CoreLink>
         )}
-        <div className="text-typo-paragraphLight text-sm">by {recommendationOwner?.name}</div>
+        {recommendationOwner && <div className="text-typo-paragraphLight text-sm">by {recommendationOwner.name}</div>}
         <div className="text-sm mt-2">{renderNote()}</div>
 
         {showAddToList ? (

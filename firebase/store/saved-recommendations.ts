@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import firebaseStore from '.'
 import { IRecommendationInfo } from '../../interface/recommendation'
 
@@ -16,6 +16,15 @@ export const addSavedRecommendation = async (params: IRecommendationInfo): Promi
     type: params.type,
     ownerEmail: params.ownerEmail,
   })
+}
+
+export const updateSavedRecommendation = async (id: string, params: Partial<IRecommendationInfo>): Promise<null> => {
+  await updateDoc(doc(savedCollection, id), params as any)
+  return null
+}
+
+export const deleteSavedRecommendationById = async (id: string): Promise<void> => {
+  await deleteDoc(doc(savedCollection, id))
 }
 
 export const listSavedRecommendationsByEmail = async (userEmail: string): Promise<IRecommendationInfo[]> => {

@@ -1,19 +1,25 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
 import classNames from 'classnames'
 import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
 import { RECOMMENDATION_TYPE_LABEL_MAP, REGEX_MAP } from '../../constants/constants'
 import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
-import { CheckIcon } from '@heroicons/react/outline'
+import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
 import useOnEnter from '../../hooks/useOnEnter'
 import { handleValidation } from '../../utils/form'
 import CoreCheckbox from '../core/CoreCheckbox'
-import { addSavedRecommendation } from '../../firebase/store/saved-recommendations'
+import {
+  addSavedRecommendation,
+  deleteSavedRecommendationById,
+  updateSavedRecommendation,
+} from '../../firebase/store/saved-recommendations'
 import { nanoid } from 'nanoid'
 import ApplicationContext from '../ApplicationContext'
 import { toastError, toastSuccess } from '../Toaster'
 import { generateRecommendationImageUrl } from '../../utils/recommendation'
+import { IRecommendationInfo } from '../../interface/recommendation'
+import Alert from '../modal/Alert'
 
 enum FieldKeyType {
   URL = 'URL',
@@ -24,11 +30,12 @@ enum FieldKeyType {
 }
 
 interface IAddRecommendationFormProps {
+  recommendation?: IRecommendationInfo
   onSuccess?: () => void
 }
 
 const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
-  const { onSuccess } = props
+  const { recommendation, onSuccess } = props
 
   const applicationContext = useContext(ApplicationContext)
   const { user } = applicationContext
@@ -48,7 +55,22 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   const [fieldsWithError, setFieldsWithError] = useState<Record<FieldKeyType, boolean>>(defaultFieldsWithError)
   const [loading, toggleLoading] = useState(false)
 
+  const [showDeleteAlert, toggleDeleteAlert] = useState(false)
+  const [deleteLoading, toggleDeleteLoading] = useState(false)
+
   const formRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (recommendation) {
+      setFields({
+        [FieldKeyType.URL]: recommendation.url,
+        [FieldKeyType.TITLE]: recommendation.title,
+        [FieldKeyType.TYPE]: recommendation.type,
+        [FieldKeyType.NOTES]: recommendation.notes,
+        [FieldKeyType.IS_ADULT]: recommendation.isAdult,
+      })
+    }
+  }, [recommendation])
 
   const FIELD_VALIDATION_MAPPING = {
     [FieldKeyType.URL]: {
@@ -81,11 +103,59 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     },
   }
 
+  const isEditable = !!recommendation
+
   const updateField = (field: keyof typeof fields) => (value: string) => {
     setFields({
       ...fields,
       [field]: value,
     })
+  }
+
+  const handleAdd = async () => {
+    await addSavedRecommendation({
+      id: nanoid(),
+      url: fields.URL,
+      title: fields.TITLE,
+      imageUrl: generateRecommendationImageUrl(fields.URL),
+      isAdult: fields.IS_ADULT,
+      createdAt: new Date().getTime(),
+      notes: fields.NOTES,
+      type: fields.TYPE,
+      ownerEmail: user!.email,
+    })
+    onSuccess?.()
+    toastSuccess('Recommendation is saved!')
+  }
+
+  const handleUpdate = async () => {
+    await updateSavedRecommendation(recommendation!.id, {
+      url: fields.URL,
+      title: fields.TITLE,
+      imageUrl: generateRecommendationImageUrl(fields.URL),
+      isAdult: fields.IS_ADULT,
+      notes: fields.NOTES,
+      type: fields.TYPE,
+    })
+    onSuccess?.()
+    toastSuccess('Updated!')
+  }
+
+  const handleDelete = async () => {
+    if (deleteLoading) {
+      return null
+    }
+
+    toggleDeleteLoading(true)
+    try {
+      await deleteSavedRecommendationById(recommendation!.id)
+      toastSuccess('Recommendation deleted!')
+      onSuccess?.()
+    } catch (e) {
+      console.error('list:delete:error', e)
+      toastError('Failed to delete recommendation!')
+    }
+    toggleDeleteLoading(false)
   }
 
   const handleSubmit = () => {
@@ -96,19 +166,11 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     const onValidationSuccess = async () => {
       toggleLoading(true)
       try {
-        await addSavedRecommendation({
-          id: nanoid(),
-          url: fields.URL,
-          title: fields.TITLE,
-          imageUrl: generateRecommendationImageUrl(fields.URL),
-          isAdult: fields.IS_ADULT,
-          createdAt: new Date().getTime(),
-          notes: fields.NOTES,
-          type: fields.TYPE,
-          ownerEmail: user!.email,
-        })
-        onSuccess?.()
-        toastSuccess('Recommendation is saved!')
+        if (isEditable) {
+          await handleUpdate()
+        } else {
+          await handleAdd()
+        }
       } catch (e) {
         console.error('recommendation:add:error', e)
         toastError('Something went wrong! Please try again.')
@@ -130,85 +192,120 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   }))
 
   return (
-    <div ref={formRef}>
-      {/* <div className="user-input-group">
+    <div>
+      <div ref={formRef}>
+        {/* <div className="user-input-group">
         <div className="text-typo-paragraphLight text-sm">
           You can edit the recommendation at any time from the settings page.
         </div>
       </div> */}
 
-      <div className="user-input-group">
-        <div className="user-input-label">URL *</div>
-        <CoreTextInput
-          type={CoreTextInputType.TEXT}
-          placeholder="Eg. amazon.com/product/1234"
-          value={fields.URL}
-          setValue={updateField(FieldKeyType.URL)}
-          autoComplete="url"
-          autoFocus
-          inputClassName={classNames('user-input', {
-            'user-input-error': fieldsWithError.URL,
-          })}
-        />
+        <div className="user-input-group">
+          <div className="user-input-label">URL *</div>
+          <CoreTextInput
+            type={CoreTextInputType.TEXT}
+            placeholder="Eg. amazon.com/product/1234"
+            value={fields.URL}
+            setValue={updateField(FieldKeyType.URL)}
+            autoComplete="url"
+            autoFocus
+            inputClassName={classNames('user-input', {
+              'user-input-error': fieldsWithError.URL,
+            })}
+          />
+        </div>
+
+        <div className="user-input-group">
+          <div className="user-input-label">Title *</div>
+          <CoreTextInput
+            type={CoreTextInputType.TEXT}
+            placeholder="Eg. An old-school shirt I really like"
+            value={fields.TITLE}
+            setValue={updateField(FieldKeyType.TITLE)}
+            inputClassName={classNames('user-input', {
+              'user-input-error': fieldsWithError.TITLE,
+            })}
+          />
+        </div>
+
+        <div className="user-input-group ">
+          <div className="user-input-label">Type *</div>
+          <div className="text-typo-paragraphLight text-sm mb-2 -mt-1">What kind of recommendation is this?</div>
+          <CoreSelectInput
+            value={fields.TYPE}
+            onChange={updateField(FieldKeyType.TYPE)}
+            options={typeOptions}
+            className={classNames({
+              'user-input-error': fieldsWithError.TYPE,
+            })}
+          />
+        </div>
+
+        <div className="user-input-group">
+          <div className="user-input-label">Notes</div>
+          <CoreTextarea
+            value={fields.NOTES}
+            setValue={updateField(FieldKeyType.NOTES)}
+            placeholder="A note/review you want to attach"
+            className={classNames('user-input h-24', {
+              'user-input-error': fieldsWithError.NOTES,
+            })}
+          />
+        </div>
+
+        <div className="user-input-group">
+          <CoreCheckbox
+            id="primary"
+            onChange={updateField(FieldKeyType.IS_ADULT) as any}
+            checked={fields.IS_ADULT}
+            label="Does this recommendation contain adult content?"
+          />
+        </div>
+
+        <div className="user-input-group">
+          <CoreButton
+            label="Save Details"
+            size={CoreButtonSize.MEDIUM}
+            type={CoreButtonType.SOLID_PRIMARY}
+            loading={loading}
+            icon={CheckIcon}
+            onClick={handleSubmit}
+          />
+          {isEditable && (
+            <CoreButton
+              label="Delete"
+              size={CoreButtonSize.MEDIUM}
+              type={CoreButtonType.OUTLINE_SECONDARY}
+              onClick={() => {
+                toggleDeleteAlert(true)
+              }}
+              icon={TrashIcon}
+              className="ml-1"
+            />
+          )}
+        </div>
       </div>
 
-      <div className="user-input-group">
-        <div className="user-input-label">Title *</div>
-        <CoreTextInput
-          type={CoreTextInputType.TEXT}
-          placeholder="Eg. An old-school shirt I really like"
-          value={fields.TITLE}
-          setValue={updateField(FieldKeyType.TITLE)}
-          inputClassName={classNames('user-input', {
-            'user-input-error': fieldsWithError.TITLE,
-          })}
+      {showDeleteAlert ? (
+        <Alert
+          dismissModal={() => toggleDeleteAlert(false)}
+          title="Delete Confirmation"
+          subTitle="Are you sure you want to do this? You cannot undo this."
+          cta={{
+            primary: {
+              show: true,
+              label: 'Delete',
+              loading: deleteLoading,
+              onClick: handleDelete,
+            },
+            secondary: {
+              show: true,
+              label: 'Cancel',
+              onClick: () => toggleDeleteAlert(false),
+            },
+          }}
         />
-      </div>
-
-      <div className="user-input-group ">
-        <div className="user-input-label">Type *</div>
-        <div className="text-typo-paragraphLight text-sm mb-2 -mt-1">What kind of recommendation is this?</div>
-        <CoreSelectInput
-          value={fields.TYPE}
-          onChange={updateField(FieldKeyType.TYPE)}
-          options={typeOptions}
-          className={classNames({
-            'user-input-error': fieldsWithError.TYPE,
-          })}
-        />
-      </div>
-
-      <div className="user-input-group">
-        <div className="user-input-label">Notes</div>
-        <CoreTextarea
-          value={fields.NOTES}
-          setValue={updateField(FieldKeyType.NOTES)}
-          placeholder="A note/review you want to attach"
-          className={classNames('user-input h-24', {
-            'user-input-error': fieldsWithError.NOTES,
-          })}
-        />
-      </div>
-
-      <div className="user-input-group">
-        <CoreCheckbox
-          id="primary"
-          onChange={updateField(FieldKeyType.IS_ADULT) as any}
-          checked={fields.IS_ADULT}
-          label="Does this recommendation contain adult content?"
-        />
-      </div>
-
-      <div className="user-input-group">
-        <CoreButton
-          label="Save Details"
-          size={CoreButtonSize.MEDIUM}
-          type={CoreButtonType.SOLID_PRIMARY}
-          loading={loading}
-          icon={CheckIcon}
-          onClick={handleSubmit}
-        />
-      </div>
+      ) : null}
     </div>
   )
 }

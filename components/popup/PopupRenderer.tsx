@@ -4,6 +4,7 @@ import {
   DynamicAddToListPopup,
   DynamicChangeAvatarPopup,
   DynamicCreateListPopup,
+  DynamicEditRecommendationPopup,
   DynamicLoginPopup,
 } from '../dynamicComponents'
 import ApplicationContext from '../ApplicationContext'
@@ -18,6 +19,7 @@ function PopupRenderer() {
     [PopupType.CHANGE_AVATAR]: DynamicChangeAvatarPopup,
     [PopupType.CREATE_LIST]: DynamicCreateListPopup,
     [PopupType.ADD_RECOMMENDATION]: DynamicAddRecommendationPopup,
+    [PopupType.EDIT_RECOMMENDATION]: DynamicEditRecommendationPopup,
     [PopupType.ADD_TO_LIST]: DynamicAddToListPopup,
   }
 

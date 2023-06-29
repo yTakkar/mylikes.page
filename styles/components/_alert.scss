@@ -10,9 +10,10 @@
   @include desktop {
     @apply p-2;
     width: 500px !important;
-    top: 50%;
-    bottom: 50%;
-    transform: translateY(-50%);
+    top: 25%;
+    // top: 50%;
+    // bottom: 50%;
+    // transform: translateY(-50%);
     position: relative;
     margin-top: 0;
   }

@@ -4,7 +4,12 @@ import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
-import { AnnotationIcon, BookmarkIcon as BookmarkIconOutline, DocumentAddIcon } from '@heroicons/react/outline'
+import {
+  AnnotationIcon,
+  BookmarkIcon as BookmarkIconOutline,
+  DocumentAddIcon,
+  PencilAltIcon,
+} from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
 import { IListDetail } from '../../interface/list'
@@ -16,6 +21,7 @@ import { getProfilePageUrl } from '../../utils/routes'
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
   ADD = 'ADD',
+  MANAGE = 'MANAGE',
 }
 
 export enum RecommendationInfoLayoutType {
@@ -31,10 +37,12 @@ interface IRecommendationInfoProps {
   showAddToList: boolean
   list?: IListDetail
   onAddToList?: () => void
+  onManageClick?: () => void
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
-  const { layout, source, recommendationInfo, recommendationOwner, list, showAddToList, onAddToList } = props
+  const { layout, source, recommendationInfo, recommendationOwner, list, showAddToList, onAddToList, onManageClick } =
+    props
 
   const applicationContext = useContext(ApplicationContext)
   const { user } = applicationContext
@@ -59,7 +67,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
    */
 
   const renderNote = () => {
-    if (source === RecommendationInfoSourceType.ADD) {
+    if (source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE) {
       if (!note) {
         return null
       }
@@ -110,6 +118,9 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     if (source === RecommendationInfoSourceType.ADD) {
       return DocumentAddIcon
     }
+    if (source === RecommendationInfoSourceType.MANAGE) {
+      return PencilAltIcon
+    }
     return BookmarkIconOutline
   }
 
@@ -148,6 +159,18 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               size={CoreButtonSize.SMALL}
               type={CoreButtonType.SOLID_PRIMARY}
               onClick={onAddToList}
+            />
+          </div>
+        ) : null}
+
+        {source === RecommendationInfoSourceType.MANAGE ? (
+          <div className="flex items-center justify-end mt-2 lg:mt-3">
+            <CoreButton
+              label={'Edit'}
+              icon={getCTAIcon()}
+              size={CoreButtonSize.SMALL}
+              type={CoreButtonType.SOLID_PRIMARY}
+              onClick={onManageClick}
             />
           </div>
         ) : null}

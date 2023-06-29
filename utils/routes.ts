@@ -39,3 +39,7 @@ export const get404PageUrl = () => {
 export const getListPageUrl = (listId: string) => {
   return `/list/${listId}`
 }
+
+export const getSavedRecommendationsPageUrl = () => {
+  return `/saved-recommendations`
+}

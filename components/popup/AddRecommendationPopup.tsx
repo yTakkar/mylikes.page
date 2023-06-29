@@ -17,6 +17,8 @@ import Loader, { LoaderType } from '../loader/Loader'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
+import CoreLink from '../core/CoreLink'
+import { getSavedRecommendationsPageUrl } from '../../utils/routes'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -84,12 +86,14 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
       <div className="saved">
         <div className="flex items-center">
           {/* <div className="font-medium font-primary-medium">Choose from the saved list</div> */}
-          <div className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
+          <CoreLink
+            url={getSavedRecommendationsPageUrl()}
+            className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
             <div className="flex">
               <CogIcon className="w-4 mr-1" />
               Manage
             </div>
-          </div>
+          </CoreLink>
           <div
             className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium ml-2"
             onClick={() => setPanel('add')}>

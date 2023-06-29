@@ -123,6 +123,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       createdAt: new Date().getTime(),
       ownerEmail: user!.email,
       recommendations: [],
+      clonedListId: null,
     })
     toastSuccess('List created!')
     vibrate()

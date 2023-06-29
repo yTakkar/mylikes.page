@@ -4,8 +4,9 @@ import {
   ShieldCheckIcon,
   LogoutIcon,
   PhoneIcon,
-  UserCircleIcon,
   LoginIcon,
+  BookmarkIcon,
+  HomeIcon,
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
@@ -21,6 +22,7 @@ import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
+import { PopupType } from '../interface/popup'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -32,53 +34,56 @@ const MorePage: NextPage<IProps> = () => {
 
   const router = useRouter()
 
-  // TODO:
   const LINKS = [
     {
-      label: 'Account',
-      subTitle: 'View your account details',
+      label: 'Home',
+      url: getHomePageUrl(),
+      icon: HomeIcon,
+      show: true,
+    },
+    {
+      label: 'Profile',
+      subTitle: 'Manage your profile and lists',
       url: getHomePageUrl(),
       icon: UserIcon,
       show: !!user,
     },
     {
-      label: 'Login',
-      subTitle: 'Login to sync your data',
+      label: 'Saved Recommendations',
       url: getHomePageUrl(),
-      icon: LoginIcon,
-      show: !user,
+      icon: BookmarkIcon,
+      show: !!user,
     },
     {
-      label: 'Signup',
-      subTitle: 'Create your account',
-      url: getHomePageUrl(),
-      icon: UserCircleIcon,
+      label: 'Login',
+      subTitle: 'Login to sync your data',
+      url: null,
+      icon: LoginIcon,
       show: !user,
+      onClick: () => {
+        methods.togglePopup(PopupType.LOGIN, {})
+      },
     },
     {
       label: 'Terms & Conditions',
-      subTitle: '',
       url: getTnCPageUrl(),
       icon: ShieldCheckIcon,
       show: true,
     },
     {
       label: 'Privacy Policy',
-      subTitle: '',
       url: getPrivacyPageUrl(),
       icon: DocumentTextIcon,
       show: true,
     },
     {
       label: 'Contact Us',
-      subTitle: '',
       url: getContactPageUrl(),
       icon: PhoneIcon,
       show: true,
     },
     {
       label: 'Logout',
-      subTitle: '',
       url: null,
       icon: LogoutIcon,
       show: !!user,

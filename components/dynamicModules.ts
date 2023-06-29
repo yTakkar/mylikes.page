@@ -1,3 +1,5 @@
+export const dynamicNprogress = () => import(/* webpackChunkName: "Nprogress" */ 'nprogress')
+
 export const dynamicSentry = () => import(/* webpackChunkName: "sentry" */ '@sentry/react').then(mod => mod.default)
 
 export const dynamicSentryTracingIntegrations = () =>

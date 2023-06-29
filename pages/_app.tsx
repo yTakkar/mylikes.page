@@ -2,7 +2,7 @@ import React from 'react'
 import 'styles/styles.scss'
 import { NextPage } from 'next'
 import ApplicationContext from '../components/ApplicationContext'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import appConfig from '../config/appConfig'
 import useApplicationContext from '../hooks/useApplicationContext'
 import classnames from 'classnames'
@@ -16,6 +16,19 @@ import Toaster from '../components/Toaster'
 import Footer from '../components/footer/Footer'
 import OrientationLock from '../components/OrientationLock'
 import PopupRenderer from '../components/popup/PopupRenderer'
+import { dynamicNprogress } from '../components/dynamicModules'
+
+Router.events.on('routeChangeStart', () => {
+  dynamicNprogress().then(mod => mod.start())
+})
+
+Router.events.on('routeChangeComplete', () => {
+  dynamicNprogress().then(mod => mod.done())
+})
+
+Router.events.on('routeChangeError', () => {
+  dynamicNprogress().then(mod => mod.done())
+})
 
 export interface IPageLayoutData {
   header: {

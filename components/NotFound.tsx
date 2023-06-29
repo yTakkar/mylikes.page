@@ -13,7 +13,6 @@ const NotFound: React.FC<INotFoundProps> = () => {
     device: { isMobile },
   } = applicationContext
 
-  // TODO: Update content
   return (
     <div className="flex flex-col items-center justify-center mt-20">
       <CoreImage
@@ -25,16 +24,10 @@ const NotFound: React.FC<INotFoundProps> = () => {
       <div className="text-center text-lg lg:text-xl mt-5 w-[320px] md:w-auto">{`We couldn't find the page you were looking for.`}</div>
       <div className="text-center mt-2 lg:mt-3">
         <CoreButton
-          label="View products"
+          label="Go to Home"
           size={isMobile ? CoreButtonSize.MEDIUM : CoreButtonSize.LARGE}
           type={CoreButtonType.OUTLINE_SECONDARY}
-          url={getHomePageUrl()} // TODO:
-        />
-        <CoreButton
-          label="Catalogues"
-          size={isMobile ? CoreButtonSize.MEDIUM : CoreButtonSize.LARGE}
-          type={CoreButtonType.OUTLINE_SECONDARY}
-          url={getHomePageUrl()} // TODO:
+          url={getHomePageUrl()}
         />
       </div>
     </div>

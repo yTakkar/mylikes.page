@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IGlobalLayoutProps } from '../_app'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -13,20 +13,23 @@ import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
 } from '../../components/recommendation/RecommendationInfo'
-import { getListById, getListProfileInfoMap, listLists } from '../../firebase/store/list'
+import { addList, getListById, getListProfileInfoMap, listLists } from '../../firebase/store/list'
 import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME } from '../../constants/constants'
-import { get404PageUrl, getProfilePageUrl } from '../../utils/routes'
-import { pluralize } from '../../utils/common'
+import { get404PageUrl, getListPageUrl, getProfilePageUrl } from '../../utils/routes'
+import { pluralize, vibrate } from '../../utils/common'
 import NoContent from '../../components/NoContent'
 import { CoreButtonSize, CoreButtonType } from '../../components/core/CoreButton'
 import ApplicationContext from '../../components/ApplicationContext'
 import { PopupType } from '../../interface/popup'
 import Loader, { LoaderType } from '../../components/loader/Loader'
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { DuplicateIcon, LockClosedIcon } from '@heroicons/react/solid'
 import { IUserInfo } from '../../interface/user'
 import { isSessionUser } from '../../utils/user'
 import NotFound from '../../components/NotFound'
 import CoreLink from '../../components/core/CoreLink'
+import { generateListId } from '../../utils/list'
+import { toastSuccess } from '../../components/Toaster'
+import Tooltip from '../../components/Tooltip'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -52,6 +55,12 @@ const List: NextPage<IProps> = (props: IProps) => {
   const [listDetail, setListDetail] = useState(initialListDetail)
   const [loading, toggleLoading] = useState(false)
 
+  useEffect(() => {
+    if (initialListDetail) {
+      setListDetail(initialListDetail)
+    }
+  }, [initialListDetail])
+
   const hasRecommendations = listDetail.recommendations.length > 0
 
   const refetchListDetail = async () => {
@@ -72,9 +81,23 @@ const List: NextPage<IProps> = (props: IProps) => {
     })
   }
 
-  // TODO:
   const handleAddToLibrary = () => {
-    console.log('Add to library')
+    const process = async () => {
+      const id = generateListId(listDetail.name)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id: _id, owner: _owner, ...rest } = listDetail
+      await addList({
+        id,
+        ...rest,
+        ownerEmail: user!.email,
+        clonedListId: listDetail.id,
+      })
+      toastSuccess('List added to your library!')
+      vibrate()
+      router.push(getListPageUrl(id))
+    }
+
+    process()
   }
 
   const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
@@ -86,6 +109,7 @@ const List: NextPage<IProps> = (props: IProps) => {
     }
   }
 
+  // TODO: One more button here???
   const actions = [
     {
       label: 'List Settings',
@@ -143,8 +167,23 @@ const List: NextPage<IProps> = (props: IProps) => {
             by
             <CoreLink url={getProfilePageUrl(listDetail.owner)} className="ml-1">
               {listDetail.owner.name} {sessionUser ? '(You)' : null}
-            </CoreLink>{' '}
-            {listDetail.visibility === ListVisibilityType.PRIVATE && <LockClosedIcon className="w-4 ml-1" />}
+            </CoreLink>
+            {listDetail.visibility === ListVisibilityType.PRIVATE && (
+              <Tooltip content="This is a private list.">
+                <span>
+                  <LockClosedIcon className="w-5 ml-2" />
+                </span>
+              </Tooltip>
+            )}
+            {listDetail.clonedListId && (
+              <Tooltip content={`This is a cloned list. Click to view.`}>
+                <span>
+                  <CoreLink url={getListPageUrl(listDetail.clonedListId!)}>
+                    <DuplicateIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />
+                  </CoreLink>
+                </span>
+              </Tooltip>
+            )}
           </div>
         </div>
 

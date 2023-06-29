@@ -14,6 +14,7 @@ export interface IListDetail {
   createdAt: number | null // date mills
   visibility: ListVisibilityType
   recommendations: IListRecommendationInfo[]
+  clonedListId: string | null
 }
 
 export interface IListDetailAddParams {
@@ -24,6 +25,7 @@ export interface IListDetailAddParams {
   createdAt: number | null // date mills
   visibility: ListVisibilityType
   recommendations: IListRecommendationInfo[]
+  clonedListId: string | null
 }
 
 export interface IListListsParams {

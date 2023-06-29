@@ -28,6 +28,7 @@ export const addList = async (listParams: IListDetailAddParams): Promise<void> =
     createdAt: listParams.createdAt,
     visibility: listParams.visibility,
     recommendations: listParams.recommendations,
+    clonedListId: listParams.clonedListId,
   })
 }
 

@@ -11,6 +11,7 @@ import { IListDetail } from '../../interface/list'
 import ApplicationContext from '../ApplicationContext'
 import { isSessionUser } from '../../utils/user'
 import AddRecommendationNote from './AddRecommendationNote'
+import { getProfilePageUrl } from '../../utils/routes'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -127,7 +128,16 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             {recommendationInfo.title}
           </CoreLink>
         )}
-        {recommendationOwner && <div className="text-typo-paragraphLight text-sm">by {recommendationOwner.name}</div>}
+        {recommendationOwner && (
+          <div className="text-typo-paragraphLight text-sm">
+            by{' '}
+            <CoreLink
+              url={getProfilePageUrl(recommendationOwner)}
+              className="text-typo-paragraphLight text-sm hover:underline">
+              {recommendationOwner.name}
+            </CoreLink>
+          </div>
+        )}
         <div className="text-sm mt-2">{renderNote()}</div>
 
         {showAddToList ? (

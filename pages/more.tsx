@@ -16,7 +16,13 @@ import classnames from 'classnames'
 import PageContainer from '../components/PageContainer'
 import CoreLink from '../components/core/CoreLink'
 import { toastSuccess } from '../components/Toaster'
-import { getContactPageUrl, getHomePageUrl, getPrivacyPageUrl, getTnCPageUrl } from '../utils/routes'
+import {
+  getContactPageUrl,
+  getHomePageUrl,
+  getPrivacyPageUrl,
+  getSavedRecommendationsPageUrl,
+  getTnCPageUrl,
+} from '../utils/routes'
 import { prepareHomePageSeo } from '../utils/seo/pages/home'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
@@ -50,7 +56,7 @@ const MorePage: NextPage<IProps> = () => {
     },
     {
       label: 'Saved Recommendations',
-      url: getHomePageUrl(),
+      url: getSavedRecommendationsPageUrl(),
       icon: BookmarkIcon,
       show: !!user,
     },

@@ -8,6 +8,7 @@ import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/popup'
 import { IUserInfo } from '../../interface/user'
 import { isSessionUser } from '../../utils/user'
+import { pluralize } from '../../utils/common'
 
 interface IListInfoProps {
   lists: IListDetail[]
@@ -59,7 +60,9 @@ const ListInfos: React.FC<IListInfoProps> = props => {
   return (
     <div>
       {sessionUser && (
-        <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="font-semibold">Showing {pluralize('list', listsToShow.length)}</div>
+
           <div
             className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
             onClick={handleNewList}>

@@ -3,11 +3,13 @@ import {
   MenuIcon as MenuIconSolid,
   PlusIcon as PlusIconSolid,
   LoginIcon as LoginIconSolid,
+  DownloadIcon as DownloadIconSolid,
 } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
   PlusIcon as PlusIconOutline,
   LoginIcon as LoginIconOutline,
+  DownloadIcon as DownloadIconOutline,
 } from '@heroicons/react/outline'
 import CoreLink from '../core/CoreLink'
 import usePWAInstall from '../../hooks/usePWAInstall'
@@ -32,15 +34,16 @@ const Header: React.FC<INavbarProps> = props => {
   const pwaInstallLink: IHeaderLink = {
     label: 'Install',
     url: null,
-    iconComponent: PlusIconOutline,
-    activeIconComponent: PlusIconSolid,
-    iconClassName: 'animation-shakeX w-[28px]',
+    iconComponent: DownloadIconOutline,
+    activeIconComponent: DownloadIconSolid,
+    iconClassName: 'animation-shakeX',
     count: null,
     onClick: e => {
       e.preventDefault()
       showPWAInstallPrompt()
     },
     show: true,
+    tooltipContent: 'Install the app',
   }
 
   const NAV_LINKS: IHeaderLink[] = [

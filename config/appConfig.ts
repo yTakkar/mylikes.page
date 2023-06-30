@@ -85,8 +85,8 @@ const appConfig = {
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
       404: 15 * 60,
       ERROR: 15 * 60,
-      PROFILE: 5 * 60, // TODO: think?
-      LIST: 5 * 60, // TODO: think?
+      PROFILE: 10 * 60,
+      LIST: 10 * 60,
     },
     initialPageBuildCount: {
       PROFILE: 100,

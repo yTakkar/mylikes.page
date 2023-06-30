@@ -22,7 +22,7 @@ import { CoreButtonSize, CoreButtonType } from '../../components/core/CoreButton
 import ApplicationContext from '../../components/ApplicationContext'
 import { PopupType } from '../../interface/popup'
 import Loader, { LoaderType } from '../../components/loader/Loader'
-import { DuplicateIcon, LockClosedIcon } from '@heroicons/react/solid'
+import { LockClosedIcon, ReplyIcon } from '@heroicons/react/solid'
 import { IUserInfo } from '../../interface/user'
 import { isSessionUser } from '../../utils/user'
 import NotFound from '../../components/NotFound'
@@ -179,7 +179,7 @@ const List: NextPage<IProps> = (props: IProps) => {
               <Tooltip content={`This is a cloned list. Click to view.`}>
                 <span>
                   <CoreLink url={getListPageUrl(listDetail.clonedListId!)}>
-                    <DuplicateIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />
+                    <ReplyIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />
                   </CoreLink>
                 </span>
               </Tooltip>

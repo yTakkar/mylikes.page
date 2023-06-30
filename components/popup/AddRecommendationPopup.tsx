@@ -88,6 +88,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
           {/* <div className="font-medium font-primary-medium">Choose from the saved list</div> */}
           <CoreLink
             url={getSavedRecommendationsPageUrl()}
+            onClick={onClose}
             className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium">
             <div className="flex">
               <CogIcon className="w-4 mr-1" />

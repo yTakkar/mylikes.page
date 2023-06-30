@@ -6,11 +6,16 @@ import 'tippy.js/dist/svg-arrow.css' // optional
 import 'tippy.js/dist/backdrop.css' // optional
 
 interface ITooltipProps extends PropsWithChildren {
-  content: string
+  content: React.ReactNode
 }
 
 const Tooltip: React.FC<ITooltipProps> = props => {
   const { content, children } = props
+
+  if (!content) {
+    return <>{children}</>
+  }
+
   return <Tippy content={content}>{children as any}</Tippy>
 }
 

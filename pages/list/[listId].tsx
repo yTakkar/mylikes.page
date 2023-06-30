@@ -13,7 +13,7 @@ import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
 } from '../../components/recommendation/RecommendationInfo'
-import { addList, getListById, getListProfileInfoMap, listLists } from '../../firebase/store/list'
+import { addList, getListById, getListProfileInfoMap, listLists, updateList } from '../../firebase/store/list'
 import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME } from '../../constants/constants'
 import { get404PageUrl, getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import { pluralize, vibrate } from '../../utils/common'
@@ -94,7 +94,7 @@ const List: NextPage<IProps> = (props: IProps) => {
       })
       toastSuccess('List added to your library!')
       vibrate()
-      router.push(getListPageUrl(id))
+      router.push(getProfilePageUrl(user!))
     }
 
     process()
@@ -107,6 +107,15 @@ const List: NextPage<IProps> = (props: IProps) => {
       })
       return
     }
+  }
+
+  const onRemoveFromList = async (listRecommendation: IListRecommendationInfo) => {
+    const updatedList = listDetail.recommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
+    await updateList(listDetail.id, {
+      recommendations: updatedList,
+    })
+    toastSuccess('Removed from list!')
+    refetchListDetail()
   }
 
   // TODO: One more button here???
@@ -225,6 +234,8 @@ const List: NextPage<IProps> = (props: IProps) => {
                 list={listDetail}
                 showAddToList={!sessionUser}
                 onAddToList={() => handleAddToList(recommendationInfo)}
+                showRemoveFromList={sessionUser}
+                onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
               />
             ))
           ) : (

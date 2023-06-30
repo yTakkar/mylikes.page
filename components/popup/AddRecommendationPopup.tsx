@@ -147,6 +147,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         <AddRecommendationForm
           onSuccess={() => {
             setPanel('saved')
+            fetchRecommendations()
           }}
         />
       </div>

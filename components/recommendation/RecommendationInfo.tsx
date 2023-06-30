@@ -9,6 +9,9 @@ import {
   BookmarkIcon as BookmarkIconOutline,
   DocumentAddIcon,
   PencilAltIcon,
+  PlusIcon,
+  TrashIcon,
+  XIcon,
 } from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
@@ -17,6 +20,9 @@ import ApplicationContext from '../ApplicationContext'
 import { isSessionUser } from '../../utils/user'
 import AddRecommendationNote from './AddRecommendationNote'
 import { getProfilePageUrl } from '../../utils/routes'
+import classNames from 'classnames'
+import Tooltip from '../Tooltip'
+import Alert from '../modal/Alert'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -34,21 +40,39 @@ interface IRecommendationInfoProps {
   source: RecommendationInfoSourceType
   recommendationInfo: IRecommendationInfo
   recommendationOwner?: IUserInfo
-  showAddToList: boolean
   list?: IListDetail
+  showAddToList?: boolean
   onAddToList?: () => void
   onManageClick?: () => void
+  showRemoveFromList?: boolean
+  onRemoveFromList?: () => Promise<void>
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
-  const { layout, source, recommendationInfo, recommendationOwner, list, showAddToList, onAddToList, onManageClick } =
-    props
+  const {
+    layout,
+    source,
+    recommendationInfo,
+    recommendationOwner,
+    list,
+    showAddToList = false,
+    onAddToList,
+    onManageClick,
+    showRemoveFromList = false,
+    onRemoveFromList,
+  } = props
 
   const applicationContext = useContext(ApplicationContext)
-  const { user } = applicationContext
+  const {
+    user,
+    device: { isDesktop },
+  } = applicationContext
 
   const [note, setNote] = useState(recommendationInfo.notes || '')
   const [addNote, setAddNote] = useState(false)
+
+  const [showRemoveAlert, toggleRemoveAlert] = useState(false)
+  const [removeLoading, toggleRemoveLoading] = useState(false)
 
   const sessionUser = isSessionUser(user, list?.owner || null)
 
@@ -114,68 +138,116 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
   }
 
-  const getCTAIcon = () => {
-    if (source === RecommendationInfoSourceType.ADD) {
-      return DocumentAddIcon
-    }
-    if (source === RecommendationInfoSourceType.MANAGE) {
-      return PencilAltIcon
-    }
-    return BookmarkIconOutline
+  const handleRemove = () => {
+    toggleRemoveLoading(true)
+    onRemoveFromList!()
+      .then(() => {
+        toggleRemoveAlert(false)
+      })
+      .finally(() => {
+        toggleRemoveLoading(false)
+      })
   }
 
+  const showCtaContainer = [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(
+    v => !!v
+  )
+
   return (
-    <div className="flex items-start mb-6">
-      <CoreImage
-        url={recommendationInfo.imageUrl}
-        alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
-        className="w-20 h-20 shadow-listInfoImage"
-      />
-      <div className="ml-3 flex-grow">
-        {source === RecommendationInfoSourceType.ADD ? (
-          <span className="font-medium font-primary-medium">{recommendationInfo.title}</span>
-        ) : (
-          <CoreLink url={recommendationInfo.url} isExternal className="font-medium font-primary-medium">
-            {recommendationInfo.title}
-          </CoreLink>
-        )}
-        {recommendationOwner && (
-          <div className="text-typo-paragraphLight text-sm">
-            by{' '}
-            <CoreLink
-              url={getProfilePageUrl(recommendationOwner)}
-              className="text-typo-paragraphLight text-sm hover:underline">
-              {recommendationOwner.name}
-            </CoreLink>
+    <>
+      <div className="flex items-start mb-6 relative">
+        <CoreImage
+          url={recommendationInfo.imageUrl}
+          alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
+          className="w-20 h-20 shadow-listInfoImage"
+        />
+        <div className="ml-3 flex-grow">
+          <div
+            className={classNames({
+              'block max-w-[87%]': source === RecommendationInfoSourceType.LIST && isDesktop,
+            })}>
+            {source === RecommendationInfoSourceType.ADD ? (
+              <span className="font-medium font-primary-medium">{recommendationInfo.title}</span>
+            ) : (
+              <CoreLink url={recommendationInfo.url} isExternal className="font-medium font-primary-medium">
+                {recommendationInfo.title}
+              </CoreLink>
+            )}
           </div>
-        )}
-        <div className="text-sm mt-2">{renderNote()}</div>
+          {recommendationOwner && (
+            <div className="text-typo-paragraphLight text-sm">
+              by{' '}
+              <CoreLink
+                url={getProfilePageUrl(recommendationOwner)}
+                className="text-typo-paragraphLight text-sm hover:underline">
+                {recommendationOwner.name}
+              </CoreLink>
+            </div>
+          )}
+          <div className="text-sm mt-2">{renderNote()}</div>
 
-        {showAddToList ? (
-          <div className="flex items-center justify-end mt-2 lg:mt-3">
-            <CoreButton
-              label={'Add to list'}
-              icon={getCTAIcon()}
-              size={CoreButtonSize.SMALL}
-              type={CoreButtonType.SOLID_PRIMARY}
-              onClick={onAddToList}
-            />
-          </div>
-        ) : null}
-
-        {source === RecommendationInfoSourceType.MANAGE ? (
-          <div className="flex items-center justify-end mt-2 lg:mt-3">
-            <CoreButton
-              label={'Edit'}
-              icon={getCTAIcon()}
-              size={CoreButtonSize.SMALL}
-              type={CoreButtonType.SOLID_PRIMARY}
-              onClick={onManageClick}
-            />
-          </div>
-        ) : null}
+          {showCtaContainer && (
+            <div
+              className={classNames('flex items-center justify-end mt-2', {
+                'mt-0 absolute right-1 top-1': source === RecommendationInfoSourceType.LIST && isDesktop,
+              })}>
+              {showAddToList ? (
+                <CoreButton
+                  label={'Add to list'}
+                  icon={PlusIcon}
+                  size={CoreButtonSize.SMALL}
+                  type={CoreButtonType.SOLID_PRIMARY}
+                  onClick={onAddToList}
+                />
+              ) : null}
+              {showRemoveFromList ? (
+                <Tooltip content="Remove from list">
+                  <span>
+                    <CoreButton
+                      label={isDesktop ? null : 'Remove'}
+                      icon={XIcon}
+                      size={CoreButtonSize.SMALL}
+                      type={CoreButtonType.OUTLINE_SECONDARY}
+                      onClick={() => toggleRemoveAlert(true)}
+                    />
+                  </span>
+                </Tooltip>
+              ) : null}
+              {source === RecommendationInfoSourceType.MANAGE ? (
+                <CoreButton
+                  label={'Edit'}
+                  icon={PencilAltIcon}
+                  size={CoreButtonSize.SMALL}
+                  type={CoreButtonType.SOLID_PRIMARY}
+                  onClick={onManageClick}
+                />
+              ) : null}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      {showRemoveAlert ? (
+        <Alert
+          dismissModal={() => toggleRemoveAlert(false)}
+          title="Remove Confirmation"
+          subTitle="Are you sure you want to do this? You cannot undo this."
+          cta={{
+            primary: {
+              show: true,
+              label: 'Remove',
+              loading: removeLoading,
+              onClick: handleRemove,
+            },
+            secondary: {
+              show: true,
+              label: 'Cancel',
+              onClick: () => toggleRemoveAlert(false),
+            },
+          }}
+        />
+      ) : null}
+    </>
   )
 }
 

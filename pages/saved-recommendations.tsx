@@ -96,7 +96,6 @@ const Home: NextPage<IProps> = () => {
                 source={RecommendationInfoSourceType.MANAGE}
                 recommendationInfo={recommendationInfo}
                 recommendationOwner={user!}
-                showAddToList={false}
                 onManageClick={() => handleManageClick(recommendationInfo)}
               />
             )

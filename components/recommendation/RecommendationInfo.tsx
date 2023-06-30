@@ -4,15 +4,7 @@ import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
-import {
-  AnnotationIcon,
-  BookmarkIcon as BookmarkIconOutline,
-  DocumentAddIcon,
-  PencilAltIcon,
-  PlusIcon,
-  TrashIcon,
-  XIcon,
-} from '@heroicons/react/outline'
+import { AnnotationIcon, PencilAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
 import { IListDetail } from '../../interface/list'
@@ -23,6 +15,7 @@ import { getProfilePageUrl } from '../../utils/routes'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
+import { ExclamationIcon } from '@heroicons/react/solid'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -87,7 +80,6 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   // TODO:
   /**
    * a way to show type
-   * is 18+?
    */
 
   const renderNote = () => {
@@ -156,11 +148,21 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   return (
     <>
       <div className="flex items-start mb-6 relative">
-        <CoreImage
-          url={recommendationInfo.imageUrl}
-          alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
-          className="w-20 h-20 shadow-listInfoImage"
-        />
+        <div className="relative">
+          <CoreImage
+            url={recommendationInfo.imageUrl}
+            alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
+            className={classNames('w-20 h-20 shadow-listInfoImage', {
+              'blur-sm': recommendationInfo.isAdult,
+            })}
+          />
+          {recommendationInfo.isAdult && (
+            <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
+              <ExclamationIcon className="w-4 mr-1 font-medium font-primary-medium" />{' '}
+              <span className="text-xs">NSFW</span>
+            </div>
+          )}
+        </div>
         <div className="ml-3 flex-grow">
           <div
             className={classNames({

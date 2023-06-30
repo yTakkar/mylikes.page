@@ -12,7 +12,7 @@ const PreconnectUrls = () => (
   <>
     {/* Fonts preloading */}
     {/* Next.js has fonts optimization strategy built-in but only for Google web-fonts */}
-    <link
+    {/* <link
       rel="preload"
       href={prepareAssetUrl(`/fonts/BentonSans/BentonSans-Regular/BentonSans-Regular.woff`)}
       as="font"
@@ -30,7 +30,7 @@ const PreconnectUrls = () => (
       as="font"
       type="font/woff"
     />
-    <link rel="preload" href={prepareAssetUrl(`/fonts/domaine/domaine-bold.woff`)} as="font" type="font/woff" />
+    <link rel="preload" href={prepareAssetUrl(`/fonts/domaine/domaine-bold.woff`)} as="font" type="font/woff" /> */}
 
     {/* <link rel="preconnect" href={appConfig.global.apiBaseUrl} crossOrigin="anonymous" /> */}
   </>

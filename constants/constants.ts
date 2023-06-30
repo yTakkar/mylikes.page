@@ -98,3 +98,11 @@ export const RECOMMENDATION_TYPE_LABEL_MAP = {
   [RecommendationType.MUSIC]: 'Music',
   [RecommendationType.OTHER]: 'Other',
 }
+
+export const RECOMMENDATION_TYPE_DESCRIPTION_MAP = {
+  [RecommendationType.PRODUCT]: 'This is an online product recommendation',
+  [RecommendationType.BLOG]: 'This is a blog recommendation',
+  [RecommendationType.VIDEO]: 'This is a video recommendation',
+  [RecommendationType.MUSIC]: 'This is a music recommendation',
+  [RecommendationType.OTHER]: '',
+}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { IRecommendationInfo } from '../../interface/recommendation'
+import { IRecommendationInfo, RecommendationType } from '../../interface/recommendation'
 import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
@@ -15,7 +15,14 @@ import { getProfilePageUrl } from '../../utils/routes'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
-import { ExclamationIcon } from '@heroicons/react/solid'
+import {
+  DocumentTextIcon,
+  ExclamationIcon,
+  MusicNoteIcon,
+  ShoppingBagIcon,
+  VideoCameraIcon,
+} from '@heroicons/react/solid'
+import { RECOMMENDATION_TYPE_DESCRIPTION_MAP } from '../../constants/constants'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -77,10 +84,20 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return null
   }
 
-  // TODO:
-  /**
-   * a way to show type
-   */
+  const handleRemove = () => {
+    toggleRemoveLoading(true)
+    onRemoveFromList!()
+      .then(() => {
+        toggleRemoveAlert(false)
+      })
+      .finally(() => {
+        toggleRemoveLoading(false)
+      })
+  }
+
+  const showCtaContainer = [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(
+    v => !!v
+  )
 
   const renderNote = () => {
     if (source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE) {
@@ -130,20 +147,22 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
   }
 
-  const handleRemove = () => {
-    toggleRemoveLoading(true)
-    onRemoveFromList!()
-      .then(() => {
-        toggleRemoveAlert(false)
-      })
-      .finally(() => {
-        toggleRemoveLoading(false)
-      })
+  const renderTypeIcon = () => {
+    const className = 'w-4'
+    if (recommendationInfo.type === RecommendationType.BLOG) {
+      return <DocumentTextIcon className={className} />
+    }
+    if (recommendationInfo.type === RecommendationType.MUSIC) {
+      return <MusicNoteIcon className={className} />
+    }
+    if (recommendationInfo.type === RecommendationType.VIDEO) {
+      return <VideoCameraIcon className={className} />
+    }
+    if (recommendationInfo.type === RecommendationType.PRODUCT) {
+      return <ShoppingBagIcon className={className} />
+    }
+    return null
   }
-
-  const showCtaContainer = [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(
-    v => !!v
-  )
 
   return (
     <>
@@ -176,16 +195,28 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               </CoreLink>
             )}
           </div>
-          {recommendationOwner && (
-            <div className="text-typo-paragraphLight text-sm">
-              by{' '}
-              <CoreLink
-                url={getProfilePageUrl(recommendationOwner)}
-                className="text-typo-paragraphLight text-sm hover:underline">
-                {recommendationOwner.name}
-              </CoreLink>
-            </div>
-          )}
+
+          <div className="text-typo-paragraphLight text-sm flex items-center">
+            {recommendationOwner && (
+              <span>
+                by{' '}
+                <CoreLink
+                  url={getProfilePageUrl(recommendationOwner)}
+                  className="text-typo-paragraphLight text-sm hover:underline">
+                  {recommendationOwner.name}
+                </CoreLink>
+              </span>
+            )}
+            {recommendationInfo.type !== RecommendationType.OTHER && (
+              <>
+                &nbsp;•&nbsp;
+                <Tooltip content={RECOMMENDATION_TYPE_DESCRIPTION_MAP[recommendationInfo.type]}>
+                  <span>{renderTypeIcon()}</span>
+                </Tooltip>
+              </>
+            )}
+          </div>
+
           <div className="text-sm mt-2">{renderNote()}</div>
 
           {showCtaContainer && (

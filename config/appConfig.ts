@@ -18,6 +18,9 @@ const appConfig = {
     avatarsBaseUrl: process.env.ENV_AVATARS_BASE_URL,
     // apiResponseTimeout: 5 * 1000,
   },
+  cache: {
+    revalidateCacheKey: process.env.ENV_REVALIDATE_CACHE_KEY,
+  },
   seo: {
     facebook: {
       pageId: process.env.ENV_SEO_FACEBOOK_PAGE_ID,

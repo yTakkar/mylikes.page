@@ -2,11 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface IQuery {
   secret: string
-  urls: string[]
+  urls: string
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { secret, urls } = req.query as unknown as IQuery
+  const { secret, urls: urlsString } = req.query as unknown as IQuery
+  const urls = JSON.parse(urlsString)
 
   // Check for secret to confirm this is a valid request
   if (secret !== process.env.ENV_REVALIDATE_CACHE_KEY) {

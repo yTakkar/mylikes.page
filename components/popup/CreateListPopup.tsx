@@ -17,6 +17,7 @@ import { vibrate } from '../../utils/common'
 import { useRouter } from 'next/router'
 import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import Alert from '../modal/Alert'
+import { revalidateUrls } from '../../utils/revalidate'
 
 enum FieldKeyType {
   NAME = 'NAME',
@@ -110,6 +111,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       description: fields.DESCRIPTION,
       visibility: fields.VISIBILITY as ListVisibilityType,
     })
+    await revalidateUrls([getProfilePageUrl(listDetail!.owner), getListPageUrl(listDetail!.id)])
     toastSuccess('List settings updated!')
   }
 
@@ -125,6 +127,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       recommendations: [],
       clonedListId: null,
     })
+    await revalidateUrls([getProfilePageUrl(listDetail!.owner)])
     toastSuccess('List created!')
     vibrate()
     router.push(getListPageUrl(id))
@@ -170,6 +173,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
     toggleDeleteLoading(true)
     try {
       await deleteListById(listDetail!.id)
+      await revalidateUrls([getProfilePageUrl(listDetail!.owner)])
       toastSuccess('List deleted!')
       router.push(getProfilePageUrl(user!))
       onClose()

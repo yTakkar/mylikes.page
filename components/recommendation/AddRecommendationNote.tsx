@@ -6,6 +6,8 @@ import { IListDetail } from '../../interface/list'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
+import { revalidateUrls } from '../../utils/revalidate'
+import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 
 interface IAddRecommendationNoteProps {
   list: IListDetail
@@ -30,30 +32,34 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
       return
     }
 
-    const recommendations = list!.recommendations.map(rec => {
-      if (rec.id === recommendationInfo.id) {
-        return {
-          ...rec,
-          notes: noteValue,
+    const processCommands = async () => {
+      const recommendations = list!.recommendations.map(rec => {
+        if (rec.id === recommendationInfo.id) {
+          return {
+            ...rec,
+            notes: noteValue,
+          }
         }
-      }
-      return rec
-    })
+        return rec
+      })
 
-    setAddNoteLoading(true)
-    updateList(list!.id, {
-      recommendations: recommendations,
-    })
-      .then(() => {
+      setAddNoteLoading(true)
+
+      try {
+        await updateList(list!.id, {
+          recommendations: recommendations,
+        })
+        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner)])
         toastSuccess('Note updated successfully')
         onSuccess(noteValue)
-      })
-      .catch(() => {
+      } catch (e) {
         toastError('Failed to update note')
-      })
-      .finally(() => {
+      } finally {
         setAddNoteLoading(false)
-      })
+      }
+    }
+
+    processCommands()
   }
 
   return (

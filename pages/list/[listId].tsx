@@ -30,6 +30,7 @@ import CoreLink from '../../components/core/CoreLink'
 import { generateListId } from '../../utils/list'
 import { toastSuccess } from '../../components/Toaster'
 import Tooltip from '../../components/Tooltip'
+import { revalidateUrls } from '../../utils/revalidate'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -92,6 +93,7 @@ const List: NextPage<IProps> = (props: IProps) => {
         ownerEmail: user!.email,
         clonedListId: listDetail.id,
       })
+      await revalidateUrls([getListPageUrl(id)])
       toastSuccess('List added to your library!')
       vibrate()
       router.push(getProfilePageUrl(user!))
@@ -114,6 +116,7 @@ const List: NextPage<IProps> = (props: IProps) => {
     await updateList(listDetail.id, {
       recommendations: updatedList,
     })
+    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner)])
     toastSuccess('Removed from list!')
     refetchListDetail()
   }

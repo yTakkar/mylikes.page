@@ -18,7 +18,8 @@ import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
 import CoreLink from '../core/CoreLink'
-import { getSavedRecommendationsPageUrl } from '../../utils/routes'
+import { getListPageUrl, getProfilePageUrl, getSavedRecommendationsPageUrl } from '../../utils/routes'
+import { revalidateUrls } from '../../utils/revalidate'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -58,23 +59,27 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   }
 
   const handleAddToList = (recommendation: IRecommendationInfo) => {
-    const listRecommendation: IListRecommendationInfo = {
-      ...recommendation,
-      addedAt: new Date().getTime(),
-    }
-    const updatedList = [listRecommendation, ...listRecommendations]
+    const processCommands = async () => {
+      const listRecommendation: IListRecommendationInfo = {
+        ...recommendation,
+        addedAt: new Date().getTime(),
+      }
+      const updatedList = [listRecommendation, ...listRecommendations]
 
-    updateList(list.id, {
-      recommendations: updatedList,
-    })
-      .then(() => {
+      try {
+        await updateList(list.id, {
+          recommendations: updatedList,
+        })
+        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
         setListRecommendations(updatedList)
         toastSuccess('Added to the list')
         handleOnSuccess()
-      })
-      .catch(() => {
+      } catch (e) {
         toastError('Failed to add to the list')
-      })
+      }
+    }
+
+    processCommands()
   }
 
   const renderSavedRecommendations = () => {

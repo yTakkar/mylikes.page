@@ -23,7 +23,7 @@ import { toastError, toastSuccess } from '../../components/Toaster'
 import { updateUser, usernameExists } from '../../firebase/store/users'
 import { IUserInfo } from '../../interface/user'
 import { handleValidation } from '../../utils/form'
-import { revalidateUrl } from '../../utils/revalidate'
+import { revalidateUrls } from '../../utils/revalidate'
 import { getProfilePageUrl } from '../../utils/routes'
 
 enum FieldKeyType {
@@ -174,7 +174,7 @@ const ProfileEdit: NextPage<IProps> = () => {
         }
 
         await updateUser(user!.email, partialUserInfo)
-        await revalidateUrl([getProfilePageUrl(user!)])
+        await revalidateUrls([getProfilePageUrl(user!)])
         methods.updateUser({
           ...user!,
           ...partialUserInfo,

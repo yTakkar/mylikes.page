@@ -8,6 +8,8 @@ import CoreImage from '../core/CoreImage'
 import classNames from 'classnames'
 import ApplicationContext from '../ApplicationContext'
 import { updateUser } from '../../firebase/store/users'
+import { revalidateUrls } from '../../utils/revalidate'
+import { getProfilePageUrl } from '../../utils/routes'
 
 interface IChangeAvatarPopupProps {
   onClose: () => void
@@ -47,6 +49,7 @@ const ChangeAvatarPopup: React.FC<IChangeAvatarPopupProps> = props => {
         await updateUser(user!.email, {
           avatarUrl: selectedAvatar,
         })
+        await revalidateUrls([getProfilePageUrl(user!)])
         methods.updateUser(updatedUserInfo)
         toastSuccess('Profile picture changed!')
         onClose()

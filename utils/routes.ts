@@ -24,6 +24,7 @@ export const getTnCPageUrl = () => {
   return '/terms-conditions'
 }
 
+// TODO: accept username
 export const getProfilePageUrl = (userInfo: IUserInfo) => {
   return `/profile/${userInfo?.username}`
 }

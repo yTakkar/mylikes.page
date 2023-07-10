@@ -63,6 +63,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
           recommendations: updatedList,
         })
         await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
+        await fetchLists()
         toastSuccess('Added to the selected list')
       } catch (e) {
         toastError('Failed to add')

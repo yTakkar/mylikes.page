@@ -164,17 +164,29 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return null
   }
 
+  const renderImage = () => {
+    return (
+      <CoreImage
+        url={recommendationInfo.imageUrl}
+        alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
+        className={classNames('w-20 h-20 min-h-20 min-w-20 shadow-listInfoImage', {
+          'blur-sm': recommendationInfo.isAdult,
+        })}
+      />
+    )
+  }
+
   return (
     <>
       <div className="flex items-start mb-6 relative">
         <div className="relative">
-          <CoreImage
-            url={recommendationInfo.imageUrl}
-            alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
-            className={classNames('w-20 h-20 shadow-listInfoImage', {
-              'blur-sm': recommendationInfo.isAdult,
-            })}
-          />
+          {source === RecommendationInfoSourceType.LIST ? (
+            <CoreLink url={recommendationInfo.url} isExternal>
+              {renderImage()}
+            </CoreLink>
+          ) : (
+            renderImage()
+          )}
           {recommendationInfo.isAdult && (
             <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
               <ExclamationIcon className="w-4 mr-1 font-medium font-primary-medium" />{' '}

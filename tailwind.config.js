@@ -692,21 +692,23 @@ module.exports = {
       prose: '65ch',
       ...breakpoints(theme('screens')),
     }),
-    minHeight: {
+    minHeight: ({ theme }) => ({
+      ...theme('height'),
       0: '0px',
       full: '100%',
       screen: '100vh',
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',
-    },
-    minWidth: {
+    }),
+    minWidth: ({ theme }) => ({
+      ...theme('width'),
       0: '0px',
       full: '100%',
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',
-    },
+    }),
     objectPosition: {
       bottom: 'bottom',
       center: 'center',

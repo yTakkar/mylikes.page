@@ -5,6 +5,7 @@ import {
   DynamicChangeAvatarPopup,
   DynamicCreateListPopup,
   DynamicEditRecommendationPopup,
+  DynamicListAnalyticsPopup,
   DynamicLoginPopup,
 } from '../dynamicComponents'
 import ApplicationContext from '../ApplicationContext'
@@ -21,6 +22,7 @@ function PopupRenderer() {
     [PopupType.ADD_RECOMMENDATION]: DynamicAddRecommendationPopup,
     [PopupType.EDIT_RECOMMENDATION]: DynamicEditRecommendationPopup,
     [PopupType.ADD_TO_LIST]: DynamicAddToListPopup,
+    [PopupType.LIST_ANALYTICS]: DynamicListAnalyticsPopup,
   }
 
   const popupMemo = (

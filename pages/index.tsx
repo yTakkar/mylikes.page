@@ -2,7 +2,6 @@ import React from 'react'
 import { IGlobalLayoutProps } from './_app'
 import { GetStaticProps, NextPage } from 'next'
 import { prepareHomePageSeo } from '../utils/seo/pages/home'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 import PageContainer from '../components/PageContainer'
 
 interface IProps extends IGlobalLayoutProps {
@@ -18,6 +17,7 @@ const Home: NextPage<IProps> = () => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
+  // TODO: - get data, revalidate
   return {
     props: {
       pageData: {},
@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       },
       analytics: null,
     },
-    revalidate: PAGE_REVALIDATE_TIME.HOME,
+    // revalidate: PAGE_REVALIDATE_TIME.HOME,
   }
 }
 

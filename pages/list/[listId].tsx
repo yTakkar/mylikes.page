@@ -6,7 +6,7 @@ import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
 import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
-import { LibraryIcon, PlusIcon } from '@heroicons/react/outline'
+import { ChartBarIcon, CogIcon, LibraryIcon, PlusIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
@@ -31,6 +31,8 @@ import { generateListId } from '../../utils/list'
 import { toastSuccess } from '../../components/Toaster'
 import Tooltip from '../../components/Tooltip'
 import { revalidateUrls } from '../../utils/revalidate'
+import classNames from 'classnames'
+import { trackRecommendationClick } from '../../firebase/store/recommendationClickTracking'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -105,6 +107,7 @@ const List: NextPage<IProps> = (props: IProps) => {
   const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
     if (!sessionUser) {
       methods.togglePopup(PopupType.ADD_TO_LIST, {
+        listDetail,
         listRecommendation,
       })
       return
@@ -121,10 +124,24 @@ const List: NextPage<IProps> = (props: IProps) => {
     refetchListDetail()
   }
 
+  const onLinkClick = async (listRecommendation: IListRecommendationInfo) => {
+    if (!sessionUser) {
+      trackRecommendationClick(listDetail.id, listRecommendation.id)
+    }
+  }
+
   // TODO: One more button here???
+  // TODO: Spacing issue on mobile
   const actions = [
     {
-      label: 'List Settings',
+      label: (
+        <Tooltip content="Manage list">
+          <div className="flex">
+            <CogIcon className="w-4 mr-1" />
+            Settings
+          </div>
+        </Tooltip>
+      ),
       onClick: () => {
         methods.togglePopup(PopupType.CREATE_LIST, {
           listDetail,
@@ -137,12 +154,30 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <div className="flex">
-          <PlusIcon className="w-4 mr-1" />
-          Add a recommendation
-        </div>
+        <Tooltip content="Add a new recommendation">
+          <div className="flex">
+            <PlusIcon className="w-4 mr-1" />
+            Recommendation
+          </div>
+        </Tooltip>
       ),
       onClick: handleNewRecommendation,
+      show: sessionUser,
+    },
+    {
+      label: (
+        <Tooltip content="View list analytics">
+          <div className="flex">
+            <ChartBarIcon className="w-4 mr-1" />
+            Analytics
+          </div>
+        </Tooltip>
+      ),
+      onClick: () => {
+        methods.togglePopup(PopupType.LIST_ANALYTICS, {
+          listDetail,
+        })
+      },
       show: sessionUser,
     },
     {
@@ -155,7 +190,7 @@ const List: NextPage<IProps> = (props: IProps) => {
       onClick: handleAddToLibrary,
       show: !sessionUser,
     },
-  ]
+  ].filter(action => action.show)
 
   const renderContent = () => {
     if (!sessionUser && listDetail.visibility === ListVisibilityType.PRIVATE) {
@@ -202,14 +237,17 @@ const List: NextPage<IProps> = (props: IProps) => {
         <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center">
             {actions.map((action, index) => {
-              if (!action.show) {
-                return null
-              }
+              const isLast = index === actions.length - 1
 
               return (
                 <div
                   key={index}
-                  className="bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded-lg font-primary-medium mr-2"
+                  className={classNames(
+                    'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded-lg font-primary-medium mr-1 lg:mr-2',
+                    {
+                      'mr-0': isLast,
+                    }
+                  )}
                   onClick={action.onClick}>
                   {action.label}
                 </div>
@@ -235,6 +273,7 @@ const List: NextPage<IProps> = (props: IProps) => {
                 recommendationInfo={recommendationInfo}
                 recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
                 list={listDetail}
+                onLinkClick={() => onLinkClick(recommendationInfo)}
                 showAddToList={!sessionUser}
                 onAddToList={() => handleAddToList(recommendationInfo)}
                 showRemoveFromList={sessionUser}

@@ -1,13 +1,11 @@
 import React, { useContext } from 'react'
 import {
   MenuIcon as MenuIconSolid,
-  PlusIcon as PlusIconSolid,
   LoginIcon as LoginIconSolid,
   DownloadIcon as DownloadIconSolid,
 } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
-  PlusIcon as PlusIconOutline,
   LoginIcon as LoginIconOutline,
   DownloadIcon as DownloadIconOutline,
 } from '@heroicons/react/outline'

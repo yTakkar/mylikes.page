@@ -60,7 +60,7 @@ const Modal: React.FC<IModalProps> = props => {
           ref={ref}>
           <div className="flex justify-between items-start p-3 modal-header">
             <div>
-              <div className="font-medium font-primary-medium text-typo-title">{title}</div>
+              <div className="font-medium font-primary-medium text-typo-title modal-header-title">{title}</div>
               {subTitle && <div className="text-sm mt-1">{subTitle}</div>}
             </div>
             {showCrossIcon ? (

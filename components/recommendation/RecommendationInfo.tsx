@@ -41,6 +41,7 @@ interface IRecommendationInfoProps {
   recommendationInfo: IRecommendationInfo
   recommendationOwner?: IUserInfo
   list?: IListDetail
+  onLinkClick?: () => void
   showAddToList?: boolean
   onAddToList?: () => void
   onManageClick?: () => void
@@ -55,6 +56,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     recommendationInfo,
     recommendationOwner,
     list,
+    onLinkClick,
     showAddToList = false,
     onAddToList,
     onManageClick,
@@ -181,7 +183,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       <div className="flex items-start mb-6 relative">
         <div className="relative">
           {source === RecommendationInfoSourceType.LIST ? (
-            <CoreLink url={recommendationInfo.url} isExternal>
+            <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
               {renderImage()}
             </CoreLink>
           ) : (
@@ -202,7 +204,11 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             {source === RecommendationInfoSourceType.ADD ? (
               <span className="font-medium font-primary-medium">{recommendationInfo.title}</span>
             ) : (
-              <CoreLink url={recommendationInfo.url} isExternal className="font-medium font-primary-medium">
+              <CoreLink
+                url={recommendationInfo.url}
+                isExternal
+                className="font-medium font-primary-medium"
+                onClick={onLinkClick}>
                 {recommendationInfo.title}
               </CoreLink>
             )}

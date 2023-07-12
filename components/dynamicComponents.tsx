@@ -59,3 +59,10 @@ export const DynamicAddToListPopup = dynamic(
     ssr: false,
   }
 )
+
+export const DynamicListAnalyticsPopup = dynamic(
+  () => import(/* webpackChunkName: "ListAnalyticsPopup" */ 'components/popup/ListAnalyticsPopup'),
+  {
+    ssr: false,
+  }
+)

@@ -9,8 +9,10 @@ import { listListsByUser, updateList } from '../../firebase/store/list'
 import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import { toastError, toastSuccess } from '../Toaster'
 import { revalidateUrls } from '../../utils/revalidate'
+import { trackAddToList } from '../../firebase/store/addToListTracking'
 
 interface IAddToListPopupProps {
+  listDetail: IListDetail
   listRecommendation: IListRecommendationInfo
   onClose: () => void
 }
@@ -18,7 +20,7 @@ interface IAddToListPopupProps {
 declare const window: any
 
 const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
-  const { listRecommendation, onClose } = props
+  const { listDetail, listRecommendation, onClose } = props
 
   const applicationContext = useContext(ApplicationContext)
   const { user } = applicationContext
@@ -64,6 +66,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         })
         await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
         await fetchLists()
+        trackAddToList(listDetail.id, listRecommendation.id, list.id)
         toastSuccess('Added to the selected list')
       } catch (e) {
         toastError('Failed to add')

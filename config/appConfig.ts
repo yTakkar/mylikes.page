@@ -83,13 +83,13 @@ const appConfig = {
   },
   build: {
     pageRevalidateTimeInSec: {
-      HOME: 15 * 60,
+      // HOME: 15 * 60,
       PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
-      404: 15 * 60,
-      ERROR: 15 * 60,
-      PROFILE: 10 * 60,
-      LIST: 10 * 60,
+      // 404: 15 * 60,
+      // ERROR: 15 * 60,
+      PROFILE: 30 * 60,
+      LIST: 30 * 60,
     },
     initialPageBuildCount: {
       PROFILE: 100,

@@ -20,6 +20,7 @@
     "@sentry/tracing": "^7.47.0",
     "@tippyjs/react": "^4.2.6",
     "classnames": "^2.3.2",
+    "dayjs": "^1.11.9",
     "esm": "^3.2.25",
     "firebase": "^9.22.1",
     "nanoid": "^4.0.2",

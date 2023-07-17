@@ -43,6 +43,12 @@ export const listLists = async (params: IListListsParams) => {
   return querySnapshot.docs.map(doc => doc.data() as IListDetail)
 }
 
+export const listListsByClonedListId = async (clonedListId: string) => {
+  const q = query(listCollection, where('clonedListId', '==', clonedListId))
+  const querySnapshot = await getDocs(q)
+  return querySnapshot.docs.map(doc => doc.data() as IListDetail)
+}
+
 export const listListsByUser = async (user: IUserInfo) => {
   const userRef = doc(usersCollection, user.email)
   const q = query(listCollection, where('owner', '==', userRef))

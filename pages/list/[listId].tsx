@@ -6,7 +6,7 @@ import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
 import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
-import { ChartBarIcon, CogIcon, LibraryIcon, PlusIcon } from '@heroicons/react/outline'
+import { ChartBarIcon, CogIcon, DocumentDuplicateIcon, PlusIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
@@ -33,6 +33,7 @@ import Tooltip from '../../components/Tooltip'
 import { revalidateUrls } from '../../utils/revalidate'
 import classNames from 'classnames'
 import { trackRecommendationClick } from '../../firebase/store/recommendationClickTracking'
+import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -84,7 +85,7 @@ const List: NextPage<IProps> = (props: IProps) => {
     })
   }
 
-  const handleAddToLibrary = () => {
+  const handleClone = () => {
     const process = async () => {
       const id = generateListId(listDetail.name)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -96,7 +97,13 @@ const List: NextPage<IProps> = (props: IProps) => {
         clonedListId: listDetail.id,
       })
       await revalidateUrls([getListPageUrl(id)])
-      toastSuccess('List added to your library!')
+      trackAddToLibrary({
+        listId: listDetail.id,
+        clonedListId: id,
+        clonedListName: listDetail.name,
+        addedAt: new Date().getTime(),
+      })
+      toastSuccess('List cloned to your library!')
       vibrate()
       router.push(getProfilePageUrl(user!))
     }
@@ -126,7 +133,10 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const onLinkClick = async (listRecommendation: IListRecommendationInfo) => {
     if (!sessionUser) {
-      trackRecommendationClick(listDetail.id, listRecommendation.id)
+      trackRecommendationClick({
+        listId: listDetail.id,
+        listRecommendationId: listRecommendation.id,
+      })
     }
   }
 
@@ -182,12 +192,14 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <div className="flex">
-          <LibraryIcon className="w-4 mr-1" />
-          Add to your library
-        </div>
+        <Tooltip content="Clone this list to your library">
+          <div className="flex">
+            <DocumentDuplicateIcon className="w-4 mr-1" />
+            Clone List
+          </div>
+        </Tooltip>
       ),
-      onClick: handleAddToLibrary,
+      onClick: handleClone,
       show: !sessionUser,
     },
   ].filter(action => action.show)

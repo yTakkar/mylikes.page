@@ -1,18 +1,18 @@
 import { collection, deleteDoc, doc, getDocs, increment, query, setDoc, where } from 'firebase/firestore'
 import firebaseStore from '.'
-import { IRecommendationClickInfo } from '../../interface/recommendationClickTracking'
+import { IRecommendationClickInfo, IRecommendationClickParams } from '../../interface/recommendationClickTracking'
 
 const trackingCollection = collection(firebaseStore, 'recommendation-click-tracking')
 
-export const trackRecommendationClick = async (listId: string, listRecommendationId: string): Promise<void> => {
-  const id = `${listId}-${listRecommendationId}`
+export const trackRecommendationClick = async (params: IRecommendationClickParams): Promise<void> => {
+  const id = `${params.listId}-${params.listRecommendationId}`
   const docRef = doc(trackingCollection, id)
   await setDoc(
     docRef,
     {
       id,
-      listId,
-      listRecommendationId,
+      listId: params.listId,
+      listRecommendationId: params.listRecommendationId,
       clickCount: increment(1),
     },
     {

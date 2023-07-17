@@ -66,7 +66,13 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         })
         await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
         await fetchLists()
-        trackAddToList(listDetail.id, listRecommendation.id, list.id)
+        trackAddToList({
+          listId: listDetail.id,
+          listRecommendationId: listRecommendation.id,
+          targetListId: list.id,
+          targetListName: list.name,
+          addedAt: new Date().getTime(),
+        })
         toastSuccess('Added to the selected list')
       } catch (e) {
         toastError('Failed to add')

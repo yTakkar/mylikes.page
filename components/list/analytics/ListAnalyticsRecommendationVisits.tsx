@@ -7,6 +7,7 @@ import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
+import { PresentationChartLineIcon } from '@heroicons/react/outline'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -51,18 +52,21 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
   const renderTrackingListRecommendationInfo = (trackingListRecommendationInfo: ITrackingListRecommendationInfo) => {
     const { listRecommendation, clickCount } = trackingListRecommendationInfo
     return (
-      <div className="flex items-start mb-4 relative">
-        <div className="relative">
-          <CoreImage
-            url={listRecommendation.imageUrl}
-            alt={`${listRecommendation.title} recommendation on ${appConfig.global.app.name}`}
-            className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
-          />
+      <div>
+        <div className="flex items-start mb-4 relative">
+          <div className="relative">
+            <CoreImage
+              url={listRecommendation.imageUrl}
+              alt={`${listRecommendation.title} recommendation on ${appConfig.global.app.name}`}
+              className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
+            />
+          </div>
+          <div className="ml-3 flex-grow">
+            <span className="font-medium font-primary-medium">{listRecommendation.title}</span>
+            <div className="text-gray-600 text-sm flex items-center">{pluralize('visit', clickCount)}</div>
+          </div>
         </div>
-        <div className="ml-3 flex-grow">
-          <span className="font-medium font-primary-medium">{listRecommendation.title}</span>
-          <div className="text-typo-paragraphLight text-sm flex items-center">{pluralize('visit', clickCount)}</div>
-        </div>
+        <div className="border-b border-gray-200 my-2" />
       </div>
     )
   }
@@ -74,15 +78,22 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
 
     return (
       <div>
+        <div className="inline-flex mb-6">
+          <span className="mt-1 mr-1">
+            <PresentationChartLineIcon className="w-5" />
+          </span>
+          <span>Whenever someone visits recommendations from this list.</span>
+        </div>
+
         <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Overall visits</div>
+          <div className="font-bold">Total count</div>
           <div className="text-xl">{totalRecommendationVisits}</div>
         </div>
 
         <div>
-          {trackingListRecommendationInfos.map(trackingListRecommendationInfo => {
+          {trackingListRecommendationInfos.map((trackingListRecommendationInfo, index) => {
             return (
-              <React.Fragment key={trackingListRecommendationInfo.id}>
+              <React.Fragment key={index}>
                 {renderTrackingListRecommendationInfo(trackingListRecommendationInfo)}
               </React.Fragment>
             )

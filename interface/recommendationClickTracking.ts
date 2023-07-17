@@ -4,3 +4,8 @@ export interface IRecommendationClickInfo {
   listRecommendationId: string
   clickCount: number
 }
+
+export interface IRecommendationClickParams {
+  listId: string
+  listRecommendationId: string
+}

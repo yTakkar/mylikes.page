@@ -17,7 +17,7 @@ const options: ICoreSelectInputOption[] = [
   {
     id: 'library-add',
     value: 'library-add',
-    label: 'List saved to libraries',
+    label: 'List clones',
     selected: false,
   },
   {
@@ -43,10 +43,10 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
       return <ListAnalyticsRecommendationVisits listDetail={listDetail} />
     }
     if (selectedOption === options[1].value) {
-      return <ListAnalyticsLibrarySaves />
+      return <ListAnalyticsLibrarySaves listDetail={listDetail} />
     }
     if (selectedOption === options[2].value) {
-      return <ListAnalyticsAddedToList />
+      return <ListAnalyticsAddedToList listDetail={listDetail} />
     }
     return null
   }

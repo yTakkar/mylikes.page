@@ -57,8 +57,8 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
     return (
       <div>
         <div className="inline-flex mb-6">
-          <span className="mt-1 mr-1">
-            <PresentationChartLineIcon className="w-4" />
+          <span className="mt-[2px] mr-1">
+            <PresentationChartLineIcon className="w-5" />
           </span>
           <span>Whenever someone clones this list to their personal library.</span>
         </div>

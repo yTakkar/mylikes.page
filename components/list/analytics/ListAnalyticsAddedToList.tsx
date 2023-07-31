@@ -75,10 +75,10 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
     return (
       <div>
         <div className="inline-flex mb-6">
-          <span className="mt-1 mr-1">
-            <PresentationChartLineIcon className="w-4" />
+          <span className="mt-[2px] mr-1">
+            <PresentationChartLineIcon className="w-5" />
           </span>
-          <span>Whenever someone adds recommendations to their lists.</span>
+          <span>Whenever someone adds recommendations from this list to their lists.</span>
         </div>
 
         <div className="flex items-center flex-col mb-6">

@@ -79,10 +79,10 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
     return (
       <div>
         <div className="inline-flex mb-6">
-          <span className="mt-1 mr-1">
+          <span className="mt-[2px] mr-1">
             <PresentationChartLineIcon className="w-5" />
           </span>
-          <span>Whenever someone visits recommendations from this list.</span>
+          <span>Recommendation visits from this list.</span>
         </div>
 
         <div className="flex items-center flex-col mb-6">

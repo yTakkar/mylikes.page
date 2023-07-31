@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import classnames from 'classnames'
 
 export interface ICoreSelectInputOption {
@@ -19,6 +19,8 @@ interface ICoreSelectInputProps {
 const CoreSelectInput: React.FC<ICoreSelectInputProps> = props => {
   const { value, onChange, options, disabled = false, className } = props
 
+  const selectRef = useRef<HTMLSelectElement>(null)
+
   return (
     <div
       className={classnames(
@@ -29,9 +31,13 @@ const CoreSelectInput: React.FC<ICoreSelectInputProps> = props => {
         className
       )}>
       <select
+        ref={selectRef}
         id={classnames(disabled ? 'standard-select-disabled' : 'standard-select')}
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => {
+          onChange(e.target.value)
+          selectRef.current?.blur()
+        }}
         disabled={disabled}>
         <option disabled value="">
           -- select an option --

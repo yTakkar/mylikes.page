@@ -147,7 +147,6 @@ const appConfig = {
   },
   footer: {
     links: [
-      { label: 'FAQ', url: '/faq' },
       { label: 'Privacy Policy', url: '/privacy-policy' },
       { label: 'Terms of Use', url: '/terms-conditions' },
       { label: 'Contact', url: '/contact' },

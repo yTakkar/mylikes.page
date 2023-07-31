@@ -47,7 +47,7 @@ const Header: React.FC<INavbarProps> = props => {
   const NAV_LINKS: IHeaderLink[] = [
     {
       label: 'Account',
-      url: getProfilePageUrl(user!),
+      url: getProfilePageUrl(user?.username || ''),
       iconComponent: ({ className }) => <HeaderProfileIcon className={className} active={false} />,
       activeIconComponent: ({ className }) => <HeaderProfileIcon className={className} active />,
       iconClassName: null,

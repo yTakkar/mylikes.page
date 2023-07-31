@@ -70,7 +70,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         await updateList(list.id, {
           recommendations: updatedList,
         })
-        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
+        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner.username)])
         setListRecommendations(updatedList)
         toastSuccess('Added to the list')
         handleOnSuccess()

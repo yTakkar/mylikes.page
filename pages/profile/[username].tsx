@@ -74,7 +74,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
 
   return (
     <PageContainer>
-      <div className=" p-4 py-6">
+      <div className="p-4 py-6">
         <div className="bg-whit flex flex-col justify-center items-center lg:flex-row lg:justify-normal">
           <div>
             <CoreImage

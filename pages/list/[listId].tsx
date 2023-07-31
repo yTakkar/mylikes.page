@@ -50,7 +50,11 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
+  const {
+    user,
+    methods,
+    device: { isMobile },
+  } = applicationContext
 
   const { listDetail: initialListDetail, profileInfoMap } = props.pageData
 
@@ -105,7 +109,7 @@ const List: NextPage<IProps> = (props: IProps) => {
       })
       toastSuccess('List cloned to your library!')
       vibrate()
-      router.push(getProfilePageUrl(user!))
+      router.push(getProfilePageUrl(user!.username))
     }
 
     process()
@@ -126,7 +130,7 @@ const List: NextPage<IProps> = (props: IProps) => {
     await updateList(listDetail.id, {
       recommendations: updatedList,
     })
-    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner)])
+    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner.username)])
     toastSuccess('Removed from list!')
     refetchListDetail()
   }
@@ -140,8 +144,6 @@ const List: NextPage<IProps> = (props: IProps) => {
     }
   }
 
-  // TODO: One more button here???
-  // TODO: Spacing issue on mobile
   const actions = [
     {
       label: (
@@ -167,7 +169,7 @@ const List: NextPage<IProps> = (props: IProps) => {
         <Tooltip content="Add a new recommendation">
           <div className="flex">
             <PlusIcon className="w-4 mr-1" />
-            Recommendation
+            {isMobile ? 'Add new' : 'Recommendation'}
           </div>
         </Tooltip>
       ),
@@ -224,7 +226,7 @@ const List: NextPage<IProps> = (props: IProps) => {
           {listDetail.description && <div className="my-2 text-gray-800">{listDetail.description}</div>}
           <div className="text-typo-paragraphLight flex items-center lg:justify-center">
             by
-            <CoreLink url={getProfilePageUrl(listDetail.owner)} className="ml-1">
+            <CoreLink url={getProfilePageUrl(listDetail.owner.username)} className="ml-1">
               {listDetail.owner.name} {sessionUser ? '(You)' : null}
             </CoreLink>
             {listDetail.visibility === ListVisibilityType.PRIVATE && (
@@ -235,7 +237,7 @@ const List: NextPage<IProps> = (props: IProps) => {
               </Tooltip>
             )}
             {listDetail.clonedListId && (
-              <Tooltip content={`This is a cloned list. Click to view.`}>
+              <Tooltip content={`This is a cloned list. Click to view the original list.`}>
                 <span>
                   <CoreLink url={getListPageUrl(listDetail.clonedListId!)}>
                     <ReplyIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />

@@ -25,7 +25,7 @@ export const enablePageScrolling = () => {
 }
 
 export const addBlur = () => {
-  const pageWrapper = document.getElementById('pageMain')
+  const pageWrapper = document.querySelector('.page-main')
   const topNav = document.querySelector('.top-nav')
 
   const elements = [pageWrapper, topNav].filter(Boolean)
@@ -39,7 +39,7 @@ export const addBlur = () => {
 }
 
 export const removeBlur = () => {
-  const pageWrapper = document.getElementById('pageMain')
+  const pageWrapper = document.querySelector('.page-main')
   const topNav = document.querySelector('.top-nav')
 
   const elements = [pageWrapper, topNav].filter(Boolean)

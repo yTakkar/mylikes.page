@@ -64,7 +64,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         await updateList(list.id, {
           recommendations: updatedList,
         })
-        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner)])
+        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner.username)])
         await fetchLists()
         trackAddToList({
           listId: listDetail.id,
@@ -123,7 +123,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
                 label: 'Create a list',
                 size: CoreButtonSize.MEDIUM,
                 type: CoreButtonType.SOLID_PRIMARY,
-                url: getProfilePageUrl(user!),
+                url: getProfilePageUrl(user!.username),
               },
             ]}
           />

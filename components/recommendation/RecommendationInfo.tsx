@@ -219,7 +219,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               <span>
                 by{' '}
                 <CoreLink
-                  url={getProfilePageUrl(recommendationOwner)}
+                  url={getProfilePageUrl(recommendationOwner.username)}
                   className="text-typo-paragraphLight text-sm hover:underline">
                   {recommendationOwner.name}
                 </CoreLink>

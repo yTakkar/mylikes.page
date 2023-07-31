@@ -174,7 +174,7 @@ const ProfileEdit: NextPage<IProps> = () => {
         }
 
         await updateUser(user!.email, partialUserInfo)
-        await revalidateUrls([getProfilePageUrl(user!)])
+        await revalidateUrls([getProfilePageUrl(user!.username)])
         methods.updateUser({
           ...user!,
           ...partialUserInfo,

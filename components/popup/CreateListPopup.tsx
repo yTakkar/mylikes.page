@@ -111,7 +111,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       description: fields.DESCRIPTION,
       visibility: fields.VISIBILITY as ListVisibilityType,
     })
-    await revalidateUrls([getProfilePageUrl(listDetail!.owner), getListPageUrl(listDetail!.id)])
+    await revalidateUrls([getProfilePageUrl(listDetail!.owner.username), getListPageUrl(listDetail!.id)])
     toastSuccess('List settings updated!')
   }
 
@@ -127,7 +127,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       recommendations: [],
       clonedListId: null,
     })
-    await revalidateUrls([getProfilePageUrl(listDetail!.owner)])
+    await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
     toastSuccess('List created!')
     vibrate()
     router.push(getListPageUrl(id))
@@ -173,9 +173,9 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
     toggleDeleteLoading(true)
     try {
       await deleteListById(listDetail!.id)
-      await revalidateUrls([getProfilePageUrl(listDetail!.owner)])
+      await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
       toastSuccess('List deleted!')
-      router.push(getProfilePageUrl(user!))
+      router.push(getProfilePageUrl(user!.username))
       onClose()
     } catch (e) {
       console.error('list:delete:error', e)

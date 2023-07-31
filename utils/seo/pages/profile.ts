@@ -7,7 +7,7 @@ export const prepareProfilePageSeo = (profileInfo: IUserInfo): IAppSeoProps => {
   return {
     title: `${profileInfo.username} | ${profileInfo.name} | ${appConfig.global.app.name}`,
     description: `${profileInfo.name} description`,
-    canonical: `${appConfig.global.baseUrl}${getProfilePageUrl(profileInfo)}`,
+    canonical: `${appConfig.global.baseUrl}${getProfilePageUrl(profileInfo.username)}`,
     imageUrl: profileInfo.avatarUrl,
     keywords: [],
     // TODO:

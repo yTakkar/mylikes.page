@@ -49,7 +49,7 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
         await updateList(list!.id, {
           recommendations: recommendations,
         })
-        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner)])
+        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner.username)])
         toastSuccess('Note updated successfully')
         onSuccess(noteValue)
       } catch (e) {

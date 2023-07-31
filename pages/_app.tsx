@@ -87,7 +87,7 @@ const MyApp: NextPage<IProps> = props => {
         id={classnames('pageMain', {
           'pageMain-lock': !appConfig.features.enableLandscapeMode,
         })}
-        className={classNames('lg:pb-0')}>
+        className={classNames('page-main lg:pb-0')}>
         <ErrorBoundary key={router.route}>
           {appConfig.features.enablePageTransition ? (
             <DynamicPageTransition timeout={300} classNames="pageTransition">

@@ -49,7 +49,7 @@ const ChangeAvatarPopup: React.FC<IChangeAvatarPopupProps> = props => {
         await updateUser(user!.email, {
           avatarUrl: selectedAvatar,
         })
-        await revalidateUrls([getProfilePageUrl(user!)])
+        await revalidateUrls([getProfilePageUrl(user!.username)])
         methods.updateUser(updatedUserInfo)
         toastSuccess('Profile picture changed!')
         onClose()

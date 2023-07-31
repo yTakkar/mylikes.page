@@ -1,5 +1,3 @@
-import { IUserInfo } from '../interface/user'
-
 export const getHomePageUrl = () => {
   return '/'
 }
@@ -24,9 +22,8 @@ export const getTnCPageUrl = () => {
   return '/terms-conditions'
 }
 
-// TODO: accept username
-export const getProfilePageUrl = (userInfo: IUserInfo) => {
-  return `/profile/${userInfo?.username}`
+export const getProfilePageUrl = (username: string) => {
+  return `/profile/${username}`
 }
 
 export const getProfileEditPageUrl = () => {

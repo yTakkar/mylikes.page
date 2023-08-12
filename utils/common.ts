@@ -156,3 +156,14 @@ export const vibrate = (pattern: VibratePatternType = VibratePatternType.DEFAULT
 }
 
 export const timestampToMillis = (timestamp: Timestamp) => (timestamp as unknown as Timestamp).toMillis()
+
+export const copyToClipboard = (secretInfo: string) => {
+  const body = document.getElementsByTagName('body')[0]
+  const tempInput = document.createElement('INPUT')
+  body.appendChild(tempInput)
+  tempInput.setAttribute('value', secretInfo)
+  // @ts-ignore
+  tempInput.select()
+  document.execCommand('copy')
+  body.removeChild(tempInput)
+}

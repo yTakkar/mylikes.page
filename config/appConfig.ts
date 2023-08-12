@@ -84,6 +84,11 @@ const appConfig = {
   analytics: {
     cacheInvalidationTimeInSec: 10 * 60,
   },
+  share: {
+    list: {
+      title: `Checkout {{LIST_NAME}} on ${app.name}!`, // Dynamic keywords allowed: LIST_NAME, LIST_URL
+    },
+  },
   build: {
     pageRevalidateTimeInSec: {
       // HOME: 15 * 60,

@@ -6,7 +6,14 @@ import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
 import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
-import { ChartBarIcon, CogIcon, DocumentDuplicateIcon, PlusIcon } from '@heroicons/react/outline'
+import {
+  ChartBarIcon,
+  ClipboardIcon,
+  CogIcon,
+  DocumentDuplicateIcon,
+  PlusIcon,
+  ShareIcon,
+} from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
@@ -16,7 +23,7 @@ import RecommendationInfo, {
 import { addList, getListById, getListProfileInfoMap, listLists, updateList } from '../../firebase/store/list'
 import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME } from '../../constants/constants'
 import { get404PageUrl, getListPageUrl, getProfilePageUrl } from '../../utils/routes'
-import { pluralize, vibrate } from '../../utils/common'
+import { copyToClipboard, pluralize, vibrate } from '../../utils/common'
 import NoContent from '../../components/NoContent'
 import { CoreButtonSize, CoreButtonType } from '../../components/core/CoreButton'
 import ApplicationContext from '../../components/ApplicationContext'
@@ -34,6 +41,8 @@ import { revalidateUrls } from '../../utils/revalidate'
 import classNames from 'classnames'
 import { trackRecommendationClick } from '../../firebase/store/recommendationClickTracking'
 import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
+import useNativeShare from '../../hooks/useNativeShare'
+import appConfig from '../../config/appConfig'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -50,11 +59,7 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const applicationContext = useContext(ApplicationContext)
-  const {
-    user,
-    methods,
-    device: { isMobile },
-  } = applicationContext
+  const { user, methods } = applicationContext
 
   const { listDetail: initialListDetail, profileInfoMap } = props.pageData
 
@@ -62,6 +67,20 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const [listDetail, setListDetail] = useState(initialListDetail)
   const [loading, toggleLoading] = useState(false)
+
+  const shareUrl = `${appConfig.global.baseUrl}${getListPageUrl(listDetail.id)}`
+  const shareText = appConfig.share.list.title
+    .replace('{{LIST_NAME}}', listDetail.name)
+    .replace('{{LIST_URL}}', `${shareUrl}`)
+
+  const handleURLCopy = () => {
+    copyToClipboard(shareUrl)
+    toastSuccess('List URL copied!')
+  }
+
+  const { shouldshowNativeShare, handleNativeShare } = useNativeShare({
+    onShareFail: handleURLCopy,
+  })
 
   useEffect(() => {
     if (initialListDetail) {
@@ -166,18 +185,6 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content="Add a new recommendation">
-          <div className="flex">
-            <PlusIcon className="w-4 mr-1" />
-            {isMobile ? 'Add new' : 'Recommendation'}
-          </div>
-        </Tooltip>
-      ),
-      onClick: handleNewRecommendation,
-      show: sessionUser,
-    },
-    {
-      label: (
         <Tooltip content="View list analytics">
           <div className="flex">
             <ChartBarIcon className="w-4 mr-1" />
@@ -203,6 +210,35 @@ const List: NextPage<IProps> = (props: IProps) => {
       ),
       onClick: handleClone,
       show: !sessionUser,
+    },
+    {
+      label: (
+        <Tooltip content="Share this list">
+          <div className="flex">
+            <ShareIcon className="w-4 mr-1" />
+            Share
+          </div>
+        </Tooltip>
+      ),
+      onClick: () => {
+        handleNativeShare({
+          text: shareText,
+          url: shareUrl,
+        })
+      },
+      show: shouldshowNativeShare,
+    },
+    {
+      label: (
+        <Tooltip content="Copy list URL">
+          <div className="flex">
+            <ClipboardIcon className="w-4 mr-1" />
+            Copy
+          </div>
+        </Tooltip>
+      ),
+      onClick: handleURLCopy,
+      show: !shouldshowNativeShare,
     },
   ].filter(action => action.show)
 
@@ -257,7 +293,7 @@ const List: NextPage<IProps> = (props: IProps) => {
                 <div
                   key={index}
                   className={classNames(
-                    'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded-lg font-primary-medium mr-1 lg:mr-2',
+                    'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium mr-1 lg:mr-2',
                     {
                       'mr-0': isLast,
                     }
@@ -275,7 +311,24 @@ const List: NextPage<IProps> = (props: IProps) => {
           </DesktopView>
         </div>
 
-        <CoreDivider className="my-8" />
+        <CoreDivider className="my-6" />
+
+        {sessionUser && (
+          <div className="flex justify-end mb-5">
+            <div
+              className={classNames(
+                'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium'
+              )}
+              onClick={handleNewRecommendation}>
+              <Tooltip content="Add a new recommendation">
+                <div className="flex">
+                  <PlusIcon className="w-4 mr-1" />
+                  Recommendation
+                </div>
+              </Tooltip>
+            </div>
+          </div>
+        )}
 
         <div>
           {hasRecommendations ? (

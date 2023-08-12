@@ -8,14 +8,6 @@ export const prepareOrganizationStructuredData = () => {
     name: appConfig.company.name,
     url: appConfig.global.baseUrl,
     logo: APP_LOGO.DEFAULT,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: appConfig.company.address.streetAddress,
-      addressLocality: appConfig.company.address.addressLocality,
-      addressRegion: appConfig.company.address.addressRegion,
-      postalCode: appConfig.company.address.postalCode,
-      Telephone: appConfig.company.contactNumber,
-    },
     sameAs: appConfig.company.socialLinks
       .filter(socialLink => socialLink.url.startsWith('https://'))
       .map(socialLink => socialLink.url),

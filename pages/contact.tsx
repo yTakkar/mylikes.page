@@ -1,5 +1,5 @@
 import React from 'react'
-import { LocationMarkerIcon, MailIcon, PhoneIcon } from '@heroicons/react/solid'
+import { MailIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
 import BackTitle from '../components/BackTitle'
 import CoreImage from '../components/core/CoreImage'
@@ -17,24 +17,40 @@ interface IProps extends IGlobalLayoutProps {
 }
 
 const ContactPage: NextPage<IProps> = () => {
+  const INSTAGRAM_SOCIAL_LINK = appConfig.company.socialLinks.find(socialLink => socialLink.type === 'INSTAGRAM')
+  const TWITTER_SOCIAL_LINK = appConfig.company.socialLinks.find(socialLink => socialLink.type === 'TWITTER')
+  const FACEBOOK_SOCIAL_LINK = appConfig.company.socialLinks.find(socialLink => socialLink.type === 'FACEBOOK')
+
   const links = [
-    {
-      value: Object.values(appConfig.company.address).join(', '),
-      iconComponent: LocationMarkerIcon,
-      url: '',
-      isExternal: false,
-    },
-    {
-      value: appConfig.company.contactNumber,
-      iconComponent: PhoneIcon,
-      url: `tel:${appConfig.company.contactNumber}`,
-      isExternal: false,
-    },
     {
       value: appConfig.company.contactEmail,
       iconComponent: MailIcon,
       url: `mailto:${appConfig.company.contactEmail}`,
       isExternal: false,
+    },
+    {
+      value: `${INSTAGRAM_SOCIAL_LINK?.username}`,
+      iconComponent: () => (
+        <CoreImage url={SOCIAL_ICONS_SRC_MAP.INSTAGRAM} alt="" useTransparentPlaceholder className="w-6" />
+      ),
+      url: INSTAGRAM_SOCIAL_LINK?.url,
+      isExternal: INSTAGRAM_SOCIAL_LINK?.isExternal,
+    },
+    {
+      value: TWITTER_SOCIAL_LINK?.username,
+      iconComponent: () => (
+        <CoreImage url={SOCIAL_ICONS_SRC_MAP.TWITTER} alt="" useTransparentPlaceholder className="w-6" />
+      ),
+      url: TWITTER_SOCIAL_LINK?.url,
+      isExternal: TWITTER_SOCIAL_LINK?.isExternal,
+    },
+    {
+      value: FACEBOOK_SOCIAL_LINK?.username,
+      iconComponent: () => (
+        <CoreImage url={SOCIAL_ICONS_SRC_MAP.FACEBOOK} alt="" useTransparentPlaceholder className="w-6" />
+      ),
+      url: FACEBOOK_SOCIAL_LINK?.url,
+      isExternal: FACEBOOK_SOCIAL_LINK?.isExternal,
     },
   ]
 
@@ -75,23 +91,6 @@ const ContactPage: NextPage<IProps> = () => {
               return (
                 <CoreLink key={index} url={link.url} isExternal={link.isExternal}>
                   {content}
-                </CoreLink>
-              )
-            })}
-          </div>
-
-          <div className="flex justify-center mt-5">
-            {appConfig.company.socialLinks.map((socialLink, index) => {
-              const socialIconSrc = SOCIAL_ICONS_SRC_MAP[socialLink.type] || SOCIAL_ICONS_SRC_MAP.GLOBE
-
-              return (
-                <CoreLink
-                  key={index}
-                  url={socialLink.url}
-                  isExternal={socialLink.isExternal}
-                  title={socialLink.name}
-                  className="flex items-start rounded border-gray-400 p-2 mx-1 transform transition-transform hover:scale-110">
-                  <CoreImage url={socialIconSrc} alt="" useTransparentPlaceholder className="w-6" />
                 </CoreLink>
               )
             })}

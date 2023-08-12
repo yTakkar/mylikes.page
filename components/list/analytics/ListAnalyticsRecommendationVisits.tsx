@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
 import { PresentationChartLineIcon } from '@heroicons/react/outline'
+import ls from 'localstorage-slim'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -23,17 +24,26 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
   const [loading, toggleLoading] = useState(false)
   const [trackingInfoList, setTrackingInfoList] = useState<IRecommendationClickInfo[]>([])
 
+  const CACHE_KEY = `listAnalyticsRecommendationVisits-${listDetail.id}`
+
   const fetchTrackingInfoList = async () => {
+    const cacheValue = ls.get(CACHE_KEY) as IRecommendationClickInfo[] | null
+    if (cacheValue) {
+      setTrackingInfoList(cacheValue)
+      return
+    }
+
     toggleLoading(true)
     const list = await getRecommendationClickTrackingsByList(listDetail.id)
     setTrackingInfoList(list)
+    ls.set(CACHE_KEY, list, {
+      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+    })
     toggleLoading(false)
   }
 
   useEffect(() => {
-    if (trackingInfoList.length === 0) {
-      fetchTrackingInfoList()
-    }
+    fetchTrackingInfoList()
   }, [])
 
   const totalRecommendationVisits = trackingInfoList.reduce((acc, cur) => acc + cur.clickCount, 0)
@@ -82,7 +92,10 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
           <span className="mt-[2px] mr-1">
             <PresentationChartLineIcon className="w-5" />
           </span>
-          <span>Recommendation visits from this list.</span>
+          <span>
+            Recommendation visits from this list. Updates every {appConfig.analytics.cacheInvalidationTimeInSec / 60}{' '}
+            minutes.
+          </span>
         </div>
 
         <div className="flex items-center flex-col mb-6">

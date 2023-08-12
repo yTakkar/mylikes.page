@@ -81,6 +81,9 @@ const appConfig = {
     appId: process.env.ENV_FIREBASE_APP_ID,
     measurementId: process.env.ENV_FIREBASE_MEASUREMENT_ID,
   },
+  analytics: {
+    cacheInvalidationTimeInSec: 10 * 60,
+  },
   build: {
     pageRevalidateTimeInSec: {
       // HOME: 15 * 60,
@@ -123,25 +126,36 @@ const appConfig = {
   },
   company: {
     name: 'MyLikes Pvt. Ltd.',
-    contactNumber: '+918104570640',
     contactEmail: 'mylikes@gmail.com',
-    address: {
-      streetAddress: 'Zed Pearl, No 12, Domlur Layout',
-      addressLocality: 'Mumbai, Maharashtra',
-      addressRegion: 'India',
-      postalCode: '400000',
-    },
     socialLinks: [
-      { type: 'TWITTER', url: 'https://twitter.com/ownStore_', name: 'Twitter', isExternal: true },
-      { type: 'FACEBOOK', url: 'https://www.facebook.com/ownStoreFB', name: 'Facebook', isExternal: true },
-      { type: 'INSTAGRAM', url: 'https://www.instagram.com/ownStore__/', name: 'Instagram', isExternal: true },
       {
-        type: 'YOUTUBE',
-        url: 'https://www.youtube.com/channel/UCp7xl0E-JtFQamoZNBO8yGw',
-        name: 'YouTube',
+        type: 'TWITTER',
+        url: 'https://twitter.com/ownStore_',
+        name: 'Twitter',
         isExternal: true,
+        username: 'ownStore_',
       },
-      { type: 'WHATSAPP', url: 'https://wa.me/+919999999999', name: 'WhatsApp', isExternal: true },
+      {
+        type: 'FACEBOOK',
+        url: 'https://www.facebook.com/ownStoreFB',
+        name: 'Facebook',
+        isExternal: true,
+        username: 'ownStoreFB',
+      },
+      {
+        type: 'INSTAGRAM',
+        url: 'https://www.instagram.com/ownStore__/',
+        name: 'Instagram',
+        isExternal: true,
+        username: 'ownStore__',
+      },
+      // {
+      //   type: 'YOUTUBE',
+      //   url: 'https://www.youtube.com/channel/UCp7xl0E-JtFQamoZNBO8yGw',
+      //   name: 'YouTube',
+      //   isExternal: true,
+      // },
+      // { type: 'WHATSAPP', url: 'https://wa.me/+919999999999', name: 'WhatsApp', isExternal: true },
       { type: 'MAIL', url: 'mailto:ownstoreonlinee@gmail.com', name: 'Mail', isExternal: true },
     ],
   },

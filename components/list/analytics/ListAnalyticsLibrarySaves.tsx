@@ -7,6 +7,8 @@ import { getAddToLibraryTrackingsByList } from '../../../firebase/store/addToLib
 import { IAddToLibraryTrackingInfo } from '../../../interface/addToLibraryTracking'
 import { getRelativeTime } from '../../../utils/date'
 import CoreLink from '../../core/CoreLink'
+import appConfig from '../../../config/appConfig'
+import ls from 'localstorage-slim'
 
 interface IListAnalyticsLibrarySavesProps {
   listDetail: IListDetail
@@ -18,17 +20,26 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
   const [loading, toggleLoading] = useState(false)
   const [lists, setLists] = useState<IAddToLibraryTrackingInfo[]>([])
 
+  const CACHE_KEY = `listAnalyticsLibrarySaves-${listDetail.id}`
+
   const fetch = async () => {
+    const cacheValue = ls.get(CACHE_KEY) as IAddToLibraryTrackingInfo[] | null
+    if (cacheValue) {
+      setLists(cacheValue)
+      return
+    }
+
     toggleLoading(true)
     const list = await getAddToLibraryTrackingsByList(listDetail.id)
     setLists(list)
+    ls.set(CACHE_KEY, list, {
+      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+    })
     toggleLoading(false)
   }
 
   useEffect(() => {
-    if (lists.length === 0) {
-      fetch()
-    }
+    fetch()
   }, [])
 
   const totalLibrarySaves = lists.length
@@ -60,7 +71,10 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
           <span className="mt-[2px] mr-1">
             <PresentationChartLineIcon className="w-5" />
           </span>
-          <span>Whenever someone clones this list to their personal library.</span>
+          <span>
+            Whenever someone clones this list to their personal library. Updates every{' '}
+            {appConfig.analytics.cacheInvalidationTimeInSec / 60} minutes.
+          </span>
         </div>
 
         <div className="flex items-center flex-col mb-6">

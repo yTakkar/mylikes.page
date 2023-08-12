@@ -10,6 +10,7 @@ import appConfig from '../../../config/appConfig'
 import { getRelativeTime } from '../../../utils/date'
 import CoreLink from '../../core/CoreLink'
 import { getListPageUrl } from '../../../utils/routes'
+import ls from 'localstorage-slim'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -21,17 +22,26 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
   const [loading, toggleLoading] = useState(false)
   const [trackingInfoList, setTrackingInfoList] = useState<IAddToListTrackingInfo[]>([])
 
+  const CACHE_KEY = `listAnalyticsAddedToList-${listDetail.id}`
+
   const fetchTrackingInfoList = async () => {
+    const cacheValue = ls.get(CACHE_KEY) as IAddToListTrackingInfo[] | null
+    if (cacheValue) {
+      setTrackingInfoList(cacheValue)
+      return
+    }
+
     toggleLoading(true)
     const list = await getAddToListTrackingsByList(listDetail.id)
     setTrackingInfoList(list)
+    ls.set(CACHE_KEY, list, {
+      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+    })
     toggleLoading(false)
   }
 
   useEffect(() => {
-    if (trackingInfoList.length === 0) {
-      fetchTrackingInfoList()
-    }
+    fetchTrackingInfoList()
   }, [])
 
   const total = trackingInfoList.length
@@ -78,7 +88,10 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
           <span className="mt-[2px] mr-1">
             <PresentationChartLineIcon className="w-5" />
           </span>
-          <span>Whenever someone adds recommendations from this list to their lists.</span>
+          <span>
+            Whenever someone adds recommendations from this list to their lists. Updates every{' '}
+            {appConfig.analytics.cacheInvalidationTimeInSec / 60} minutes.
+          </span>
         </div>
 
         <div className="flex items-center flex-col mb-6">

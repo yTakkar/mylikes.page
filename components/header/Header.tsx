@@ -1,22 +1,22 @@
 import React, { useContext } from 'react'
-import {
-  MenuIcon as MenuIconSolid,
-  LoginIcon as LoginIconSolid,
-  DownloadIcon as DownloadIconSolid,
-} from '@heroicons/react/solid'
+import { MenuIcon as MenuIconSolid, DownloadIcon as DownloadIconSolid } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
-  LoginIcon as LoginIconOutline,
   DownloadIcon as DownloadIconOutline,
+  UserCircleIcon as UserCircleIconOutline,
 } from '@heroicons/react/outline'
 import CoreLink from '../core/CoreLink'
 import usePWAInstall from '../../hooks/usePWAInstall'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
-import { PopupType } from '../../interface/popup'
 import TextLogo from '../logo/TextLogo'
 import HeaderProfileIcon from './HeaderProfileIcon'
+import { signInWithGoogle } from '../../firebase/auth/auth'
+import { prepareUserInfo } from '../../utils/user'
+import { addUser } from '../../firebase/store/users'
+import { vibrate } from '../../utils/common'
+import { toastError, toastSuccess } from '../Toaster'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -27,10 +27,31 @@ const Header: React.FC<INavbarProps> = props => {
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
 
   const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
+  const {
+    user,
+    methods,
+    device: { isMobile },
+  } = applicationContext
+
+  const handleGoogleLogin = () => {
+    const processCommands = async () => {
+      try {
+        const user = await signInWithGoogle()
+        const preparedUserInfo = await prepareUserInfo(user)
+        const userInfo = await addUser(preparedUserInfo)
+        vibrate()
+        methods.updateUser(userInfo)
+        toastSuccess('Login successful!')
+      } catch (e) {
+        toastError('Failed to login!')
+      }
+    }
+
+    processCommands()
+  }
 
   const pwaInstallLink: IHeaderLink = {
-    label: 'Install',
+    label: isMobile ? null : 'Install',
     url: null,
     iconComponent: DownloadIconOutline,
     activeIconComponent: DownloadIconSolid,
@@ -46,7 +67,7 @@ const Header: React.FC<INavbarProps> = props => {
 
   const NAV_LINKS: IHeaderLink[] = [
     {
-      label: 'Account',
+      label: isMobile ? null : user?.name || '',
       url: getProfilePageUrl(user?.username || ''),
       iconComponent: ({ className }) => <HeaderProfileIcon className={className} active={false} />,
       activeIconComponent: ({ className }) => <HeaderProfileIcon className={className} active />,
@@ -56,20 +77,21 @@ const Header: React.FC<INavbarProps> = props => {
       show: !!user,
     },
     {
-      label: 'Login',
+      label: isMobile ? null : 'Login',
       url: null,
-      iconComponent: LoginIconOutline,
-      activeIconComponent: LoginIconSolid,
+      iconComponent: UserCircleIconOutline,
+      activeIconComponent: null,
       iconClassName: null,
       count: null,
       onClick: e => {
         e.preventDefault()
-        methods.togglePopup(PopupType.LOGIN, {})
+        handleGoogleLogin()
       },
       show: !user,
+      tooltipContent: 'Login with Google',
     },
     {
-      label: 'More',
+      label: null,
       url: getMorePageUrl(),
       iconComponent: MenuIconOutline,
       activeIconComponent: MenuIconSolid,

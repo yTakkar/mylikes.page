@@ -4,9 +4,9 @@ import CoreActiveLink from '../core/CoreActiveLink'
 import Tooltip from '../Tooltip'
 
 export interface IHeaderLink {
-  label: string
+  label: string | null
   url: string | null
-  iconComponent: React.FC<any>
+  iconComponent: React.FC<any> | null
   activeIconComponent: React.FC<any> | null
   iconClassName: string | null
   count: string | null
@@ -30,7 +30,7 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
         key={index}
         url={navLink.url}
         className="flex font-primary-medium text-typo-paragraph text-sm items-center group relative ml-4 lg:ml-5"
-        title={navLink.label}
+        title={navLink.label || ''}
         onClick={e => {
           if (navLink.onClick) {
             navLink.onClick(e)
@@ -38,7 +38,8 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
         }}>
         {(isActive: boolean) => {
           const IconComponent =
-            isActive && navLink.activeIconComponent ? navLink.activeIconComponent : navLink.iconComponent
+            (isActive && navLink.activeIconComponent ? navLink.activeIconComponent : navLink.iconComponent) ||
+            (() => null)
 
           return (
             <React.Fragment>
@@ -46,12 +47,13 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
                 <span>
                   <IconComponent
                     className={classnames(
-                      'w-[24px] transform transition-transform group-hover:scale-110',
+                      'w-[24px] transform transition-transform group-hover:scale-105',
                       navLink.iconClassName
                     )}
                   />
                 </span>
               </Tooltip>
+              <span className="ml-1">{navLink.label}</span>
               {navLink.count && !isActive ? (
                 <span className="absolute -right-3 -top-4 bg-primary text-xxs text-white rounded-lg py-[1px] px-1 font-primary-medium">
                   {navLink.count}

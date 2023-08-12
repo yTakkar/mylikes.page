@@ -16,9 +16,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.BUNDLE_ANALYZE === 'true',
 })
 
-console.log('process.env', process.env)
-console.log('parsedEnvs', parsedEnvs)
-
 const securityHeaders = [
   {
     key: 'X-XSS-Protection',

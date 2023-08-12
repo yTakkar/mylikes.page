@@ -17,6 +17,7 @@ import Footer from '../components/footer/Footer'
 import OrientationLock from '../components/OrientationLock'
 import PopupRenderer from '../components/popup/PopupRenderer'
 import { dynamicNprogress } from '../components/dynamicModules'
+import { Analytics } from '@vercel/analytics/react'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -79,34 +80,37 @@ const MyApp: NextPage<IProps> = props => {
   }
 
   return (
-    <ApplicationContext.Provider value={applicationContext}>
-      <AppSeo {...seo} />
-      <Header topNavVisibility={showTopNav} />
+    <>
+      <ApplicationContext.Provider value={applicationContext}>
+        <AppSeo {...seo} />
+        <Header topNavVisibility={showTopNav} />
 
-      <main
-        id={classnames('pageMain', {
-          'pageMain-lock': !appConfig.features.enableLandscapeMode,
-        })}
-        className={classNames('page-main lg:pb-0')}>
-        <ErrorBoundary key={router.route}>
-          {appConfig.features.enablePageTransition ? (
-            <DynamicPageTransition timeout={300} classNames="pageTransition">
+        <main
+          id={classnames('pageMain', {
+            'pageMain-lock': !appConfig.features.enableLandscapeMode,
+          })}
+          className={classNames('page-main lg:pb-0')}>
+          <ErrorBoundary key={router.route}>
+            {appConfig.features.enablePageTransition ? (
+              <DynamicPageTransition timeout={300} classNames="pageTransition">
+                <Component {...pageProps} key={router.route} />
+              </DynamicPageTransition>
+            ) : (
               <Component {...pageProps} key={router.route} />
-            </DynamicPageTransition>
-          ) : (
-            <Component {...pageProps} key={router.route} />
-          )}
+            )}
 
-          {footer?.show ? <Footer /> : null}
-        </ErrorBoundary>
-      </main>
+            {footer?.show ? <Footer /> : null}
+          </ErrorBoundary>
+        </main>
 
-      <CookieBanner />
-      <Toaster />
-      {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
-      {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
-      <PopupRenderer />
-    </ApplicationContext.Provider>
+        <CookieBanner />
+        <Toaster />
+        {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
+        {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
+        <PopupRenderer />
+      </ApplicationContext.Provider>
+      <Analytics />
+    </>
   )
 }
 

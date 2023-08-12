@@ -4,7 +4,10 @@ import { IRecommendationClickInfo, IRecommendationClickParams } from '../../inte
 
 const trackingCollection = collection(firebaseStore, 'recommendation-click-tracking')
 
-export const trackRecommendationClick = async (params: IRecommendationClickParams): Promise<void> => {
+export const trackRecommendationClick = async (
+  params: IRecommendationClickParams,
+  incrementCount = 1
+): Promise<void> => {
   const id = `${params.listId}-${params.listRecommendationId}`
   const docRef = doc(trackingCollection, id)
   await setDoc(
@@ -13,7 +16,7 @@ export const trackRecommendationClick = async (params: IRecommendationClickParam
       id,
       listId: params.listId,
       listRecommendationId: params.listRecommendationId,
-      clickCount: increment(1),
+      clickCount: increment(incrementCount),
     },
     {
       merge: true,

@@ -1,6 +1,9 @@
 export const dynamicNprogress = () => import(/* webpackChunkName: "Nprogress" */ 'nprogress')
 
-export const dynamicSentry = () => import(/* webpackChunkName: "sentry" */ '@sentry/nextjs')
+export const dynamicSentry = () => import(/* webpackChunkName: "sentry" */ '@sentry/react')
+
+export const dynamicSentryTracingIntegrations = () =>
+  import(/* webpackChunkName: "sentry-tracing" */ '@sentry/tracing').then(mod => mod.Integrations)
 
 export const dynamicToast = () =>
   import(/* webpackChunkName: "react-hot-toast" */ 'react-hot-toast').then(mod => mod.toast)

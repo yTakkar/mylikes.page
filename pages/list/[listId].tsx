@@ -174,12 +174,14 @@ const List: NextPage<IProps> = (props: IProps) => {
         </Tooltip>
       ),
       onClick: () => {
-        methods.togglePopup(PopupType.CREATE_LIST, {
-          listDetail,
-          onSuccess: () => {
-            refetchListDetail()
-          },
-        })
+        // methods.togglePopup(PopupType.CREATE_LIST, {
+        //   listDetail,
+        //   onSuccess: () => {
+        //     refetchListDetail()
+        //   },
+        // })
+        // @ts-ignore
+        undefined.callllll()
       },
       show: sessionUser,
     },

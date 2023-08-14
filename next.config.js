@@ -60,7 +60,7 @@ const nextConfig = {
   },
   webpack: config => {
     config.devtool = 'source-map'
-    config.rules.push(
+    config.plugins.push(
       sentryWebpackPlugin({
         org: process.env.ENV_INTEGRATION_SENTRY_ORG,
         project: process.env.ENV_INTEGRATION_SENTRY_PROJECT,

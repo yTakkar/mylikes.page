@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { IGlobalLayoutProps } from './_app'
 import classnames from 'classnames'
 import PageContainer from '../components/PageContainer'
@@ -29,7 +29,6 @@ import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import { PopupType } from '../interface/popup'
-import appAnalytics from '../lib/analytics/appAnalytics'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -40,17 +39,6 @@ const MorePage: NextPage<IProps> = () => {
   const { user, methods } = applicationContext
 
   const router = useRouter()
-
-  useEffect(() => {
-    setTimeout(() => {
-      // @ts-ignore
-      undefined.faiyaz()
-    }, 2 * 1000)
-
-    setTimeout(() => {
-      appAnalytics.captureException(new Error('Takkar'))
-    }, 5 * 1000)
-  }, [])
 
   const LINKS = [
     {

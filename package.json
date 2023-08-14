@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.3.0",
+    "@sentry/webpack-plugin": "^2.6.2",
     "@types/debug": "^4.1.7",
     "@types/google.analytics": "^0.0.42",
     "@types/node": "^18.15.11",

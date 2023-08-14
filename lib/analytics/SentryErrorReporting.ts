@@ -53,7 +53,6 @@ class SentryErrorReporting implements ISentryErrorReporting {
 
   public captureException(error: any, info?: any): void {
     if (this.sentry) {
-      console.log('SentryErrorReporting.captureException', error, info)
       this.sentry.captureException(error, info)
     }
   }

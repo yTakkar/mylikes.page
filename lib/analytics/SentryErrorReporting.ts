@@ -24,7 +24,6 @@ class SentryErrorReporting implements ISentryErrorReporting {
     const config: BrowserOptions = {
       dsn: appConfig.integrations.sentryErrorReporting.dsn,
       tracesSampleRate: 1.0,
-      debug: false,
       environment: appConfig.env,
       integrations: [new integrations.BrowserTracing()],
     }
@@ -54,6 +53,7 @@ class SentryErrorReporting implements ISentryErrorReporting {
 
   public captureException(error: any, info?: any): void {
     if (this.sentry) {
+      console.log('SentryErrorReporting.captureException', error, info)
       this.sentry.captureException(error, info)
     }
   }

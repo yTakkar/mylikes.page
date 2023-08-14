@@ -1,6 +1,5 @@
 const withPlugins = require('next-compose-plugins')
 const { getAbsPath } = require('./scripts/fileSystem')
-const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 
 const appEnv = process.env.ENV
 
@@ -57,20 +56,6 @@ const nextConfig = {
         destination: '/txt/ads.txt',
       },
     ]
-  },
-  webpack: config => {
-    config.devtool = 'source-map'
-    config.plugins.push(
-      sentryWebpackPlugin({
-        org: process.env.ENV_INTEGRATION_SENTRY_ORG,
-        project: process.env.ENV_INTEGRATION_SENTRY_PROJECT,
-        authToken: process.env.ENV_INTEGRATION_SENTRY_AUTH_TOKEN,
-        include: '.next',
-        ignore: ['node_modules'],
-        urlPrefix: '~/_next',
-      })
-    )
-    return config
   },
 }
 

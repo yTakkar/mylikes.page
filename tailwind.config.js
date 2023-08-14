@@ -193,6 +193,7 @@ module.exports = {
       alabaster: '#F7F7F7',
       mercury: '#e3e3e3',
       clementine: '#e86800',
+      emerald: '#48c289',
     }),
     columns: {
       auto: 'auto',

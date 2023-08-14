@@ -89,6 +89,10 @@ const appConfig = {
       title: `Checkout {{LIST_NAME}} on ${app.name}!`, // Dynamic keywords allowed: LIST_NAME, LIST_URL
     },
   },
+  feedback: {
+    generalFeedbackForm: 'https://forms.gle/322aJaKeZYmZV83H6',
+    newRecommendationTypeForm: 'https://forms.gle/DrF31SThVFCmLdPa7',
+  },
   build: {
     pageRevalidateTimeInSec: {
       // HOME: 15 * 60,

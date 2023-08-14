@@ -20,6 +20,8 @@ import { toastError, toastSuccess } from '../Toaster'
 import { generateRecommendationImageUrl } from '../../utils/recommendation'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import Alert from '../modal/Alert'
+import CoreLink from '../core/CoreLink'
+import appConfig from '../../config/appConfig'
 
 enum FieldKeyType {
   URL = 'URL',
@@ -239,6 +241,12 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
               'user-input-error': fieldsWithError.TYPE,
             })}
           />
+          <div className="text-typo-paragraphLight text-sm mt-2">
+            {`Don't see the type you want? `}
+            <CoreLink isExternal url={appConfig.feedback.newRecommendationTypeForm} className="underline">
+              Suggest here
+            </CoreLink>
+          </div>
         </div>
 
         <div className="user-input-group">

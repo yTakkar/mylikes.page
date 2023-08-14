@@ -18,6 +18,8 @@ import OrientationLock from '../components/OrientationLock'
 import PopupRenderer from '../components/popup/PopupRenderer'
 import { dynamicNprogress } from '../components/dynamicModules'
 import { Analytics } from '@vercel/analytics/react'
+import GeneralFeedbackFormButton from '../components/GeneralFeedbackFormButton'
+import { DesktopView } from '../components/ResponsiveViews'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -108,8 +110,12 @@ const MyApp: NextPage<IProps> = props => {
         {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
         {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
         <PopupRenderer />
+        <DesktopView useCSS>
+          <GeneralFeedbackFormButton />
+        </DesktopView>
       </ApplicationContext.Provider>
-      <Analytics />
+
+      {!appConfig.isDev && <Analytics />}
     </>
   )
 }

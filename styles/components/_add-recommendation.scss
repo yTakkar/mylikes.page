@@ -1,5 +1,5 @@
 .addRecommendation {
-  @apply relative overflow-hidden h-full;
+  @apply relative overflow-x-hidden h-full;
 
   & > div {
     @apply pt-4 pb-2 px-3;

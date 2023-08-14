@@ -49,6 +49,14 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/ads.txt',
+        destination: '/txt/ads.txt',
+      },
+    ]
+  },
 }
 
 module.exports = withPlugins([withBundleAnalyzer], nextConfig)

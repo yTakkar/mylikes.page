@@ -175,16 +175,12 @@ const List: NextPage<IProps> = (props: IProps) => {
         </Tooltip>
       ),
       onClick: () => {
-        // methods.togglePopup(PopupType.CREATE_LIST, {
-        //   listDetail,
-        //   onSuccess: () => {
-        //     refetchListDetail()
-        //   },
-        // })
-        // @ts-ignore
-        undefined.very_unique()
-
-        appAnalytics.captureException(new Error('Very unique error'))
+        methods.togglePopup(PopupType.CREATE_LIST, {
+          listDetail,
+          onSuccess: () => {
+            refetchListDetail()
+          },
+        })
       },
       show: sessionUser,
     },

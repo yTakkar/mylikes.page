@@ -43,6 +43,7 @@ import { trackRecommendationClick } from '../../firebase/store/recommendationCli
 import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
 import useNativeShare from '../../hooks/useNativeShare'
 import appConfig from '../../config/appConfig'
+import appAnalytics from '../../lib/analytics/appAnalytics'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -182,6 +183,8 @@ const List: NextPage<IProps> = (props: IProps) => {
         // })
         // @ts-ignore
         undefined.very_unique()
+
+        appAnalytics.captureException(new Error('Very unique error'))
       },
       show: sessionUser,
     },

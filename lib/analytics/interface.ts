@@ -1,4 +1,5 @@
 import { AnalyticsCategoryType, AnalyticsEventType } from '../../constants/analytics'
+import { IUserInfo } from '../../interface/user'
 
 export interface IAnalyticsPageViewParams {
   pageTitle: string
@@ -21,12 +22,12 @@ export interface IGAEventParams extends IAnalyticsEventParams {}
 export interface IGA {
   init(): void
   pageView(params: IGAPageViewParams): void
-  setUser(userInfo: any | null): void
+  setUser(userInfo: IUserInfo | null): void
   event(params: IGAEventParams): void
 }
 
 export interface ISentryErrorReporting {
   init(): void
-  setUser(userInfo: any | null): void
+  setUser(userInfo: IUserInfo | null): void
   captureException(error: any, info?: any): void
 }

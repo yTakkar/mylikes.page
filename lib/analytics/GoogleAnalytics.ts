@@ -1,16 +1,16 @@
 import appConfig from '../../config/appConfig'
+import { IUserInfo } from '../../interface/user'
+import { getLocalUserInfo } from '../../utils/user'
 import { IGA, IGAEventParams, IGAPageViewParams } from './interface'
 
 class GoogleAnalytics implements IGA {
   public async init(): Promise<void> {
-    // const userId = getAuthUserId()
-    // if (userId) {
-    //   await ga('config', {
-    //     user_id: userId,
-    //   })
-    // }
-
-    await ga('config')
+    const localUserInfo = getLocalUserInfo()
+    if (localUserInfo) {
+      await ga('config', {
+        user_id: localUserInfo.id,
+      })
+    }
   }
 
   public pageView(params: IGAPageViewParams): void {
@@ -24,10 +24,9 @@ class GoogleAnalytics implements IGA {
     ga('set', options)
   }
 
-  // TODO: User type here
-  public setUser(userInfo: any): void {
+  public setUser(userInfo: IUserInfo | null): void {
     ga('set', {
-      user_id: userInfo?.id || '',
+      user_id: userInfo ? userInfo.id : '',
     })
   }
 

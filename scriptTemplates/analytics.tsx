@@ -21,6 +21,7 @@ const GoogleAnalyticsScripts: React.FC = () => {
           ga('js', new Date());
           ga('config', '${appConfig.integrations.googleAnalytics.webCode}', {
             transport_type: 'beacon',
+            send_page_view: false,
           });
         `,
         }}

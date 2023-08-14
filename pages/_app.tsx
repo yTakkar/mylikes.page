@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'styles/styles.scss'
 import { NextPage } from 'next'
 import ApplicationContext from '../components/ApplicationContext'
@@ -68,9 +68,22 @@ const MyApp: NextPage<IProps> = props => {
   const { applicationContext } = useApplicationContext()
   const router = useRouter()
 
+  const [analyticsLoaded, toggleAnalyticsLoaded] = useState(false)
+
   useEffect(() => {
-    appAnalytics.init()
+    appAnalytics.init().then(() => {
+      toggleAnalyticsLoaded(true)
+    })
   }, [])
+
+  useEffect(() => {
+    if (analyticsLoaded) {
+      appAnalytics.sendPageView({
+        pageTitle: router.asPath,
+        pagePath: router.asPath,
+      })
+    }
+  }, [router.asPath, analyticsLoaded])
 
   let showTopNav = true
 

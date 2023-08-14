@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'styles/styles.scss'
 import { NextPage } from 'next'
 import ApplicationContext from '../components/ApplicationContext'
@@ -20,6 +20,7 @@ import { dynamicNprogress } from '../components/dynamicModules'
 import { Analytics } from '@vercel/analytics/react'
 import GeneralFeedbackFormButton from '../components/GeneralFeedbackFormButton'
 import { DesktopView } from '../components/ResponsiveViews'
+import appAnalytics from '../lib/analytics/appAnalytics'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -66,6 +67,10 @@ const MyApp: NextPage<IProps> = props => {
 
   const { applicationContext } = useApplicationContext()
   const router = useRouter()
+
+  useEffect(() => {
+    appAnalytics.init()
+  }, [])
 
   let showTopNav = true
 

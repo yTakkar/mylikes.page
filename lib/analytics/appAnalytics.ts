@@ -1,5 +1,6 @@
 import appConfig from '../../config/appConfig'
 import { AnalyticsEventType } from '../../constants/analytics'
+import { IUserInfo } from '../../interface/user'
 import googleAnalytics from './GoogleAnalytics'
 import { IAnalyticsEventParams, IAnalyticsPageViewParams } from './interface'
 import sentryErrorReporting from './SentryErrorReporting'
@@ -19,8 +20,7 @@ const sendPageView = (params: IAnalyticsPageViewParams) => {
   }
 }
 
-// TODO: User type
-const setUser = (user: any | null) => {
+const setUser = (user: IUserInfo | null) => {
   if (appConfig.integrations.googleAnalytics.enabled) {
     googleAnalytics.setUser(user)
   }

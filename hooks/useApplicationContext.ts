@@ -1,9 +1,10 @@
-import { use, useEffect } from 'react'
+import { useEffect } from 'react'
 import { getDeviceInfo } from '../utils/applicationContext'
 import useApplicationContextReducer from './useApplicationContextReducer'
 import useOrientation from './useOrientation'
 import { IContextMethods } from '../interface/applicationContext'
 import { deleteLocalUserInfo, getLocalUserInfo, setLocalUserInfo } from '../utils/user'
+import appAnalytics from '../lib/analytics/appAnalytics'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
@@ -40,12 +41,14 @@ const useApplicationContext = () => {
   const logout: IContextMethods['logout'] = () => {
     updateUser(null)
     deleteLocalUserInfo()
+    appAnalytics.setUser(null)
   }
 
   useEffect(() => {
     const localUserInfo = getLocalUserInfo()
     if (localUserInfo) {
       updateUser(localUserInfo)
+      appAnalytics.setUser(localUserInfo)
     }
   }, [])
 

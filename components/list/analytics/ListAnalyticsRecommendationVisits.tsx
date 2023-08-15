@@ -7,7 +7,7 @@ import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
-import { PresentationChartLineIcon } from '@heroicons/react/outline'
+import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
 import ls from 'localstorage-slim'
 
 interface IListAnalyticsRecommendationVisitsProps {
@@ -15,7 +15,7 @@ interface IListAnalyticsRecommendationVisitsProps {
 }
 
 interface ITrackingListRecommendationInfo extends IRecommendationClickInfo {
-  listRecommendation: IListRecommendationInfo
+  listRecommendation: IListRecommendationInfo | null
 }
 
 const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVisitsProps> = props => {
@@ -52,9 +52,9 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
     .map(trackingInfo => {
       return {
         ...trackingInfo,
-        listRecommendation: listDetail.recommendations.find(
-          recommendation => recommendation.id === trackingInfo.listRecommendationId
-        )!,
+        listRecommendation:
+          listDetail.recommendations.find(recommendation => recommendation.id === trackingInfo.listRecommendationId) ||
+          null,
       }
     })
     .sort((a, b) => b.clickCount - a.clickCount)
@@ -65,14 +65,27 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
       <div>
         <div className="flex items-start mb-4 relative">
           <div className="relative">
-            <CoreImage
-              url={listRecommendation.imageUrl}
-              alt={`${listRecommendation.title} recommendation on ${appConfig.global.app.name}`}
-              className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
-            />
+            {listRecommendation ? (
+              <CoreImage
+                url={listRecommendation.imageUrl}
+                alt={`${listRecommendation.title} recommendation on ${appConfig.global.app.name}`}
+                className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
+              />
+            ) : (
+              <BanIcon
+                className={classNames('w-11 h-11 min-h-11 min-w-11', {
+                  'text-gray-600': !listRecommendation,
+                })}
+              />
+            )}
           </div>
           <div className="ml-3 flex-grow">
-            <span className="font-medium font-primary-medium">{listRecommendation.title}</span>
+            <span
+              className={classNames('font-medium font-primary-medium', {
+                'text-gray-600 ital': !listRecommendation,
+              })}>
+              {listRecommendation ? listRecommendation.title : '<Deleted>'}
+            </span>
             <div className="text-gray-600 text-sm flex items-center">{pluralize('visit', clickCount)}</div>
           </div>
         </div>
@@ -99,7 +112,7 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
         </div>
 
         <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Total count</div>
+          <div className="font-bold">Overall count</div>
           <div className="text-xl">{totalRecommendationVisits}</div>
         </div>
 

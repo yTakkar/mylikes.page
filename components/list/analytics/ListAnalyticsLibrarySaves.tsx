@@ -78,7 +78,7 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
         </div>
 
         <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Total count</div>
+          <div className="font-bold">Overall count</div>
           <div className="text-xl">{totalLibrarySaves}</div>
         </div>
 

@@ -3,7 +3,7 @@ import { IListDetail } from '../../../interface/list'
 import { IAddToListTrackingInfo } from '../../../interface/addToListTracking'
 import { getAddToListTrackingsByList } from '../../../firebase/store/addToListTracking'
 import Loader, { LoaderType } from '../../loader/Loader'
-import { PresentationChartLineIcon } from '@heroicons/react/outline'
+import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
 import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
@@ -47,21 +47,29 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
   const total = trackingInfoList.length
 
   const renderInfo = (info: IAddToListTrackingInfo) => {
-    const recommendation = listDetail.recommendations.find(r => r.id === info.listRecommendationId)!
+    const recommendation = listDetail.recommendations.find(r => r.id === info.listRecommendationId)
 
     return (
       <div>
         <div className="flex items-start mb-4 relative">
           <div className="relative">
-            <CoreImage
-              url={recommendation.imageUrl}
-              alt={`${recommendation.title} recommendation on ${appConfig.global.app.name}`}
-              className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
-            />
+            {recommendation ? (
+              <CoreImage
+                url={recommendation.imageUrl}
+                alt={`${recommendation.title} recommendation on ${appConfig.global.app.name}`}
+                className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
+              />
+            ) : (
+              <BanIcon
+                className={classNames('w-11 h-11 min-h-11 min-w-11', {
+                  'text-gray-600': !recommendation,
+                })}
+              />
+            )}
           </div>
           <div className="ml-3 flex-grow">
             <div className="flex items-center">
-              <div className="font-semibold">{recommendation?.title}</div>
+              <div className="font-semibold">{recommendation ? recommendation.title : '<Deleted>'}</div>
               <div className="mx-1">added to</div>
               <CoreLink url={getListPageUrl(info.targetListId)} isExternal>
                 <div className="font-semibold underline">{info.targetListName}</div>
@@ -95,7 +103,7 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
         </div>
 
         <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Total count</div>
+          <div className="font-bold">Overall count</div>
           <div className="text-xl">{total}</div>
         </div>
 

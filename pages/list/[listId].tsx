@@ -43,7 +43,6 @@ import { trackRecommendationClick } from '../../firebase/store/recommendationCli
 import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
 import useNativeShare from '../../hooks/useNativeShare'
 import appConfig from '../../config/appConfig'
-import appAnalytics from '../../lib/analytics/appAnalytics'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -62,7 +61,11 @@ const List: NextPage<IProps> = (props: IProps) => {
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
 
-  const { listDetail: initialListDetail, profileInfoMap } = props.pageData
+  const { listDetail: initialListDetail, profileInfoMap: _profileInfoMap } = props.pageData
+
+  const profileInfoMap = {
+    ..._profileInfoMap,
+  }
 
   const sessionUser = isSessionUser(user, initialListDetail.owner)
 

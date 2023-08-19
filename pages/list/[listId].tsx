@@ -35,7 +35,7 @@ import { isSessionUser } from '../../utils/user'
 import NotFound from '../../components/NotFound'
 import CoreLink from '../../components/core/CoreLink'
 import { generateListId } from '../../utils/list'
-import { toastSuccess } from '../../components/Toaster'
+import { toastError, toastSuccess } from '../../components/Toaster'
 import Tooltip from '../../components/Tooltip'
 import { revalidateUrls } from '../../utils/revalidate'
 import classNames from 'classnames'
@@ -43,6 +43,7 @@ import { trackRecommendationClick } from '../../firebase/store/recommendationCli
 import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
 import useNativeShare from '../../hooks/useNativeShare'
 import appConfig from '../../config/appConfig'
+import Alert from '../../components/modal/Alert'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -71,6 +72,8 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const [listDetail, setListDetail] = useState(initialListDetail)
   const [loading, toggleLoading] = useState(false)
+  const [showCloneAlert, toggleCloneAlert] = useState(false)
+  const [cloneLoading, toggleCloneLoading] = useState(false)
 
   const shareUrl = `${appConfig.global.baseUrl}${getListPageUrl(listDetail.id)}`
   const shareText = appConfig.share.list.title
@@ -114,25 +117,37 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const handleClone = () => {
     const process = async () => {
-      const id = generateListId(listDetail.name)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id: _id, owner: _owner, ...rest } = listDetail
-      await addList({
-        id,
-        ...rest,
-        ownerEmail: user!.email,
-        clonedListId: listDetail.id,
-      })
-      await revalidateUrls([getListPageUrl(id)])
-      trackAddToLibrary({
-        listId: listDetail.id,
-        clonedListId: id,
-        clonedListName: listDetail.name,
-        addedAt: new Date().getTime(),
-      })
-      toastSuccess('List cloned to your library!')
-      vibrate()
-      router.push(getProfilePageUrl(user!.username))
+      toggleCloneLoading(true)
+
+      try {
+        const id = generateListId(listDetail.name)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _id, owner: _owner, ...rest } = listDetail
+        await addList({
+          id,
+          ...rest,
+          ownerEmail: user!.email,
+          clonedListId: listDetail.id,
+          createdAt: new Date().getTime(),
+        })
+        await revalidateUrls([getListPageUrl(id)])
+        trackAddToLibrary({
+          listId: listDetail.id,
+          clonedListId: id,
+          clonedListName: listDetail.name,
+          addedAt: new Date().getTime(),
+        })
+        toggleCloneLoading(false)
+        toggleCloneAlert(false)
+        toastSuccess('List cloned to your library!')
+        vibrate()
+        router.push(getProfilePageUrl(user!.username))
+      } catch (e: any) {
+        toastError(`Failed to clone list!`)
+        console.error('Error cloning list', e)
+        toggleCloneLoading(false)
+        toggleCloneAlert(false)
+      }
     }
 
     process()
@@ -212,7 +227,7 @@ const List: NextPage<IProps> = (props: IProps) => {
           </div>
         </Tooltip>
       ),
-      onClick: handleClone,
+      onClick: () => toggleCloneAlert(true),
       show: !sessionUser,
     },
     {
@@ -375,7 +390,31 @@ const List: NextPage<IProps> = (props: IProps) => {
     )
   }
 
-  return <PageContainer>{renderContent()}</PageContainer>
+  return (
+    <div>
+      <PageContainer>{renderContent()}</PageContainer>
+      {showCloneAlert ? (
+        <Alert
+          dismissModal={() => toggleCloneAlert(false)}
+          title="Clone this list?"
+          subTitle="This will create a same list with all the recommendations in your personal library."
+          cta={{
+            primary: {
+              show: true,
+              label: 'Continue',
+              loading: cloneLoading,
+              onClick: handleClone,
+            },
+            secondary: {
+              show: true,
+              label: 'Cancel',
+              onClick: () => toggleCloneAlert(false),
+            },
+          }}
+        />
+      ) : null}
+    </div>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

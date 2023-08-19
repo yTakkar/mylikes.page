@@ -23,12 +23,12 @@ import {
   getSavedRecommendationsPageUrl,
   getTnCPageUrl,
 } from '../utils/routes'
-import { prepareHomePageSeo } from '../utils/seo/pages/home'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import { PopupType } from '../interface/popup'
+import { prepareMorePageSeo } from '../utils/seo/pages/more'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -157,7 +157,7 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
   return {
     props: {
       pageData: {},
-      seo: prepareHomePageSeo(),
+      seo: prepareMorePageSeo(),
       layoutData: {
         header: {
           hideTopNav: {

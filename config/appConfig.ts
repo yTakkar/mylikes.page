@@ -44,7 +44,7 @@ const appConfig = {
     ],
     startUrl: '/?utm_source=pwa&utm_medium=homescreen',
     icons: {
-      maskable: false, // make sure icons can be masked before setting to true
+      maskable: true, // make sure icons can be masked before setting to true
     },
   },
   app: {

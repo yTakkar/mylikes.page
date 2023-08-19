@@ -40,7 +40,11 @@ next-env.d.ts
 # Sentry Auth Token
 .sentryclirc
 
-public/js/sw.js
-public/js/sw.js.map
-public/misc/apple-developer-merchantid-domain-association
 public/json/manifest.json
+
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/fallback-*.js
+public/fallback-*.js.map

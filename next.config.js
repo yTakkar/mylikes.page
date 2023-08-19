@@ -52,14 +52,6 @@ const nextConfig = {
         source: '/ads.txt',
         destination: '/txt/ads.txt',
       },
-      {
-        source: '/sw.js',
-        destination: '/js/sw.js',
-      },
-      {
-        source: '/sw.js.map',
-        destination: '/js/sw.js.map',
-      },
     ]
   },
 }
@@ -70,7 +62,7 @@ module.exports = () => {
       dest: 'public',
       // sw: 'sw.js',
       // scope: '/',
-      // disable: appEnv.startsWith('local'),
+      disable: appEnv.startsWith('local'),
       // register: true,
       // swSrc: './pwa/service-worker.js',
     }),

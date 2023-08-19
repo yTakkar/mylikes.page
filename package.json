@@ -27,7 +27,7 @@
     "localstorage-slim": "^2.4.0",
     "nanoid": "^4.0.2",
     "next-page-transitions": "^1.0.0-beta.2",
-    "next-pwa": "5.2.24",
+    "next-pwa": "^5.6.0",
     "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

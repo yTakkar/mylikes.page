@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageContainer from '../components/PageContainer'
 import { IGlobalLayoutProps } from './_app'
 import { GetStaticProps, NextPage } from 'next'
@@ -11,6 +11,8 @@ interface IProps extends IGlobalLayoutProps {
 }
 
 const OfflinePage: NextPage<IProps> = () => {
+  const [loading, toggleLoading] = useState(false)
+
   return (
     <div>
       {/* eslint-disable-next-line react/no-unknown-property */}
@@ -73,7 +75,15 @@ const OfflinePage: NextPage<IProps> = () => {
           </div>
           <div className="ys-ofln-ttl">{`You're Offline`}</div>
           <div className="ys-ofln-txt">No Internet connection found. Check your connection or try again.</div>
-          <button>Try Again</button>
+          <button
+            onClick={() => {
+              toggleLoading(true)
+              setTimeout(() => {
+                window.location.reload()
+              }, 1000)
+            }}>
+            {loading ? 'Reloading...' : 'Reload'}
+          </button>
         </div>
       </PageContainer>
     </div>

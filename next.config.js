@@ -57,6 +57,10 @@ const nextConfig = {
         destination: '/js/sw.js',
       },
       {
+        source: '/sw.js',
+        destination: '/public/js/sw.js',
+      },
+      {
         source: '/sw.js.map',
         destination: '/js/sw.js.map',
       },
@@ -70,7 +74,7 @@ module.exports = () => {
       dest: 'public/js',
       sw: 'sw.js',
       scope: '/',
-      disable: appEnv.startsWith('local'),
+      // disable: appEnv.startsWith('local'),
       register: true,
       swSrc: './pwa/service-worker.js',
     }),

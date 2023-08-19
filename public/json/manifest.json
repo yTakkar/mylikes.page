@@ -1,4 +1,5 @@
 {
+  "id": "MyLikes",
   "name": "MyLikes",
   "short_name": "MyLikes",
   "description": "A summary",
@@ -567,30 +568,6 @@
       "src": "http://localhost:3000/images/logos/ios/1024.png",
       "sizes": "1024x1024",
       "purpose": "any"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Search",
-      "short_name": "Search",
-      "url": "/search?utm_source=pwa&utm_medium=shortcut",
-      "icons": [
-        {
-          "src": "http://localhost:3000/images/logos/android-icon-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Catalogues",
-      "short_name": "Catalogues",
-      "url": "/catalogue?utm_source=pwa&utm_medium=shortcut",
-      "icons": [
-        {
-          "src": "http://localhost:3000/images/logos/android-icon-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
     }
   ],
   "related_applications": []

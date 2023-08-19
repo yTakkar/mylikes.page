@@ -36,6 +36,7 @@ const resolvedTailwindConfig = resolveConfig(tailwindConfig)
 const theme = resolvedTailwindConfig.theme
 
 const manifestJSON = {
+  id: appConfig.global.app.name,
   name: appConfig.global.app.name,
   short_name: appConfig.global.app.shortName,
   description: appConfig.global.app.summary,
@@ -51,17 +52,17 @@ const manifestJSON = {
     }
   }),
   // screenshots: updatedManifestScreenshots,
-  shortcuts: appConfig.pwa.shortcuts.map(shortcut => {
-    return {
-      ...shortcut,
-      icons: [
-        {
-          src: prepareImageUrl(`/images/logos/android-icon-192x192.png`),
-          sizes: '192x192',
-        },
-      ],
-    }
-  }),
+  // shortcuts: appConfig.pwa.shortcuts.map(shortcut => {
+  //   return {
+  //     ...shortcut,
+  //     icons: [
+  //       {
+  //         src: prepareImageUrl(`/images/logos/android-icon-192x192.png`),
+  //         sizes: '192x192',
+  //       },
+  //     ],
+  //   }
+  // }),
   // prefer_related_applications: appConfig.pwa.preferNativeAppOverPWA,
   related_applications: [],
 }

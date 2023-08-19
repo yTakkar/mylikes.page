@@ -1,7 +1,7 @@
 const app = {
   name: 'MyLikes',
   shortName: 'MyLikes',
-  summary: 'A summary',
+  summary: 'A summary', // TODO:
   key: 'MYLIKES', // should be uppercase
 }
 

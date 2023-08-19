@@ -57,10 +57,6 @@ const nextConfig = {
         destination: '/js/sw.js',
       },
       {
-        source: '/sw.js',
-        destination: '/public/js/sw.js',
-      },
-      {
         source: '/sw.js.map',
         destination: '/js/sw.js.map',
       },
@@ -71,12 +67,12 @@ const nextConfig = {
 module.exports = () => {
   const plugins = [
     nextPWA({
-      dest: 'public/js',
-      sw: 'sw.js',
-      scope: '/',
+      dest: 'public',
+      // sw: 'sw.js',
+      // scope: '/',
       // disable: appEnv.startsWith('local'),
-      register: true,
-      swSrc: './pwa/service-worker.js',
+      // register: true,
+      // swSrc: './pwa/service-worker.js',
     }),
     nextBundlerAnalyzer({
       enabled: process.env.BUNDLE_ANALYZE === 'true',

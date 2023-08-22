@@ -1,4 +1,16 @@
+import { sanitize } from 'dompurify'
 import { toastError } from '../components/Toaster'
+
+export const getSanitizedValue = (value: string) => {
+  return sanitize(value, {
+    USE_PROFILES: {
+      html: false,
+      svg: false,
+      mathMl: false,
+      svgFilters: false,
+    },
+  })
+}
 
 export const handleValidation = (
   validationMapping: any,

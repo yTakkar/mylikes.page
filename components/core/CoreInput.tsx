@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { BackspaceIcon } from '@heroicons/react/solid'
 import classnames from 'classnames'
+import { getSanitizedValue } from '../../utils/form'
 
 export enum CoreTextInputType {
   TEXT = 'text',
@@ -23,6 +24,7 @@ interface ICoreInputProps {
   onClearClick?: (value: string) => void
   inputClassName?: string
   className?: string
+  sanitizeOnBlur?: boolean
 }
 
 const CoreTextInput = React.forwardRef<any, ICoreInputProps>((props, ref) => {
@@ -39,6 +41,7 @@ const CoreTextInput = React.forwardRef<any, ICoreInputProps>((props, ref) => {
     inputClassName,
     className,
     maxLength,
+    sanitizeOnBlur = false,
   } = props
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -57,6 +60,11 @@ const CoreTextInput = React.forwardRef<any, ICoreInputProps>((props, ref) => {
         )}
         value={value}
         onChange={e => setValue(e.target.value)}
+        onBlur={e => {
+          if (sanitizeOnBlur) {
+            setValue(getSanitizedValue(e.target.value))
+          }
+        }}
         disabled={disabled}
         placeholder={placeholder}
         autoComplete={autoComplete}

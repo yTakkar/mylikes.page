@@ -240,6 +240,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
                 inputClassName={classNames('user-input', {
                   'user-input-error': fieldsWithError.NAME,
                 })}
+                sanitizeOnBlur
               />
             </div>
 
@@ -252,6 +253,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
                 className={classNames('user-input h-24', {
                   'user-input-error': fieldsWithError.DESCRIPTION,
                 })}
+                sanitizeOnBlur
               />
             </div>
 

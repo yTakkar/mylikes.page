@@ -69,6 +69,7 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
         setValue={setNoteValue}
         placeholder="A note/review you want to attach"
         className={classNames('h-20')}
+        sanitizeOnBlur
       />
       <div>
         <CoreButton

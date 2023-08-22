@@ -230,6 +230,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.NAME,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -244,6 +245,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.USERNAME,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -259,6 +261,7 @@ const ProfileEdit: NextPage<IProps> = () => {
                 'user-input-error': fieldsWithError.EMAIL,
               })}
               disabled
+              sanitizeOnBlur
             />
           </div>
 
@@ -271,6 +274,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               className={classNames('user-input h-24', {
                 'user-input-error': fieldsWithError.EMAIL,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -287,6 +291,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.WEBSITE,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -303,6 +308,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.INSTAGRAM_USERNAME,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -319,6 +325,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.TWITTER_USERNAME,
               })}
+              sanitizeOnBlur
             />
           </div>
 
@@ -335,6 +342,7 @@ const ProfileEdit: NextPage<IProps> = () => {
               inputClassName={classNames('user-input', {
                 'user-input-error': fieldsWithError.YOUTUBE_USERNAME,
               })}
+              sanitizeOnBlur
             />
           </div>
 

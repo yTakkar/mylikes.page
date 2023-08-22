@@ -7,7 +7,7 @@ import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
 import useOnEnter from '../../hooks/useOnEnter'
-import { handleValidation } from '../../utils/form'
+import { getSanitizedValue, handleValidation } from '../../utils/form'
 import CoreCheckbox from '../core/CoreCheckbox'
 import {
   addSavedRecommendation,
@@ -115,11 +115,12 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   }
 
   const handleAdd = async () => {
+    const url = fields.URL
     await addSavedRecommendation({
       id: nanoid(),
-      url: fields.URL,
+      url,
       title: fields.TITLE,
-      imageUrl: generateRecommendationImageUrl(fields.URL),
+      imageUrl: generateRecommendationImageUrl(url),
       isAdult: fields.IS_ADULT,
       createdAt: new Date().getTime(),
       notes: fields.NOTES,
@@ -131,10 +132,11 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   }
 
   const handleUpdate = async () => {
+    const url = fields.URL
     await updateSavedRecommendation(recommendation!.id, {
-      url: fields.URL,
+      url,
       title: fields.TITLE,
-      imageUrl: generateRecommendationImageUrl(fields.URL),
+      imageUrl: generateRecommendationImageUrl(url),
       isAdult: fields.IS_ADULT,
       notes: fields.NOTES,
       type: fields.TYPE,
@@ -214,6 +216,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             inputClassName={classNames('user-input', {
               'user-input-error': fieldsWithError.URL,
             })}
+            sanitizeOnBlur
           />
         </div>
 
@@ -227,6 +230,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             inputClassName={classNames('user-input', {
               'user-input-error': fieldsWithError.TITLE,
             })}
+            sanitizeOnBlur
           />
         </div>
 
@@ -258,6 +262,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             className={classNames('user-input h-24', {
               'user-input-error': fieldsWithError.NOTES,
             })}
+            sanitizeOnBlur
           />
         </div>
 

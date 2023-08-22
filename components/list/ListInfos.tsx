@@ -27,7 +27,9 @@ const ListInfos: React.FC<IListInfoProps> = props => {
     methods.togglePopup(PopupType.CREATE_LIST, {})
   }
 
-  const listsToShow = sessionUser ? lists : lists.filter(list => list.visibility === ListVisibilityType.PUBLIC)
+  const listsToShow = (sessionUser ? lists : lists.filter(list => list.visibility === ListVisibilityType.PUBLIC)).sort(
+    (a, b) => b.createdAt - a.createdAt
+  )
 
   if (listsToShow.length === 0) {
     return (

@@ -14,7 +14,7 @@ export interface IRecommendationInfo {
   title: string
   imageUrl: string
   isAdult: boolean
-  createdAt: number | null // date mills
+  createdAt: number // date mills
   notes: string | null
   type: RecommendationType
   ownerEmail: string

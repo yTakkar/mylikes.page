@@ -66,6 +66,7 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const profileInfoMap = {
     ..._profileInfoMap,
+    [user?.email as string]: user || undefined,
   }
 
   const sessionUser = isSessionUser(user, initialListDetail.owner)
@@ -95,7 +96,8 @@ const List: NextPage<IProps> = (props: IProps) => {
     }
   }, [initialListDetail])
 
-  const hasRecommendations = listDetail.recommendations.length > 0
+  const listRecommendations = listDetail.recommendations
+  const hasRecommendations = listRecommendations.length > 0
 
   const refetchListDetail = async () => {
     toggleLoading(true)
@@ -164,7 +166,7 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const onRemoveFromList = async (listRecommendation: IListRecommendationInfo) => {
-    const updatedList = listDetail.recommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
+    const updatedList = listRecommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
     await updateList(listDetail.id, {
       recommendations: updatedList,
     })
@@ -325,7 +327,7 @@ const List: NextPage<IProps> = (props: IProps) => {
           </div>
           <DesktopView useCSS>
             <div className="text-typo-paragraphLight">
-              {pluralize('recommendation', listDetail.recommendations.length)} on this list
+              {pluralize('recommendation', listRecommendations.length)} on this list
             </div>
           </DesktopView>
         </div>
@@ -351,7 +353,7 @@ const List: NextPage<IProps> = (props: IProps) => {
 
         <div>
           {hasRecommendations ? (
-            listDetail.recommendations.map(recommendationInfo => (
+            listRecommendations.map(recommendationInfo => (
               <RecommendationInfo
                 key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
                 layout={RecommendationInfoLayoutType.INLINE}

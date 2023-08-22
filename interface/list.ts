@@ -11,7 +11,7 @@ export interface IListDetail {
   name: string
   description: string
   owner: IUserInfo
-  createdAt: number | null // date mills
+  createdAt: number // date mills
   visibility: ListVisibilityType
   recommendations: IListRecommendationInfo[]
   clonedListId: string | null
@@ -22,7 +22,7 @@ export interface IListDetailAddParams {
   name: string
   description: string
   ownerEmail: string
-  createdAt: number | null // date mills
+  createdAt: number // date mills
   visibility: ListVisibilityType
   recommendations: IListRecommendationInfo[]
   clonedListId: string | null
@@ -33,5 +33,5 @@ export interface IListListsParams {
 }
 
 export interface IListRecommendationInfo extends IRecommendationInfo {
-  addedAt: number | null // date mills
+  addedAt: number // date mills
 }

@@ -14,7 +14,6 @@ import { PencilIcon } from '@heroicons/react/solid'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../../components/core/CoreButton'
 import CoreTextInput, { CoreTextInputType } from '../../components/core/CoreInput'
 import classNames from 'classnames'
-import useOnEnter from '../../hooks/useOnEnter'
 import CoreTextarea from '../../components/core/CoreTextarea'
 import CoreDivider from '../../components/core/CoreDivider'
 import { PopupType } from '../../interface/popup'
@@ -192,8 +191,6 @@ const ProfileEdit: NextPage<IProps> = () => {
 
     handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onSuccess)
   }
-
-  useOnEnter(formRef, handleSubmit)
 
   const renderContent = () => {
     if (!user) {

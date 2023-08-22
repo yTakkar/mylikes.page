@@ -6,8 +6,7 @@ import { RECOMMENDATION_TYPE_LABEL_MAP, REGEX_MAP } from '../../constants/consta
 import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
-import useOnEnter from '../../hooks/useOnEnter'
-import { getSanitizedValue, handleValidation } from '../../utils/form'
+import { handleValidation } from '../../utils/form'
 import CoreCheckbox from '../core/CoreCheckbox'
 import {
   addSavedRecommendation,
@@ -185,8 +184,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
 
     handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onValidationSuccess)
   }
-
-  useOnEnter(formRef, handleSubmit)
 
   const typeOptions: ICoreSelectInputOption[] = Object.entries(RECOMMENDATION_TYPE_LABEL_MAP).map(([key, value]) => ({
     id: key,

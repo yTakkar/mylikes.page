@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
-import useOnEnter from '../../hooks/useOnEnter'
 import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
 import { REGEX_MAP } from '../../constants/constants'
 import classNames from 'classnames'
@@ -183,8 +182,6 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
     }
     toggleDeleteLoading(false)
   }
-
-  useOnEnter(formRef, handleSubmit)
 
   return (
     <>

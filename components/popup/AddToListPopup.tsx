@@ -10,6 +10,8 @@ import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import { toastError, toastSuccess } from '../Toaster'
 import { revalidateUrls } from '../../utils/revalidate'
 import { trackAddToList } from '../../firebase/store/addToListTracking'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 interface IAddToListPopupProps {
   listDetail: IListDetail
@@ -53,9 +55,10 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
     toggleOperationLoading(true)
 
     const processCommands = async () => {
+      const addedAt = new Date().getTime()
       const updatedListRecommendation: IListRecommendationInfo = {
         ...listRecommendation,
-        addedAt: new Date().getTime(),
+        addedAt: addedAt,
         notes: '',
       }
       const updatedList = [updatedListRecommendation, ...list.recommendations]
@@ -71,7 +74,15 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
           listRecommendationId: listRecommendation.id,
           targetListId: list.id,
           targetListName: list.name,
-          addedAt: new Date().getTime(),
+          addedAt: addedAt,
+        })
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.RECOMMENDATION_ADD_TO_LIST,
+          extra: {
+            listId: listDetail.id,
+            recommendationId: listRecommendation.id,
+            targetListId: list.id,
+          },
         })
         toastSuccess('Added to the selected list')
       } catch (e) {

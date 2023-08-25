@@ -9,6 +9,8 @@ import { getRelativeTime } from '../../../utils/date'
 import CoreLink from '../../core/CoreLink'
 import appConfig from '../../../config/appConfig'
 import ls from 'localstorage-slim'
+import appAnalytics from '../../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../../constants/analytics'
 
 interface IListAnalyticsLibrarySavesProps {
   listDetail: IListDetail
@@ -39,6 +41,12 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
   }
 
   useEffect(() => {
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_ANALYTICS_VIEW_CLONES,
+      extra: {
+        listId: listDetail.id,
+      },
+    })
     fetch()
   }, [])
 

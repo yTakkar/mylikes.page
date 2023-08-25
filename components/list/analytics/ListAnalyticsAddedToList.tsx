@@ -11,6 +11,8 @@ import { getRelativeTime } from '../../../utils/date'
 import CoreLink from '../../core/CoreLink'
 import { getListPageUrl } from '../../../utils/routes'
 import ls from 'localstorage-slim'
+import appAnalytics from '../../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../../constants/analytics'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -41,6 +43,12 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
   }
 
   useEffect(() => {
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_ANALYTICS_VIEW_ADD_TO_LIST,
+      extra: {
+        listId: listDetail.id,
+      },
+    })
     fetchTrackingInfoList()
   }, [])
 

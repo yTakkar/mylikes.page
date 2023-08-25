@@ -9,6 +9,8 @@ import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
 import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
 import ls from 'localstorage-slim'
+import appAnalytics from '../../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../../constants/analytics'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -43,6 +45,12 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
   }
 
   useEffect(() => {
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_ANALYTICS_VIEW_RECOMMENDATIONS_VISIT,
+      extra: {
+        listId: listDetail.id,
+      },
+    })
     fetchTrackingInfoList()
   }, [])
 

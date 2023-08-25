@@ -21,6 +21,8 @@ import { IRecommendationInfo } from '../../interface/recommendation'
 import Alert from '../modal/Alert'
 import CoreLink from '../core/CoreLink'
 import appConfig from '../../config/appConfig'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 enum FieldKeyType {
   URL = 'URL',
@@ -115,16 +117,30 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
 
   const handleAdd = async () => {
     const url = fields.URL
+    const imageUrl = generateRecommendationImageUrl(url)
+    const createdAt = new Date().getTime()
     await addSavedRecommendation({
       id: nanoid(),
       url,
       title: fields.TITLE,
-      imageUrl: generateRecommendationImageUrl(url),
+      imageUrl,
       isAdult: fields.IS_ADULT,
-      createdAt: new Date().getTime(),
+      createdAt,
       notes: fields.NOTES,
       type: fields.TYPE,
       ownerEmail: user!.email,
+    })
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.SAVED_RECOMMENDATION_ADD,
+      extra: {
+        url,
+        title: fields.TITLE,
+        type: fields.TYPE,
+        ownerEmail: user!.email,
+        isAdult: fields.IS_ADULT,
+        imageUrl,
+        createdAt,
+      },
     })
     onSuccess?.()
     toastSuccess('Recommendation is saved!')
@@ -153,6 +169,15 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     try {
       await deleteSavedRecommendationById(recommendation!.id)
       toastSuccess('Recommendation deleted!')
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.SAVED_RECOMMENDATION_REMOVE,
+        extra: {
+          id: recommendation!.id,
+          url: recommendation!.url,
+          type: recommendation!.type,
+          ownerEmail: user!.email,
+        },
+      })
       onSuccess?.()
     } catch (e) {
       console.error('list:delete:error', e)
@@ -244,7 +269,15 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
           />
           <div className="text-typo-paragraphLight text-sm mt-2">
             {`Don't see the type you want? `}
-            <CoreLink isExternal url={appConfig.feedback.newRecommendationTypeForm} className="underline">
+            <CoreLink
+              isExternal
+              url={appConfig.feedback.newRecommendationTypeForm}
+              className="underline"
+              onClick={() => {
+                appAnalytics.sendEvent({
+                  action: AnalyticsEventType.SAVED_RECOMMENDATION_SUGGEST_TYPE,
+                })
+              }}>
               Suggest here
             </CoreLink>
           </div>

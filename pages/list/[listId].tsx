@@ -44,6 +44,8 @@ import { trackAddToLibrary } from '../../firebase/store/addToLibraryTracking'
 import useNativeShare from '../../hooks/useNativeShare'
 import appConfig from '../../config/appConfig'
 import Alert from '../../components/modal/Alert'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -83,6 +85,13 @@ const List: NextPage<IProps> = (props: IProps) => {
 
   const handleURLCopy = () => {
     copyToClipboard(shareUrl)
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_COPY_URL,
+      extra: {
+        shareText,
+        shareUrl,
+      },
+    })
     toastSuccess('List URL copied!')
   }
 
@@ -125,23 +134,33 @@ const List: NextPage<IProps> = (props: IProps) => {
         const id = generateListId(listDetail.name)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id: _id, owner: _owner, ...rest } = listDetail
+        const createdAt = new Date().getTime()
         await addList({
           id,
           ...rest,
           ownerEmail: user!.email,
           clonedListId: listDetail.id,
-          createdAt: new Date().getTime(),
+          createdAt: createdAt,
         })
         await revalidateUrls([getListPageUrl(id)])
         trackAddToLibrary({
           listId: listDetail.id,
           clonedListId: id,
           clonedListName: listDetail.name,
-          addedAt: new Date().getTime(),
+          addedAt: createdAt,
         })
         toggleCloneLoading(false)
         toggleCloneAlert(false)
         toastSuccess('List cloned to your library!')
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.LIST_CLONE,
+          extra: {
+            originalListId: listDetail.id,
+            listId: id,
+            ownerEmail: user!.email,
+            createdAt,
+          },
+        })
         vibrate()
         router.push(getProfilePageUrl(user!.username))
       } catch (e: any) {
@@ -172,6 +191,16 @@ const List: NextPage<IProps> = (props: IProps) => {
     })
     await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner.username)])
     toastSuccess('Removed from list!')
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.RECOMMENDATION_REMOVE,
+      extra: {
+        listId: listDetail.id,
+        recommendationId: listRecommendation.id,
+        url: listRecommendation.url,
+        title: listRecommendation.title,
+        type: listRecommendation.type,
+      },
+    })
     refetchListDetail()
   }
 
@@ -182,6 +211,16 @@ const List: NextPage<IProps> = (props: IProps) => {
         listRecommendationId: listRecommendation.id,
       })
     }
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.RECOMMENDATION_VISIT,
+      extra: {
+        listId: listDetail.id,
+        recommendationId: listRecommendation.id,
+        url: listRecommendation.url,
+        title: listRecommendation.title,
+        type: listRecommendation.type,
+      },
+    })
   }
 
   const actions = [
@@ -246,6 +285,13 @@ const List: NextPage<IProps> = (props: IProps) => {
           text: shareText,
           url: shareUrl,
         })
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.LIST_SHARE,
+          extra: {
+            shareText,
+            shareUrl,
+          },
+        })
       },
       show: shouldshowNativeShare,
     },
@@ -296,7 +342,17 @@ const List: NextPage<IProps> = (props: IProps) => {
             {listDetail.clonedListId && (
               <Tooltip content={`This is a cloned list. Click to view the original list.`}>
                 <span>
-                  <CoreLink url={getListPageUrl(listDetail.clonedListId!)}>
+                  <CoreLink
+                    url={getListPageUrl(listDetail.clonedListId!)}
+                    onClick={() => {
+                      appAnalytics.sendEvent({
+                        action: AnalyticsEventType.LIST_CLONED_VIEW_ORIGINAL,
+                        extra: {
+                          originalListId: listDetail.clonedListId,
+                          listId: listDetail.id,
+                        },
+                      })
+                    }}>
                     <ReplyIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />
                   </CoreLink>
                 </span>

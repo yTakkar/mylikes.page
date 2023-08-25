@@ -128,8 +128,14 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       return (
         <QuotesWrapper
           text={note}
-          className="cursor-pointer"
-          onClick={() => setAddNote(true)}
+          className={classNames({
+            'cursor-pointer': sessionUser,
+          })}
+          onClick={() => {
+            if (sessionUser) {
+              setAddNote(true)
+            }
+          }}
           allowEdit={sessionUser}
         />
       )

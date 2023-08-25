@@ -24,6 +24,8 @@ import { IUserInfo } from '../../interface/user'
 import { handleValidation } from '../../utils/form'
 import { revalidateUrls } from '../../utils/revalidate'
 import { getProfilePageUrl } from '../../utils/routes'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 enum FieldKeyType {
   EMAIL = 'EMAIL',
@@ -141,6 +143,30 @@ const ProfileEdit: NextPage<IProps> = () => {
     },
   }
 
+  const sendAnalyticsEvents = () => {
+    if (user?.username !== fields.USERNAME) {
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.EDIT_PROFILE_USERNAME,
+        extra: {
+          username: fields.USERNAME,
+        },
+      })
+    }
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.EDIT_PROFILE,
+      extra: {
+        name: fields.NAME,
+        username: fields.USERNAME,
+        email: fields.EMAIL,
+        bio: fields.BIO,
+        websiteUrl: fields.WEBSITE,
+        instagram: fields.INSTAGRAM_USERNAME,
+        twitter: fields.TWITTER_USERNAME,
+        youtube: fields.YOUTUBE_USERNAME,
+      },
+    })
+  }
+
   const handleSubmit = () => {
     if (loading) {
       return null
@@ -183,6 +209,7 @@ const ProfileEdit: NextPage<IProps> = () => {
           },
         })
         toastSuccess('Profile updated!')
+        sendAnalyticsEvents()
         toggleLoading(false)
       } catch (e) {
         toastError('Something went wrong')

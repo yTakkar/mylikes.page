@@ -20,6 +20,8 @@ import { toastError, toastSuccess } from '../Toaster'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl, getProfilePageUrl, getSavedRecommendationsPageUrl } from '../../utils/routes'
 import { revalidateUrls } from '../../utils/revalidate'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -73,6 +75,16 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner.username)])
         setListRecommendations(updatedList)
         toastSuccess('Added to the list')
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.RECOMMENDATION_ADD,
+          extra: {
+            listId: list.id,
+            recommendationId: recommendation.id,
+            url: recommendation.url,
+            title: recommendation.title,
+            type: recommendation.type,
+          },
+        })
         handleOnSuccess()
       } catch (e) {
         toastError('Failed to add to the list')

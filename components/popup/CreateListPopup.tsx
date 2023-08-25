@@ -17,6 +17,8 @@ import { useRouter } from 'next/router'
 import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import Alert from '../modal/Alert'
 import { revalidateUrls } from '../../utils/revalidate'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 enum FieldKeyType {
   NAME = 'NAME',
@@ -111,22 +113,50 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       visibility: fields.VISIBILITY as ListVisibilityType,
     })
     await revalidateUrls([getProfilePageUrl(listDetail!.owner.username), getListPageUrl(listDetail!.id)])
+    if (listDetail?.visibility !== fields.VISIBILITY) {
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.LIST_UPDATE_VISIBILITY,
+        extra: {
+          visibility: fields.VISIBILITY,
+        },
+      })
+    }
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_UPDATE,
+      extra: {
+        id: listDetail!.id,
+        name: fields.NAME,
+        description: fields.DESCRIPTION,
+        visibility: fields.VISIBILITY,
+      },
+    })
     toastSuccess('List settings updated!')
   }
 
   const handleAdd = async () => {
     const id = generateListId(fields.NAME)
+    const createdAt = new Date().getTime()
     await addList({
       id,
       name: fields.NAME,
       description: fields.DESCRIPTION,
       visibility: fields.VISIBILITY as ListVisibilityType,
-      createdAt: new Date().getTime(),
+      createdAt,
       ownerEmail: user!.email,
       recommendations: [],
       clonedListId: null,
     })
     await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LIST_CREATE,
+      extra: {
+        id,
+        name: fields.NAME,
+        description: fields.DESCRIPTION,
+        ownerEmail: user!.email,
+        createdAt,
+      },
+    })
     toastSuccess('List created!')
     vibrate()
     router.push(getListPageUrl(id))
@@ -174,6 +204,14 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       await deleteListById(listDetail!.id)
       await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
       toastSuccess('List deleted!')
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.LIST_DELETE,
+        extra: {
+          id: listDetail!.id,
+          name: listDetail!.name,
+          ownerEmail: user!.email,
+        },
+      })
       router.push(getProfilePageUrl(user!.username))
       onClose()
     } catch (e) {

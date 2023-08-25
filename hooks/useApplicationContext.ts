@@ -5,6 +5,7 @@ import useOrientation from './useOrientation'
 import { IContextMethods } from '../interface/applicationContext'
 import { deleteLocalUserInfo, getLocalUserInfo, setLocalUserInfo } from '../utils/user'
 import appAnalytics from '../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../constants/analytics'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
@@ -42,6 +43,9 @@ const useApplicationContext = () => {
     updateUser(null)
     deleteLocalUserInfo()
     appAnalytics.setUser(null)
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.LOGOUT,
+    })
   }
 
   useEffect(() => {

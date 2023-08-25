@@ -10,6 +10,8 @@ import ApplicationContext from '../ApplicationContext'
 import { updateUser } from '../../firebase/store/users'
 import { revalidateUrls } from '../../utils/revalidate'
 import { getProfilePageUrl } from '../../utils/routes'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 interface IChangeAvatarPopupProps {
   onClose: () => void
@@ -52,6 +54,12 @@ const ChangeAvatarPopup: React.FC<IChangeAvatarPopupProps> = props => {
         await revalidateUrls([getProfilePageUrl(user!.username)])
         methods.updateUser(updatedUserInfo)
         toastSuccess('Profile picture changed!')
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.EDIT_PROFILE_AVATAR,
+          extra: {
+            avatar: selectedAvatar,
+          },
+        })
         onClose()
       }
     }

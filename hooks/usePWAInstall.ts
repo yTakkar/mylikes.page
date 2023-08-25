@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import debug from 'debug'
 import appConfig from '../config/appConfig'
+import appAnalytics from '../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../constants/analytics'
 
 const log = debug('pwa-install')
 
@@ -45,19 +47,17 @@ const usePWAInstall = () => {
         if (onAccept) {
           onAccept(prompt)
         }
-        // TODO: Faiyaz
-        // appAnalytics.sendEvent({
-        //   action: AnalyticsEventType.PWA_INSTALL_SUCCESS,
-        // })
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.PWA_INSTALL_SUCCESS,
+        })
       } else {
         log('User dismissed the install prompt')
         if (onDecline) {
           onDecline(prompt)
         }
-        // TODO: Faiyaz
-        // appAnalytics.sendEvent({
-        //   action: AnalyticsEventType.PWA_INSTALL_FAILED,
-        // })
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.PWA_INSTALL_FAILED,
+        })
       }
     })
   }

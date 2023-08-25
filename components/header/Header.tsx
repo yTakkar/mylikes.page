@@ -17,6 +17,8 @@ import { prepareUserInfo } from '../../utils/user'
 import { addUser } from '../../firebase/store/users'
 import { vibrate } from '../../utils/common'
 import { toastError, toastSuccess } from '../Toaster'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -41,6 +43,12 @@ const Header: React.FC<INavbarProps> = props => {
         const userInfo = await addUser(preparedUserInfo)
         vibrate()
         methods.updateUser(userInfo)
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.LOGIN,
+          extra: {
+            method: 'Google',
+          },
+        })
         toastSuccess('Login successful!')
       } catch (e) {
         toastError('Failed to login!')

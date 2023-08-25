@@ -331,7 +331,12 @@ const List: NextPage<IProps> = (props: IProps) => {
     return (
       <div className="px-3 lg:px-0">
         <div className="lg:my-8 lg:text-center">
-          <div className="font-domaine-bold font-bold text-3xl mb-1 lg:mb-3 lg:text-5xl">{listDetail.name}</div>
+          <div
+            className={classNames('font-domaine-bold font-bold mb-1 lg:mb-3', [
+              listDetail.name?.length >= 100 ? 'text-2xl lg:text-3xl' : 'text-3xl lg:text-5xl',
+            ])}>
+            {listDetail.name}
+          </div>
           {listDetail.description && <div className="my-2 text-gray-800">{listDetail.description}</div>}
           <div className="text-typo-paragraphLight flex items-center lg:justify-center">
             by

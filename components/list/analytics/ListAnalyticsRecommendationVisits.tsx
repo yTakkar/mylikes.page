@@ -11,6 +11,7 @@ import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
 import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
+import { toastError } from '../../Toaster'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -29,19 +30,24 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
   const CACHE_KEY = `listAnalyticsRecommendationVisits-${listDetail.id}`
 
   const fetchTrackingInfoList = async () => {
-    const cacheValue = ls.get(CACHE_KEY) as IRecommendationClickInfo[] | null
-    if (cacheValue) {
-      setTrackingInfoList(cacheValue)
-      return
-    }
+    try {
+      const cacheValue = ls.get(CACHE_KEY) as IRecommendationClickInfo[] | null
+      if (cacheValue) {
+        setTrackingInfoList(cacheValue)
+        return
+      }
 
-    toggleLoading(true)
-    const list = await getRecommendationClickTrackingsByList(listDetail.id)
-    setTrackingInfoList(list)
-    ls.set(CACHE_KEY, list, {
-      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
-    })
-    toggleLoading(false)
+      toggleLoading(true)
+      const list = await getRecommendationClickTrackingsByList(listDetail.id)
+      setTrackingInfoList(list)
+      ls.set(CACHE_KEY, list, {
+        ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+      })
+      toggleLoading(false)
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Something went wrong!')
+    }
   }
 
   useEffect(() => {

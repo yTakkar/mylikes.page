@@ -62,6 +62,7 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
         })
         onSuccess(noteValue)
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Failed to update note')
       } finally {
         setAddNoteLoading(false)

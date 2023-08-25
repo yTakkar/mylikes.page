@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import ApplicationContext from '../components/ApplicationContext'
 import appConfig from '../config/appConfig'
+import appAnalytics from '../lib/analytics/appAnalytics'
 
 declare let window: any
 
@@ -33,6 +34,8 @@ const useNativeShare = (props: IProps) => {
         })
         .catch((e: any) => {
           console.log(e, e.name, e.message)
+
+          appAnalytics.captureException(e)
 
           if (!['AbortError'].includes(e.name)) {
             // https://hotstar.atlassian.net/browse/ER-1904

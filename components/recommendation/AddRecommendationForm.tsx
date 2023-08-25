@@ -180,6 +180,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       })
       onSuccess?.()
     } catch (e) {
+      appAnalytics.captureException(e)
       console.error('list:delete:error', e)
       toastError('Failed to delete recommendation!')
     }
@@ -200,8 +201,9 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
           await handleAdd()
         }
       } catch (e) {
+        appAnalytics.captureException(e)
         console.error('recommendation:add:error', e)
-        toastError('Something went wrong! Please try again.')
+        toastError('Something went wrong')
       } finally {
         toggleLoading(false)
       }

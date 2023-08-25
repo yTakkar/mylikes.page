@@ -35,8 +35,8 @@ const ChangeAvatarPopup: React.FC<IChangeAvatarPopupProps> = props => {
     getAvatarsList()
       .then(setAvatars)
       .catch(e => {
-        console.log(e)
         toastError('Failed to load avatars')
+        appAnalytics.captureException(e)
       })
       .finally(() => toggleLoading(false))
   }, [])

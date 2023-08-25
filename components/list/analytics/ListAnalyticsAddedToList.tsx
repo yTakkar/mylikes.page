@@ -13,6 +13,7 @@ import { getListPageUrl } from '../../../utils/routes'
 import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
+import { toastError } from '../../Toaster'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -27,19 +28,24 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
   const CACHE_KEY = `listAnalyticsAddedToList-${listDetail.id}`
 
   const fetchTrackingInfoList = async () => {
-    const cacheValue = ls.get(CACHE_KEY) as IAddToListTrackingInfo[] | null
-    if (cacheValue) {
-      setTrackingInfoList(cacheValue)
-      return
-    }
+    try {
+      const cacheValue = ls.get(CACHE_KEY) as IAddToListTrackingInfo[] | null
+      if (cacheValue) {
+        setTrackingInfoList(cacheValue)
+        return
+      }
 
-    toggleLoading(true)
-    const list = await getAddToListTrackingsByList(listDetail.id)
-    setTrackingInfoList(list)
-    ls.set(CACHE_KEY, list, {
-      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
-    })
-    toggleLoading(false)
+      toggleLoading(true)
+      const list = await getAddToListTrackingsByList(listDetail.id)
+      setTrackingInfoList(list)
+      ls.set(CACHE_KEY, list, {
+        ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+      })
+      toggleLoading(false)
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Something went wrong!')
+    }
   }
 
   useEffect(() => {

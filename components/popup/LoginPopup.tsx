@@ -9,6 +9,7 @@ import { addUser } from '../../firebase/store/users'
 import { prepareUserInfo } from '../../utils/user'
 import ApplicationContext from '../ApplicationContext'
 import { vibrate } from '../../utils/common'
+import appAnalytics from '../../lib/analytics/appAnalytics'
 
 interface ILoginPopupProps {
   onClose: () => void
@@ -31,6 +32,7 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
         onClose()
         toastSuccess('Login successful!')
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Failed to login!')
       }
     }

@@ -212,6 +212,7 @@ const ProfileEdit: NextPage<IProps> = () => {
         sendAnalyticsEvents()
         toggleLoading(false)
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Something went wrong')
       }
     }

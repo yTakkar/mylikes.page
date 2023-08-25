@@ -164,6 +164,7 @@ const List: NextPage<IProps> = (props: IProps) => {
         vibrate()
         router.push(getProfilePageUrl(user!.username))
       } catch (e: any) {
+        appAnalytics.captureException(e)
         toastError(`Failed to clone list!`)
         console.error('Error cloning list', e)
         toggleCloneLoading(false)
@@ -185,23 +186,28 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const onRemoveFromList = async (listRecommendation: IListRecommendationInfo) => {
-    const updatedList = listRecommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
-    await updateList(listDetail.id, {
-      recommendations: updatedList,
-    })
-    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner.username)])
-    toastSuccess('Removed from list!')
-    appAnalytics.sendEvent({
-      action: AnalyticsEventType.RECOMMENDATION_REMOVE,
-      extra: {
-        listId: listDetail.id,
-        recommendationId: listRecommendation.id,
-        url: listRecommendation.url,
-        title: listRecommendation.title,
-        type: listRecommendation.type,
-      },
-    })
-    refetchListDetail()
+    try {
+      const updatedList = listRecommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
+      await updateList(listDetail.id, {
+        recommendations: updatedList,
+      })
+      await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner.username)])
+      toastSuccess('Removed from list!')
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.RECOMMENDATION_REMOVE,
+        extra: {
+          listId: listDetail.id,
+          recommendationId: listRecommendation.id,
+          url: listRecommendation.url,
+          title: listRecommendation.title,
+          type: listRecommendation.type,
+        },
+      })
+      refetchListDetail()
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Failed to remove from list')
+    }
   }
 
   const onLinkClick = async (listRecommendation: IListRecommendationInfo) => {

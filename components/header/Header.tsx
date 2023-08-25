@@ -51,6 +51,7 @@ const Header: React.FC<INavbarProps> = props => {
         })
         toastSuccess('Login successful!')
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Failed to login!')
       }
     }

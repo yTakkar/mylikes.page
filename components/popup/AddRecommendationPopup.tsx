@@ -42,10 +42,15 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
 
   const fetchRecommendations = async () => {
-    toggleLoading(true)
-    const recommendations = await listSavedRecommendationsByEmail(user!.email)
-    setSavedRecommendations(recommendations)
-    toggleLoading(false)
+    try {
+      toggleLoading(true)
+      const recommendations = await listSavedRecommendationsByEmail(user!.email)
+      setSavedRecommendations(recommendations)
+      toggleLoading(false)
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Something went wrong!')
+    }
   }
 
   useEffect(() => {
@@ -87,6 +92,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         })
         handleOnSuccess()
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Failed to add to the list')
       }
     }

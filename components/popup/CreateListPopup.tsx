@@ -185,6 +185,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
         handleOnSuccess()
       } catch (e) {
         console.error('list:add:error', e)
+        appAnalytics.captureException(e)
         toastError('Failed to create list')
       } finally {
         toggleLoading(false)
@@ -215,6 +216,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       router.push(getProfilePageUrl(user!.username))
       onClose()
     } catch (e) {
+      appAnalytics.captureException(e)
       console.error('list:delete:error', e)
       toastError('Failed to delete list')
     }

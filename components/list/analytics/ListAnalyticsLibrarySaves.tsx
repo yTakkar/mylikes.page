@@ -11,6 +11,7 @@ import appConfig from '../../../config/appConfig'
 import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
+import { toastError } from '../../Toaster'
 
 interface IListAnalyticsLibrarySavesProps {
   listDetail: IListDetail
@@ -25,19 +26,24 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
   const CACHE_KEY = `listAnalyticsLibrarySaves-${listDetail.id}`
 
   const fetch = async () => {
-    const cacheValue = ls.get(CACHE_KEY) as IAddToLibraryTrackingInfo[] | null
-    if (cacheValue) {
-      setLists(cacheValue)
-      return
-    }
+    try {
+      const cacheValue = ls.get(CACHE_KEY) as IAddToLibraryTrackingInfo[] | null
+      if (cacheValue) {
+        setLists(cacheValue)
+        return
+      }
 
-    toggleLoading(true)
-    const list = await getAddToLibraryTrackingsByList(listDetail.id)
-    setLists(list)
-    ls.set(CACHE_KEY, list, {
-      ttl: appConfig.analytics.cacheInvalidationTimeInSec,
-    })
-    toggleLoading(false)
+      toggleLoading(true)
+      const list = await getAddToLibraryTrackingsByList(listDetail.id)
+      setLists(list)
+      ls.set(CACHE_KEY, list, {
+        ttl: appConfig.analytics.cacheInvalidationTimeInSec,
+      })
+      toggleLoading(false)
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Something went wrong!')
+    }
   }
 
   useEffect(() => {

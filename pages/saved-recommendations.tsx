@@ -18,6 +18,7 @@ import RecommendationInfo, {
 import { PopupType } from '../interface/popup'
 import NoContent from '../components/NoContent'
 import { PlusIcon } from '@heroicons/react/solid'
+import appAnalytics from '../lib/analytics/appAnalytics'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -36,8 +37,9 @@ const Home: NextPage<IProps> = () => {
       .then(recommendations => {
         setRecommendations(recommendations)
       })
-      .catch(() => {
+      .catch(e => {
         toastError('Error fetching saved recommendations')
+        appAnalytics.captureException(e)
       })
       .finally(() => {
         toggleLoading(false)

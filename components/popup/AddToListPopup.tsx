@@ -33,11 +33,16 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
   const [lists, setLists] = useState<IListDetail[]>([])
 
   const fetchLists = async () => {
-    toggleLoading(true)
-    const fetchedLists = await listListsByUser(user!)
-    window.USER_LISTS = fetchedLists
-    setLists(fetchedLists)
-    toggleLoading(false)
+    try {
+      toggleLoading(true)
+      const fetchedLists = await listListsByUser(user!)
+      window.USER_LISTS = fetchedLists
+      setLists(fetchedLists)
+      toggleLoading(false)
+    } catch (e) {
+      toastError('Something went wrong!')
+      appAnalytics.captureException(e)
+    }
   }
 
   useEffect(() => {
@@ -86,6 +91,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         })
         toastSuccess('Added to the selected list')
       } catch (e) {
+        appAnalytics.captureException(e)
         toastError('Failed to add')
       } finally {
         toggleOperationLoading(false)

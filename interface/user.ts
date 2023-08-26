@@ -12,6 +12,7 @@ export interface IUserInfo {
     instagram: string | null
     youtube: string | null
   }
+  _isAdmin?: boolean
 }
 
 export interface IListUsersParams {

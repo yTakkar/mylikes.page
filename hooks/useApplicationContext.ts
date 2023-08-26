@@ -6,6 +6,8 @@ import { IContextMethods } from '../interface/applicationContext'
 import { deleteLocalUserInfo, getLocalUserInfo, setLocalUserInfo } from '../utils/user'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../constants/analytics'
+import appConfig from '../config/appConfig'
+import { APP_LOGO } from '../constants/constants'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
@@ -28,7 +30,14 @@ const useApplicationContext = () => {
     })
   }
 
-  const updateUser: IContextMethods['updateUser'] = userInfo => {
+  const updateUser: IContextMethods['updateUser'] = _userInfo => {
+    const userInfo = _userInfo
+    if (userInfo !== null) {
+      if (appConfig.admin.users.includes(userInfo.email)) {
+        userInfo!._isAdmin = true
+        userInfo.avatarUrl = APP_LOGO.DEFAULT
+      }
+    }
     dispatchApplicationContext({
       type: 'UPDATE_USER',
       payload: userInfo,

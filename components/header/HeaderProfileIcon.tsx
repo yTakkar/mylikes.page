@@ -17,7 +17,7 @@ const HeaderProfileIcon: React.FC<IHeaderProfileIconProps> = props => {
   return (
     <CoreImage
       url={user?.avatarUrl || ''}
-      className={classNames(className, 'rounded-full', {
+      className={classNames(className, 'rounded-full mr-1', {
         'ring-2 ring-brand-primary': active,
       })}
       alt={user?.name || ''}

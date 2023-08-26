@@ -176,6 +176,9 @@ const appConfig = {
     ],
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
+  admin: {
+    users: ['mylikescontact@gmail.com'],
+  },
 }
 
 export default appConfig

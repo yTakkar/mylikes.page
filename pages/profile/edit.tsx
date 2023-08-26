@@ -233,11 +233,13 @@ const ProfileEdit: NextPage<IProps> = () => {
             alt={`${user.name}'s profile on ${appConfig.global.app.name}`}
             className="h-28 w-28 rounded-full"
           />
-          <div
-            className="mt-2 flex items-center border-b border-typo-paragraph text-sm text-typo-paragraph cursor-pointer"
-            onClick={() => methods.togglePopup(PopupType.CHANGE_AVATAR, {})}>
-            Change <PencilIcon className="ml-1 w-4" />
-          </div>
+          {!user._isAdmin && (
+            <div
+              className="mt-2 flex items-center border-b border-typo-paragraph text-sm text-typo-paragraph cursor-pointer"
+              onClick={() => methods.togglePopup(PopupType.CHANGE_AVATAR, {})}>
+              Change <PencilIcon className="ml-1 w-4" />
+            </div>
+          )}
         </div>
 
         <CoreDivider className="my-8" />

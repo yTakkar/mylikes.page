@@ -6,7 +6,12 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { getUserByUsername, listUsers } from '../../firebase/store/users'
 import { get404PageUrl, getProfileEditPageUrl } from '../../utils/routes'
 import { IUserInfo } from '../../interface/user'
-import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
+import {
+  APP_LOGO,
+  INITIAL_PAGE_BUILD_COUNT,
+  PAGE_REVALIDATE_TIME,
+  SOCIAL_ICONS_SRC_MAP,
+} from '../../constants/constants'
 import { prepareProfilePageSeo } from '../../utils/seo/pages/profile'
 import CoreImage from '../../components/core/CoreImage'
 import appConfig from '../../config/appConfig'
@@ -17,6 +22,7 @@ import PageLoader from '../../components/loader/PageLoader'
 import ListInfos from '../../components/list/ListInfos'
 import { listListsByUser } from '../../firebase/store/list'
 import { IListDetail } from '../../interface/list'
+import classNames from 'classnames'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -76,11 +82,18 @@ const Home: NextPage<IProps> = (props: IProps) => {
     <PageContainer>
       <div className="p-4 py-6">
         <div className="bg-whit flex flex-col justify-center items-center lg:flex-row lg:justify-normal">
-          <div>
+          <div
+            onClick={() => {
+              if (currentUserProfile) {
+                router.push(getProfileEditPageUrl())
+              }
+            }}>
             <CoreImage
               url={profileInfo.avatarUrl}
               alt={`${profileInfo.name}'s profile on ${appConfig.global.app.name}`}
-              className="w-40 h-40 rounded-full"
+              className={classNames('w-40 h-40 rounded-full', {
+                'cursor-pointer': currentUserProfile,
+              })}
             />
           </div>
 
@@ -155,6 +168,13 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
         destination: get404PageUrl(),
         permanent: false,
       },
+    }
+  }
+
+  if (profileInfo) {
+    if (appConfig.admin.users.includes(profileInfo.email)) {
+      profileInfo!._isAdmin = true
+      profileInfo.avatarUrl = APP_LOGO.DEFAULT
     }
   }
 

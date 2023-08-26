@@ -1,12 +1,12 @@
 import React from 'react'
-import { IListDetail, ListVisibilityType } from '../../interface/list'
+import { IListInfo, ListVisibilityType } from '../../interface/list'
 import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
 import { LockClosedIcon } from '@heroicons/react/solid'
 
 interface IListInfoProps {
-  list: IListDetail
+  list: IListInfo
 }
 
 const ListInfo: React.FC<IListInfoProps> = props => {

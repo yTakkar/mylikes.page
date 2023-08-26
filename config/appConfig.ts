@@ -98,8 +98,8 @@ const appConfig = {
       // HOME: 15 * 60,
       PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
-      // 404: 15 * 60,
-      // ERROR: 15 * 60,
+      404: 60 * 60,
+      ERROR: 60 * 60,
       PROFILE: 30 * 60,
       LIST: 30 * 60,
     },

@@ -17,7 +17,7 @@ import { IListDetail, IListDetailAddParams, IListListsParams } from '../../inter
 import { usersCollection } from './users'
 import { IUserInfo } from '../../interface/user'
 
-const listCollection = collection(firebaseStore, 'list')
+export const listCollection = collection(firebaseStore, 'list')
 
 export const addList = async (listParams: IListDetailAddParams): Promise<void> => {
   await setDoc(doc(listCollection, listParams.id), {
@@ -49,7 +49,7 @@ export const listListsByClonedListId = async (clonedListId: string) => {
   return querySnapshot.docs.map(doc => doc.data() as IListDetail)
 }
 
-export const listListsByUser = async (user: IUserInfo) => {
+export const listListsByUser = async (user: IUserInfo): Promise<IListDetail[]> => {
   const userRef = doc(usersCollection, user.email)
   const q = query(listCollection, where('owner', '==', userRef))
   const querySnapshot = await getDocs(q)

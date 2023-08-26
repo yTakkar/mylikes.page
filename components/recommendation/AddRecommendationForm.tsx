@@ -48,13 +48,15 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     return acc
   }, {})
 
-  const [fields, setFields] = useState<Record<FieldKeyType, any>>({
+  const initialFields: Record<FieldKeyType, any> = {
     URL: '',
     TITLE: '',
     TYPE: '',
     NOTES: '',
     IS_ADULT: false,
-  })
+  }
+
+  const [fields, setFields] = useState<Record<FieldKeyType, any>>(initialFields)
   const [fieldsWithError, setFieldsWithError] = useState<Record<FieldKeyType, boolean>>(defaultFieldsWithError)
   const [loading, toggleLoading] = useState(false)
 
@@ -200,6 +202,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
         } else {
           await handleAdd()
         }
+        setFields(initialFields)
       } catch (e) {
         appAnalytics.captureException(e)
         console.error('recommendation:add:error', e)

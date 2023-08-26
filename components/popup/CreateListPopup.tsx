@@ -112,7 +112,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       description: fields.DESCRIPTION,
       visibility: fields.VISIBILITY as ListVisibilityType,
     })
-    await revalidateUrls([getProfilePageUrl(listDetail!.owner.username), getListPageUrl(listDetail!.id)])
+    await revalidateUrls([getProfilePageUrl(user!.username), getListPageUrl(listDetail!.id)])
     if (listDetail?.visibility !== fields.VISIBILITY) {
       appAnalytics.sendEvent({
         action: AnalyticsEventType.LIST_UPDATE_VISIBILITY,
@@ -146,7 +146,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       recommendations: [],
       clonedListId: null,
     })
-    await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
+    await revalidateUrls([getProfilePageUrl(user!.username)])
     appAnalytics.sendEvent({
       action: AnalyticsEventType.LIST_CREATE,
       extra: {

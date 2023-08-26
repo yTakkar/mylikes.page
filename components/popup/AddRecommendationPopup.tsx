@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import { ArrowLeftIcon, CogIcon, PlusIcon } from '@heroicons/react/outline'
 import RecommendationInfo, {
@@ -38,6 +38,8 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   const [loading, toggleLoading] = useState(false)
   const [panel, setPanel] = useState<'saved' | 'add'>('saved')
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
   const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
   const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
 
@@ -45,9 +47,13 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     try {
       toggleLoading(true)
       const recommendations = await listSavedRecommendationsByEmail(user!.email)
-      setSavedRecommendations(recommendations)
+      const sortedRecommendations = recommendations.sort((a, b) => {
+        return b.createdAt - a.createdAt
+      })
+      setSavedRecommendations(sortedRecommendations)
       toggleLoading(false)
     } catch (e) {
+      console.log(e)
       appAnalytics.captureException(e)
       toastError('Something went wrong!')
     }
@@ -171,6 +177,9 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
           onSuccess={() => {
             setPanel('saved')
             fetchRecommendations()
+            if (containerRef) {
+              containerRef.current?.scrollTo(0, 0)
+            }
           }}
         />
       </div>
@@ -190,7 +199,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         disableOutsideClick: true,
         showCrossIcon: panel === 'saved',
       }}>
-      <div className="addRecommendation">
+      <div className="addRecommendation" ref={containerRef}>
         {renderSavedRecommendations()}
         {renderAddRecommendation()}
       </div>

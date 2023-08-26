@@ -43,7 +43,6 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
   return (
     <Modal dismissModal={() => onClose()} className="loginPopupOverrides">
       <div className="flex flex-col items-center px-4 pb-10">
-        {/* TODO: Logo here */}
         <CoreImage
           url={prepareImageUrl('/images/ribbon.png', ImageSourceType.ASSET)}
           alt="Login promt"

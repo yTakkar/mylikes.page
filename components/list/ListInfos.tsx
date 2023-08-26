@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { IListDetail, ListVisibilityType } from '../../interface/list'
+import { IListInfo, ListVisibilityType } from '../../interface/list'
 import ListInfo from './ListInfo'
 import { PlusIcon } from '@heroicons/react/solid'
 import NoContent from '../NoContent'
@@ -11,7 +11,7 @@ import { isSessionUser } from '../../utils/user'
 import { pluralize } from '../../utils/common'
 
 interface IListInfoProps {
-  lists: IListDetail[]
+  lists: IListInfo[]
   profileUser: IUserInfo
 }
 

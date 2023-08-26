@@ -35,7 +35,7 @@ const Home: NextPage<IProps> = () => {
     toggleLoading(true)
     listSavedRecommendationsByEmail(user!.email)
       .then(recommendations => {
-        setRecommendations(recommendations)
+        setRecommendations(recommendations.sort((a, b) => b.createdAt - a.createdAt))
       })
       .catch(e => {
         toastError('Error fetching saved recommendations')

@@ -65,6 +65,20 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     }
   }, [user])
 
+  useEffect(() => {
+    if (containerRef.current) {
+      if (panel === 'saved') {
+        containerRef.current.querySelector('.saved')?.classList.remove('force-hide')
+        containerRef.current.querySelector('.add')?.classList.add('force-hide')
+        containerRef.current?.scrollTo(0, 0)
+      }
+      if (panel === 'add') {
+        containerRef.current.querySelector('.saved')?.classList.add('force-hide')
+        containerRef.current.querySelector('.add')?.classList.remove('force-hide')
+      }
+    }
+  }, [panel])
+
   const handleOnSuccess = () => {
     if (onSuccess) {
       onSuccess()
@@ -177,9 +191,6 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
           onSuccess={() => {
             setPanel('saved')
             fetchRecommendations()
-            if (containerRef) {
-              containerRef.current?.scrollTo(0, 0)
-            }
           }}
         />
       </div>

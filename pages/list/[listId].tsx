@@ -420,21 +420,25 @@ const List: NextPage<IProps> = (props: IProps) => {
 
         <div>
           {hasRecommendations ? (
-            listRecommendations.map(recommendationInfo => (
-              <RecommendationInfo
-                key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
-                layout={RecommendationInfoLayoutType.INLINE}
-                source={RecommendationInfoSourceType.LIST}
-                recommendationInfo={recommendationInfo}
-                recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
-                list={listDetail}
-                onLinkClick={() => onLinkClick(recommendationInfo)}
-                showAddToList={!sessionUser}
-                onAddToList={() => handleAddToList(recommendationInfo)}
-                showRemoveFromList={sessionUser}
-                onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
-              />
-            ))
+            listRecommendations.map((recommendationInfo, index) => {
+              const sponsored = index === 2 // TODO: Remove
+              return (
+                <RecommendationInfo
+                  key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
+                  layout={RecommendationInfoLayoutType.INLINE}
+                  source={RecommendationInfoSourceType.LIST}
+                  recommendationInfo={recommendationInfo}
+                  recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
+                  list={listDetail}
+                  onLinkClick={() => onLinkClick(recommendationInfo)}
+                  showAddToList={!sessionUser}
+                  onAddToList={() => handleAddToList(recommendationInfo)}
+                  showRemoveFromList={sessionUser}
+                  onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
+                  sponsored={sponsored}
+                />
+              )
+            })
           ) : (
             <NoContent
               message="This list is empty, it needs some recommendations."

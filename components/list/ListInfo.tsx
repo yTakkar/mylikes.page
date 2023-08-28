@@ -3,14 +3,16 @@ import { IListInfo, ListVisibilityType } from '../../interface/list'
 import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { InformationCircleIcon, LockClosedIcon } from '@heroicons/react/solid'
+import Tooltip from '../Tooltip'
 
 interface IListInfoProps {
   list: IListInfo
+  sponsored?: boolean
 }
 
 const ListInfo: React.FC<IListInfoProps> = props => {
-  const { list } = props
+  const { list, sponsored = false } = props
 
   const MAX_IMAGES = 4
 
@@ -20,6 +22,17 @@ const ListInfo: React.FC<IListInfoProps> = props => {
     <CoreLink
       url={getListPageUrl(list.id)}
       className="border border-mercury transition-all shadow-listInfo rounded transform hover:-translate-y-1 cursor-pointer group">
+      {sponsored && (
+        <div className="text-sm flex items-center text-typo-paragraphLight absolute right-2 top-2 underline">
+          <span className="">Featured</span>
+          <Tooltip content="This is a featured list.">
+            <span>
+              <InformationCircleIcon className="w-4 ml-1" />
+            </span>
+          </Tooltip>
+        </div>
+      )}
+
       <div className="p-4 flex items-center justify-center min-h-[150px] shadow-listInfoImages">
         {imagesToDisplay.length === 0 ? (
           <div className="italic text-gray-600">The list is empty</div>

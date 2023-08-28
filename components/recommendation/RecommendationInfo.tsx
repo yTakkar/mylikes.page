@@ -18,6 +18,7 @@ import Alert from '../modal/Alert'
 import {
   DocumentTextIcon,
   ExclamationIcon,
+  InformationCircleIcon,
   MusicNoteIcon,
   ShoppingBagIcon,
   VideoCameraIcon,
@@ -47,6 +48,7 @@ interface IRecommendationInfoProps {
   onManageClick?: () => void
   showRemoveFromList?: boolean
   onRemoveFromList?: () => Promise<void>
+  sponsored?: boolean
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
@@ -62,6 +64,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     onManageClick,
     showRemoveFromList = false,
     onRemoveFromList,
+    sponsored = false,
   } = props
 
   const applicationContext = useContext(ApplicationContext)
@@ -97,11 +100,15 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       })
   }
 
-  const showCtaContainer = [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(
-    v => !!v
-  )
+  const showCtaContainer = sponsored
+    ? false
+    : [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(v => !!v)
 
   const renderNote = () => {
+    if (sponsored) {
+      return null
+    }
+
     if (source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE) {
       if (!note) {
         return null
@@ -186,7 +193,10 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
   return (
     <>
-      <div className="flex items-start mb-6 relative">
+      <div
+        className={classNames('flex items-start py-3 relative ', {
+          // 'bg-denim': sponsored, // needed?
+        })}>
         <div className="relative">
           {source === RecommendationInfoSourceType.LIST ? (
             <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
@@ -240,6 +250,17 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               </>
             )}
           </div>
+
+          {sponsored && (
+            <div className="text-sm mt-2 flex items-center text-typo-paragraphLight underline">
+              <span className="">Featured</span>
+              <Tooltip content="This is a featured recommendation.">
+                <span>
+                  <InformationCircleIcon className="w-4 ml-1" />
+                </span>
+              </Tooltip>
+            </div>
+          )}
 
           <div className="text-sm mt-2">{renderNote()}</div>
 

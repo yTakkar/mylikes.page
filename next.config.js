@@ -13,6 +13,8 @@ const { parsed: parsedEnvs } = require('dotenv').config({
   path: getAbsPath(`env/${appEnv}.env`),
 })
 
+const isLocal = appEnv.includes('local')
+
 /**
  * resource "aws_cloudfront_response_headers_policy" "security_headers_policy"{
   name = "headers-policy-${terraform.workspace}"
@@ -62,6 +64,18 @@ const securityHeaders = [
   {
     key: 'Strict-Transport-Security',
     value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  {
+    key: 'X-XSS-Protection',
+    value: '1; mode=block',
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: `upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src 'self' data:; script-src 'self' blob: ${
+      isLocal ? "'unsafe-eval'" : ''
+    } www.googletagmanager.com ajax.googleapis.com; base-uri 'self'; style-src 'self' ${
+      isLocal ? "'unsafe-inline'" : ''
+    };`,
   },
 ]
 

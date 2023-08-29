@@ -13,6 +13,7 @@ const GoogleAnalyticsScripts: React.FC = () => {
         src={`https://www.googletagmanager.com/gtag/js?id=${appConfig.integrations.googleAnalytics.webCode}`}></script>
       <script
         type="text/javascript"
+        nonce="eXFBngjwfBsaKvk2tWSS"
         dangerouslySetInnerHTML={{
           __html: `
           window.dataLayer = window.dataLayer || [];

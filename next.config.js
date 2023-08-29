@@ -71,11 +71,9 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: `upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src 'self' data:; script-src 'self' blob: ${
+    value: `upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src 'self' data:; script-src 'self' 'nonce-eXFBngjwfBsaKvk2tWSS' blob: ${
       isLocal ? "'unsafe-eval'" : ''
-    } www.googletagmanager.com ajax.googleapis.com; base-uri 'self'; style-src 'self' ${
-      isLocal ? "'unsafe-inline'" : ''
-    };`,
+    } www.googletagmanager.com ajax.googleapis.com; base-uri 'self'; style-src 'self';`,
   },
 ]
 

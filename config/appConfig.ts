@@ -90,8 +90,8 @@ const appConfig = {
     },
   },
   feedback: {
-    generalFeedbackForm: 'https://forms.gle/322aJaKeZYmZV83H6',
-    newRecommendationTypeForm: 'https://forms.gle/DrF31SThVFCmLdPa7',
+    generalFeedbackForm: 'https://forms.gle/kZ659D87vZyYQihs8',
+    newRecommendationTypeForm: 'https://forms.gle/yaTZSii4AKEU4w6cA',
   },
   build: {
     pageRevalidateTimeInSec: {

@@ -15,39 +15,6 @@ const { parsed: parsedEnvs } = require('dotenv').config({
 
 const isLocal = appEnv.includes('local')
 
-/**
- * resource "aws_cloudfront_response_headers_policy" "security_headers_policy"{
-  name = "headers-policy-${terraform.workspace}"
-  custom_headers_config {
-    items {
-      header   = "Reporting-Endpoints"
-      override = true
-      value    = "endpoint=\"https://csp-report.browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pub0d48c78fc2894bdc2c8c2b7a2d852d8f&dd-evp-origin=content-security-policy&ddsource=csp-report\""
-    }
-  }
-
-  security_headers_config {
-    content_security_policy {
-      content_security_policy = "script-src 'self' blob: https://js.hs-scripts.com www.googletagmanager.com ajax.googleapis.com *.lr-in-prod.com *.cloudfront.net *.cloudflare.com *.whatfix.com https://whatfix.com; base-uri 'self'; report-uri https://csp-report.browser-intake-datadoghq.com/api/v2/logs?dd-api-key=pub0d48c78fc2894bdc2c8c2b7a2d852d8f&dd-evp-origin=content-security-policy&ddsource=csp-report; report-to endpoint; upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src 'self' data: https://fonts.gstatic.com;"
-      override                = true
-    }
-    frame_options {
-      frame_option = "DENY"
-      override     = true
-    }
-    strict_transport_security {
-      access_control_max_age_sec = "63072000"
-      include_subdomains = true
-      preload = true
-      override = true
-    }
-    content_type_options {
-      override = true
-    }
-  }
-}
- */
-
 const securityHeaders = [
   {
     key: 'X-XSS-Protection',
@@ -70,10 +37,15 @@ const securityHeaders = [
     value: '1; mode=block',
   },
   {
+    key: 'Reporting-Endpoints',
+    value:
+      'endpoint="https://o4505702857637888.ingest.sentry.io/api/4505702860914688/security/?sentry_key=d9a5a3ca87c60b11a9ad14a2d07043c6"',
+  },
+  {
     key: 'Content-Security-Policy',
     value: `upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src 'self' data:; script-src 'self' 'nonce-eXFBngjwfBsaKvk2tWSS' blob: ${
       isLocal ? "'unsafe-eval'" : ''
-    } www.googletagmanager.com ajax.googleapis.com; base-uri 'self';`,
+    } www.googletagmanager.com ajax.googleapis.com; base-uri 'self'; report-uri https://o4505702857637888.ingest.sentry.io/api/4505702860914688/security/?sentry_key=d9a5a3ca87c60b11a9ad14a2d07043c6; report-to endpoint;`,
   },
 ]
 

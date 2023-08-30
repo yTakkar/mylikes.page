@@ -69,6 +69,7 @@ const useApplicationContext = () => {
     togglePopup,
     updateUser,
     logout,
+    dispatch: dispatchApplicationContext,
   }
 
   return {

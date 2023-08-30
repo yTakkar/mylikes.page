@@ -4,6 +4,7 @@ import { IApplicationContextProps } from '../interface/applicationContext'
 import { IDeviceInfo } from '../interface/device'
 import { IUserInfo } from '../interface/user'
 import { PopupParams, PopupType } from '../interface/popup'
+import { IListInfo } from '../interface/list'
 
 export type ApplicationContextAction =
   | {
@@ -22,6 +23,12 @@ export type ApplicationContextAction =
       payload: {
         popup: PopupType
         params: PopupParams
+      }
+    }
+  | {
+      type: 'UPDATE_ADS_LISTS'
+      payload: {
+        lists: IListInfo[]
       }
     }
 
@@ -58,6 +65,17 @@ const applicationReducer = (
         ...state,
         popups: {
           [popup]: params,
+        },
+      }
+    }
+
+    case 'UPDATE_ADS_LISTS': {
+      const { lists } = action.payload
+      return {
+        ...state,
+        ads: {
+          ...state.ads,
+          featuredLists: lists,
         },
       }
     }

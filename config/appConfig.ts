@@ -165,7 +165,7 @@ const appConfig = {
       //   isExternal: true,
       // },
       // { type: 'WHATSAPP', url: 'https://wa.me/+919999999999', name: 'WhatsApp', isExternal: true },
-      { type: 'EMAIL', url: 'mailto:ownstoreonlinee@gmail.com', name: 'Mail', isExternal: true },
+      { type: 'EMAIL', url: 'mailto:team@mylikes.page', name: 'Mail', isExternal: true },
     ],
   },
   footer: {
@@ -177,7 +177,12 @@ const appConfig = {
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
   admin: {
-    users: ['mylikescontact@gmail.com'],
+    users: ['admin@mylikes.page'],
+  },
+  ads: {
+    featured: {
+      listsRevalidateTimeInSec: 10 * 60,
+    },
   },
 }
 

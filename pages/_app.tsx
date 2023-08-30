@@ -21,6 +21,7 @@ import { Analytics } from '@vercel/analytics/react'
 import GeneralFeedbackFormButton from '../components/GeneralFeedbackFormButton'
 import { DesktopView } from '../components/ResponsiveViews'
 import appAnalytics from '../lib/analytics/appAnalytics'
+import useFeaturedAds from '../hooks/useFeaturedAds'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -67,6 +68,8 @@ const MyApp: NextPage<IProps> = props => {
 
   const { applicationContext } = useApplicationContext()
   const router = useRouter()
+
+  useFeaturedAds()
 
   const [analyticsLoaded, toggleAnalyticsLoaded] = useState(false)
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { IGlobalLayoutProps } from '../_app'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -317,6 +317,11 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
   ].filter(action => action.show)
 
+  const featuredPositions = useMemo(
+    () => getFeaturedRecommendationPositions(listDetail, ads.featuredLists),
+    [listDetail, ads.featuredLists]
+  )
+
   const renderContent = () => {
     if (!sessionUser && listDetail.visibility === ListVisibilityType.PRIVATE) {
       return <NotFound />
@@ -440,10 +445,7 @@ const List: NextPage<IProps> = (props: IProps) => {
 
         <div>
           {hasRecommendations ? (
-            insertArrayPositionItems(
-              mappedRecommendations,
-              getFeaturedRecommendationPositions(listDetail, ads.featuredLists)
-            )
+            insertArrayPositionItems(mappedRecommendations, featuredPositions)
           ) : (
             <NoContent
               message="This list is empty, it needs some recommendations."

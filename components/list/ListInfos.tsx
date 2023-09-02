@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { IListDetail, ListVisibilityType } from '../../interface/list'
 import ListInfo from './ListInfo'
 import { PlusIcon } from '@heroicons/react/solid'
@@ -31,6 +31,11 @@ const ListInfos: React.FC<IListInfoProps> = props => {
 
   const listsToShow = (sessionUser ? lists : lists.filter(list => list.visibility === ListVisibilityType.PUBLIC)).sort(
     (a, b) => b.createdAt - a.createdAt
+  )
+
+  const featuredPositions = useMemo(
+    () => getFeaturedListPositions(listsToShow, ads.featuredLists),
+    [listsToShow, ads.featuredLists]
   )
 
   if (listsToShow.length === 0) {
@@ -83,7 +88,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 mt-4 lg:mt-0">
-        {insertArrayPositionItems(mappedLists, getFeaturedListPositions(listsToShow, ads.featuredLists))}
+        {insertArrayPositionItems(mappedLists, featuredPositions)}
       </div>
     </div>
   )

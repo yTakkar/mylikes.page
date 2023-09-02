@@ -203,7 +203,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
     toggleDeleteLoading(true)
     try {
       await deleteListById(listDetail!.id)
-      await revalidateUrls([getProfilePageUrl(listDetail!.owner.username)])
+      await revalidateUrls([getProfilePageUrl(listDetail!.owner!.username)])
       toastSuccess('List deleted!')
       appAnalytics.sendEvent({
         action: AnalyticsEventType.LIST_DELETE,

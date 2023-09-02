@@ -51,7 +51,7 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
         await updateList(list!.id, {
           recommendations: recommendations,
         })
-        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner.username)])
+        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner!.username)])
         toastSuccess('Note updated successfully')
         appAnalytics.sendEvent({
           action: AnalyticsEventType.RECOMMENDATION_ADD_UPDATE_NOTE,

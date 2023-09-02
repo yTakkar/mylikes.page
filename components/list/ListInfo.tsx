@@ -3,8 +3,7 @@ import { IListDetail, ListVisibilityType } from '../../interface/list'
 import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
-import { InformationCircleIcon, LockClosedIcon } from '@heroicons/react/solid'
-import Tooltip from '../Tooltip'
+import { LockClosedIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
 
 interface IListInfoProps {

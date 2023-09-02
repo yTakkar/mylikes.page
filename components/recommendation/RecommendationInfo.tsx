@@ -18,7 +18,6 @@ import Alert from '../modal/Alert'
 import {
   DocumentTextIcon,
   ExclamationIcon,
-  InformationCircleIcon,
   MusicNoteIcon,
   ShoppingBagIcon,
   VideoCameraIcon,

@@ -87,7 +87,8 @@ const Home: NextPage<IProps> = (props: IProps) => {
               if (currentUserProfile) {
                 router.push(getProfileEditPageUrl())
               }
-            }}>
+            }}
+            title="Edit">
             <CoreImage
               url={profileInfo.avatarUrl}
               alt={`${profileInfo.name}'s profile on ${appConfig.global.app.name}`}

@@ -2,8 +2,9 @@ import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firesto
 import firebaseStore from '.'
 import { IGetShelfByIdParams, IShelfDetail, IShelfInfo } from '../../interface/shelf'
 import { listCollection } from './list'
-import { IListInfo } from '../../interface/list'
-import { shuffle } from '../../utils/common'
+import { IListDetail } from '../../interface/list'
+import { shuffle } from '../../utils/array'
+import { getBulkUsers } from './users'
 
 const shelfCollection = collection(firebaseStore, 'shelves')
 
@@ -17,21 +18,37 @@ export const getShelfById = async (id: string, params: IGetShelfByIdParams): Pro
   const docSnap = await getDoc(docRef)
   const data = docSnap.data() as IShelfDetail
   const listIds = shuffle(data.listIds).slice(0, params.limit)
+  const uniqueUserEmails = new Set<string>()
 
   const listQuery = query(listCollection, where('id', 'in', listIds))
   const lists = await getDocs(listQuery)
 
   const listInfos = lists.docs.map(doc => {
-    const listInfo = doc.data() as IListInfo
+    const listInfo = doc.data() as IListDetail
+    const email = listInfo.owner?.id
+
+    if (email) {
+      uniqueUserEmails.add(email)
+    }
+
     return {
       ...listInfo,
+      __ownerEmail: email,
       owner: null,
     }
   })
 
+  const recommendationOwners = await getBulkUsers(Array.from(uniqueUserEmails))
+
   return {
     ...data,
     listIds,
-    listInfos,
+    listInfos: listInfos.map(listInfo => {
+      const owner = recommendationOwners[listInfo.__ownerEmail as string]
+      return {
+        ...listInfo,
+        owner,
+      }
+    }),
   }
 }

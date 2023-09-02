@@ -6,7 +6,7 @@ export enum ListVisibilityType {
   PRIVATE = 'PRIVATE',
 }
 
-export interface IListInfo {
+export interface IListDetail {
   id: string
   name: string
   description: string
@@ -14,10 +14,7 @@ export interface IListInfo {
   visibility: ListVisibilityType
   recommendations: IListRecommendationInfo[]
   clonedListId: string | null
-}
-
-export interface IListDetail extends IListInfo {
-  owner: IUserInfo
+  owner: IUserInfo | null
 }
 
 export interface IListDetailAddParams {
@@ -37,4 +34,7 @@ export interface IListListsParams {
 
 export interface IListRecommendationInfo extends IRecommendationInfo {
   addedAt: number // date mills
+  __sponsoredMeta?: {
+    list: IListDetail
+  }
 }

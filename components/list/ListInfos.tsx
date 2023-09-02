@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { IListInfo, ListVisibilityType } from '../../interface/list'
+import { IListDetail, ListVisibilityType } from '../../interface/list'
 import ListInfo from './ListInfo'
 import { PlusIcon } from '@heroicons/react/solid'
 import NoContent from '../NoContent'
@@ -9,9 +9,11 @@ import { PopupType } from '../../interface/popup'
 import { IUserInfo } from '../../interface/user'
 import { isSessionUser } from '../../utils/user'
 import { pluralize } from '../../utils/common'
+import { insertArrayPositionItems } from '../../utils/array'
+import { getFeaturedListPositions } from '../../utils/featuredAds'
 
 interface IListInfoProps {
-  lists: IListInfo[]
+  lists: IListDetail[]
   profileUser: IUserInfo
 }
 
@@ -19,7 +21,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
   const { lists, profileUser } = props
 
   const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
+  const { user, methods, ads } = applicationContext
 
   const sessionUser = isSessionUser(user, profileUser)
 
@@ -59,6 +61,10 @@ const ListInfos: React.FC<IListInfoProps> = props => {
     )
   }
 
+  const mappedLists = listsToShow.map(list => {
+    return <ListInfo key={list.id} list={list} sponsored={false} />
+  })
+
   return (
     <div>
       {sessionUser && (
@@ -77,10 +83,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 mt-4 lg:mt-0">
-        {listsToShow.map((list, index) => {
-          const sponsored = index === 2 // TODO:
-          return <ListInfo key={list.id} list={list} sponsored={sponsored} />
-        })}
+        {insertArrayPositionItems(mappedLists, getFeaturedListPositions(listsToShow, ads.featuredLists))}
       </div>
     </div>
   )

@@ -24,6 +24,7 @@ import {
   VideoCameraIcon,
 } from '@heroicons/react/solid'
 import { RECOMMENDATION_TYPE_DESCRIPTION_MAP } from '../../constants/constants'
+import FeaturedLabel from '../FeaturedLabel'
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -49,6 +50,7 @@ interface IRecommendationInfoProps {
   showRemoveFromList?: boolean
   onRemoveFromList?: () => Promise<void>
   sponsored?: boolean
+  loading?: boolean
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
@@ -65,6 +67,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     showRemoveFromList = false,
     onRemoveFromList,
     sponsored = false,
+    loading = false,
   } = props
 
   const applicationContext = useContext(ApplicationContext)
@@ -252,13 +255,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
           </div>
 
           {sponsored && (
-            <div className="text-sm mt-2 flex items-center text-typo-paragraphLight underline">
-              <span className="">Featured</span>
-              <Tooltip content="This is a featured recommendation.">
-                <span>
-                  <InformationCircleIcon className="w-4 ml-1" />
-                </span>
-              </Tooltip>
+            <div className="mt-1">
+              <FeaturedLabel />
             </div>
           )}
 
@@ -276,6 +274,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                   size={CoreButtonSize.SMALL}
                   type={CoreButtonType.SOLID_PRIMARY}
                   onClick={onAddToList}
+                  disabled={loading}
+                  loading={loading}
                 />
               ) : null}
               {showRemoveFromList ? (

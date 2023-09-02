@@ -46,6 +46,8 @@ import appConfig from '../../config/appConfig'
 import Alert from '../../components/modal/Alert'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
+import { insertArrayPositionItems } from '../../utils/array'
+import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -62,7 +64,7 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
+  const { user, methods, ads } = applicationContext
 
   const { listDetail: initialListDetail, profileInfoMap: _profileInfoMap } = props.pageData
 
@@ -191,7 +193,7 @@ const List: NextPage<IProps> = (props: IProps) => {
       await updateList(listDetail.id, {
         recommendations: updatedList,
       })
-      await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner.username)])
+      await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner!.username)])
       toastSuccess('Removed from list!')
       appAnalytics.sendEvent({
         action: AnalyticsEventType.RECOMMENDATION_REMOVE,
@@ -328,6 +330,24 @@ const List: NextPage<IProps> = (props: IProps) => {
       )
     }
 
+    const mappedRecommendations = listRecommendations.map(recommendationInfo => {
+      return (
+        <RecommendationInfo
+          key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
+          layout={RecommendationInfoLayoutType.INLINE}
+          source={RecommendationInfoSourceType.LIST}
+          recommendationInfo={recommendationInfo}
+          recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
+          list={listDetail}
+          onLinkClick={() => onLinkClick(recommendationInfo)}
+          showAddToList={!sessionUser}
+          onAddToList={() => handleAddToList(recommendationInfo)}
+          showRemoveFromList={sessionUser}
+          onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
+        />
+      )
+    })
+
     return (
       <div className="px-3 lg:px-0">
         <div className="lg:my-8 lg:text-center">
@@ -340,8 +360,8 @@ const List: NextPage<IProps> = (props: IProps) => {
           {listDetail.description && <div className="my-2 text-gray-800">{listDetail.description}</div>}
           <div className="text-typo-paragraphLight flex items-center lg:justify-center">
             by
-            <CoreLink url={getProfilePageUrl(listDetail.owner.username)} className="ml-1">
-              {listDetail.owner.name} {sessionUser ? '(You)' : null}
+            <CoreLink url={getProfilePageUrl(listDetail.owner!.username)} className="ml-1">
+              {listDetail.owner!.name} {sessionUser ? '(You)' : null}
             </CoreLink>
             {listDetail.visibility === ListVisibilityType.PRIVATE && (
               <Tooltip content="This is a private list.">
@@ -420,25 +440,10 @@ const List: NextPage<IProps> = (props: IProps) => {
 
         <div>
           {hasRecommendations ? (
-            listRecommendations.map((recommendationInfo, index) => {
-              const sponsored = index === 2 // TODO: Remove
-              return (
-                <RecommendationInfo
-                  key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
-                  layout={RecommendationInfoLayoutType.INLINE}
-                  source={RecommendationInfoSourceType.LIST}
-                  recommendationInfo={recommendationInfo}
-                  recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
-                  list={listDetail}
-                  onLinkClick={() => onLinkClick(recommendationInfo)}
-                  showAddToList={!sessionUser}
-                  onAddToList={() => handleAddToList(recommendationInfo)}
-                  showRemoveFromList={sessionUser}
-                  onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
-                  sponsored={sponsored}
-                />
-              )
-            })
+            insertArrayPositionItems(
+              mappedRecommendations,
+              getFeaturedRecommendationPositions(listDetail, ads.featuredLists)
+            )
           ) : (
             <NoContent
               message="This list is empty, it needs some recommendations."

@@ -22,6 +22,7 @@
     "@vercel/analytics": "^1.0.2",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.9",
+    "deepmerge": "^4.3.1",
     "dompurify": "^3.0.5",
     "esm": "^3.2.25",
     "firebase": "^9.22.1",

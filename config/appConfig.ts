@@ -177,11 +177,13 @@ const appConfig = {
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
   admin: {
-    users: ['admin@mylikes.page'],
+    users: ['admin@mylikes.page', 'mylikescontact@gmail.com'],
   },
   ads: {
     featured: {
       listsRevalidateTimeInSec: 10 * 60,
+      recommendationsFrequency: 5,
+      listsFrequency: 3,
     },
   },
 }

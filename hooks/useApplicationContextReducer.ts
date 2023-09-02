@@ -4,7 +4,7 @@ import { IApplicationContextProps } from '../interface/applicationContext'
 import { IDeviceInfo } from '../interface/device'
 import { IUserInfo } from '../interface/user'
 import { PopupParams, PopupType } from '../interface/popup'
-import { IListInfo } from '../interface/list'
+import { IListDetail } from '../interface/list'
 
 export type ApplicationContextAction =
   | {
@@ -28,7 +28,7 @@ export type ApplicationContextAction =
   | {
       type: 'UPDATE_ADS_LISTS'
       payload: {
-        lists: IListInfo[]
+        lists: IListDetail[]
       }
     }
 

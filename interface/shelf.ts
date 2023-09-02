@@ -1,4 +1,4 @@
-import { IListInfo } from './list'
+import { IListDetail } from './list'
 
 export interface IShelfInfo {
   id: string
@@ -9,7 +9,7 @@ export interface IShelfInfo {
 }
 
 export interface IShelfDetail extends IShelfInfo {
-  listInfos: IListInfo[]
+  listInfos: IListDetail[]
 }
 
 export interface IGetShelfByIdParams {

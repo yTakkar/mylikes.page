@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore'
 import firebaseStore from '.'
 import { IListDetail, IListDetailAddParams, IListListsParams } from '../../interface/list'
-import { usersCollection } from './users'
+import { getBulkUsers, usersCollection } from './users'
 import { IUserInfo } from '../../interface/user'
 
 export const listCollection = collection(firebaseStore, 'list')
@@ -64,22 +64,10 @@ export const listListsByUser = async (user: IUserInfo): Promise<IListDetail[]> =
 
 export const getListProfileInfoMap = async (list: IListDetail) => {
   const uniqueUserEmails = new Set<string>()
-  const profileInfoMap: Record<string, IUserInfo> = {}
   list.recommendations.forEach(recommendation => {
     uniqueUserEmails.add(recommendation.ownerEmail)
   })
-
-  if (uniqueUserEmails.size === 0) {
-    return profileInfoMap
-  }
-
-  const q = query(usersCollection, where('email', 'in', Array.from(uniqueUserEmails)))
-  const querySnapshot = await getDocs(q)
-  querySnapshot.docs.forEach(doc => {
-    const data = doc.data() as IUserInfo
-    profileInfoMap[data.email] = data
-  })
-  return profileInfoMap
+  return getBulkUsers(Array.from(uniqueUserEmails))
 }
 
 export const getListById = async (id: string): Promise<IListDetail | null> => {

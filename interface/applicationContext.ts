@@ -1,6 +1,6 @@
 import { ApplicationContextAction } from '../hooks/useApplicationContextReducer'
 import { IDeviceInfo } from './device'
-import { IListInfo } from './list'
+import { IListDetail } from './list'
 import { PopupParams, PopupType } from './popup'
 import { IUserInfo } from './user'
 
@@ -16,7 +16,7 @@ export interface IApplicationContextProps {
   popups: Partial<Record<PopupType, PopupParams>>
   user: IUserInfo | null
   ads: {
-    featuredLists: IListInfo[]
+    featuredLists: IListDetail[]
   }
   methods: IContextMethods
 }

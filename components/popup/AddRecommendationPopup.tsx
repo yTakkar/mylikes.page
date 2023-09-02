@@ -37,6 +37,8 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
   const [loading, toggleLoading] = useState(false)
   const [panel, setPanel] = useState<'saved' | 'add'>('saved')
+  const [selectedRecommendationId, setSelectedRecommendationId] = useState<string | null>(null)
+  const [operationLoading, toggleOperationLoading] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -86,6 +88,9 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   }
 
   const handleAddToList = (recommendation: IRecommendationInfo) => {
+    setSelectedRecommendationId(recommendation.id)
+    toggleOperationLoading(true)
+
     const processCommands = async () => {
       const listRecommendation: IListRecommendationInfo = {
         ...recommendation,
@@ -114,6 +119,8 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
       } catch (e) {
         appAnalytics.captureException(e)
         toastError('Failed to add to the list')
+      } finally {
+        toggleOperationLoading(false)
       }
     }
 
@@ -173,6 +180,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
                 recommendationOwner={user!}
                 showAddToList={true}
                 onAddToList={() => handleAddToList(recommendationInfo)}
+                loading={selectedRecommendationId === recommendationInfo.id && operationLoading}
               />
             ))
           )}

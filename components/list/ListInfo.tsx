@@ -1,13 +1,14 @@
 import React from 'react'
-import { IListInfo, ListVisibilityType } from '../../interface/list'
+import { IListDetail, ListVisibilityType } from '../../interface/list'
 import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
 import { InformationCircleIcon, LockClosedIcon } from '@heroicons/react/solid'
 import Tooltip from '../Tooltip'
+import FeaturedLabel from '../FeaturedLabel'
 
 interface IListInfoProps {
-  list: IListInfo
+  list: IListDetail
   sponsored?: boolean
 }
 
@@ -23,13 +24,8 @@ const ListInfo: React.FC<IListInfoProps> = props => {
       url={getListPageUrl(list.id)}
       className="border border-mercury transition-all shadow-listInfo rounded transform hover:-translate-y-1 cursor-pointer group">
       {sponsored && (
-        <div className="text-sm flex items-center text-typo-paragraphLight absolute right-2 top-2 underline">
-          <span className="">Featured</span>
-          <Tooltip content="This is a featured list.">
-            <span>
-              <InformationCircleIcon className="w-4 ml-1" />
-            </span>
-          </Tooltip>
+        <div className="absolute right-2 top-2">
+          <FeaturedLabel />
         </div>
       )}
 

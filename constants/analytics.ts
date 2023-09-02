@@ -44,6 +44,13 @@ export enum AnalyticsEventType {
   SAVED_RECOMMENDATION_REMOVE = 'saved_recommendation_remove',
   SAVED_RECOMMENDATION_SUGGEST_TYPE = 'saved_recommendation_suggest_type',
 
+  // featured shelf list
+  FEATURED_SHELF_LIST_VISIT = 'featured_shelf_list_visit',
+
+  // ads
+  AD_FEATURED_LIST_VISIT = 'ad_featured_list_visit',
+  AD_FEATURED_RECOMMENDATION_VISIT = 'ad_featured_recommendation_visit',
+
   // pwa
   PWA_INSTALL_SUCCESS = 'pwa_install_success',
   PWA_INSTALL_FAILED = 'pwa_install_failed',

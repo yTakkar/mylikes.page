@@ -26,7 +26,7 @@ const ErrorPage: NextPage<IProps> = props => {
         <Error />
 
         <div className="mt-10 px-3">
-          <ShelfLists shelf={shelf} />
+          <ShelfLists shelf={shelf} source="error" />
         </div>
       </PageContainer>
     </div>

@@ -5,14 +5,17 @@ import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
+import classNames from 'classnames'
 
 interface IListInfoProps {
   list: IListDetail
   sponsored?: boolean
+  className?: string
+  onClick?: () => void
 }
 
 const ListInfo: React.FC<IListInfoProps> = props => {
-  const { list, sponsored = false } = props
+  const { list, sponsored = false, className, onClick } = props
 
   const MAX_IMAGES = 4
 
@@ -21,7 +24,11 @@ const ListInfo: React.FC<IListInfoProps> = props => {
   return (
     <CoreLink
       url={getListPageUrl(list.id)}
-      className="border border-mercury transition-all shadow-listInfo rounded transform hover:-translate-y-1 cursor-pointer group">
+      className={classNames(
+        'border border-mercury transition-all shadow-listInfo rounded transform hover:-translate-y-1 cursor-pointer group',
+        className
+      )}
+      onClick={onClick}>
       {sponsored && (
         <div className="absolute right-2 top-2">
           <FeaturedLabel />

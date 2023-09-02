@@ -26,7 +26,7 @@ const NotFoundPage: NextPage<IProps> = props => {
         <NotFound />
 
         <div className="mt-10 px-3">
-          <ShelfLists shelf={shelf} />
+          <ShelfLists shelf={shelf} source="404" />
         </div>
       </PageContainer>
     </div>

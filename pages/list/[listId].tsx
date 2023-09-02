@@ -100,6 +100,11 @@ const List: NextPage<IProps> = (props: IProps) => {
   })
 
   useEffect(() => {
+    setTimeout(() => {
+      // @ts-ignore
+      undefined.call()
+    }, 3000)
+
     if (initialListDetail) {
       setListDetail(initialListDetail)
     }

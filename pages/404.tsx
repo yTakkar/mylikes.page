@@ -35,7 +35,7 @@ const NotFoundPage: NextPage<IProps> = props => {
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
   const shelf = await getShelfById('featured-lists', {
-    limit: 3,
+    limit: 4,
   })
 
   return {

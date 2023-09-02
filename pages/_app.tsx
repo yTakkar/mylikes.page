@@ -104,16 +104,16 @@ const MyApp: NextPage<IProps> = props => {
 
   return (
     <>
-      <ApplicationContext.Provider value={applicationContext}>
-        <AppSeo {...seo} />
-        <Header topNavVisibility={showTopNav} />
+      <ErrorBoundary key={router.route}>
+        <ApplicationContext.Provider value={applicationContext}>
+          <AppSeo {...seo} />
+          <Header topNavVisibility={showTopNav} />
 
-        <main
-          id={classnames('pageMain', {
-            'pageMain-lock': !appConfig.features.enableLandscapeMode,
-          })}
-          className={classNames('page-main lg:pb-0')}>
-          <ErrorBoundary key={router.route}>
+          <main
+            id={classnames('pageMain', {
+              'pageMain-lock': !appConfig.features.enableLandscapeMode,
+            })}
+            className={classNames('page-main lg:pb-0')}>
             {appConfig.features.enablePageTransition ? (
               <DynamicPageTransition timeout={300} classNames="pageTransition">
                 <Component {...pageProps} key={router.route} />
@@ -123,20 +123,20 @@ const MyApp: NextPage<IProps> = props => {
             )}
 
             {footer?.show ? <Footer /> : null}
-          </ErrorBoundary>
-        </main>
+          </main>
 
-        <CookieBanner />
-        <Toaster />
-        {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
-        {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
-        <PopupRenderer />
-        <DesktopView useCSS>
-          <GeneralFeedbackFormButton />
-        </DesktopView>
-      </ApplicationContext.Provider>
+          <CookieBanner />
+          <Toaster />
+          {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}
+          {!appConfig.features.enableLandscapeMode ? <OrientationLock /> : null}
+          <PopupRenderer />
+          <DesktopView useCSS>
+            <GeneralFeedbackFormButton />
+          </DesktopView>
+        </ApplicationContext.Provider>
 
-      {!appConfig.isDev && <Analytics />}
+        {!appConfig.isDev && <Analytics />}
+      </ErrorBoundary>
     </>
   )
 }

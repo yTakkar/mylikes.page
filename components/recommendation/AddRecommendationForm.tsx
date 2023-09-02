@@ -306,8 +306,14 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             id="primary"
             onChange={updateField(FieldKeyType.IS_ADULT) as any}
             checked={fields.IS_ADULT}
-            label="Does this recommendation contain adult content?"
+            label={'Mark as NSFW'}
           />
+          <div className="text-typo-paragraphLight text-sm mt-1">
+            {`Is this recommendation not safe for work? `}
+            <CoreLink isExternal url={'https://wikipedia.org/wiki/Not_safe_for_work'} className="underline">
+              Read more
+            </CoreLink>
+          </div>
         </div>
 
         <div className="user-input-group">

@@ -5,7 +5,7 @@ interface ICoreCheckboxProps {
   onChange: (val: boolean) => void
   id: string
   checked: boolean
-  label?: string
+  label?: React.ReactNode
   className?: string
   disabled?: boolean
 }

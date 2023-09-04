@@ -19,6 +19,8 @@ const Error: React.FC<IErrorProps> = props => {
 
   const shelf = serverShelf || featuredListsShelf
 
+  console.log('Error', serverShelf, featuredListsShelf)
+
   return (
     <div>
       <div>

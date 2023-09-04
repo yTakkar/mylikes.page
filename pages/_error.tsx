@@ -19,8 +19,6 @@ const ErrorPage: NextPage<IProps> = props => {
     pageData: { shelf },
   } = props
 
-  console.log('_error')
-
   return (
     <div>
       <PageContainer>

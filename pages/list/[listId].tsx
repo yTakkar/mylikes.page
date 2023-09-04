@@ -171,10 +171,10 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
-    // if (!user) {
-    //   methods.togglePopup(PopupType.LOGIN, {})
-    //   return
-    // }
+    if (!user) {
+      methods.togglePopup(PopupType.LOGIN, {})
+      return
+    }
 
     if (!sessionUser) {
       methods.togglePopup(PopupType.ADD_TO_LIST, {

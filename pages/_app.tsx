@@ -105,10 +105,10 @@ const MyApp: NextPage<IProps> = props => {
   return (
     <>
       <ApplicationContext.Provider value={applicationContext}>
-        <ErrorBoundary key={router.route}>
-          <AppSeo {...seo} />
-          <Header topNavVisibility={showTopNav} />
+        <AppSeo {...seo} />
+        <Header topNavVisibility={showTopNav} />
 
+        <ErrorBoundary key={router.route}>
           <main
             id={classnames('pageMain', {
               'pageMain-lock': !appConfig.features.enableLandscapeMode,

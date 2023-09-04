@@ -4,6 +4,7 @@ import CoreImage, { ImageSourceType } from '../core/CoreImage'
 import ShelfLists from '../list/ShelfLists'
 import { IShelfDetail } from '../../interface/shelf'
 import ApplicationContext from '../ApplicationContext'
+import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 
 interface IErrorProps {
   shelf: IShelfDetail | null
@@ -19,8 +20,6 @@ const Error: React.FC<IErrorProps> = props => {
 
   const shelf = serverShelf || featuredListsShelf
 
-  console.log('Error', serverShelf, featuredListsShelf)
-
   return (
     <div>
       <div>
@@ -35,6 +34,16 @@ const Error: React.FC<IErrorProps> = props => {
             Site under maintenance.
           </div>
           <div className="text-center mt-1 w-[320px] md:w-auto">{`We're working on a few fixes and updates. Sorry for the Inconvenience.`}</div>
+        </div>
+        <div className="text-center mt-2">
+          <CoreButton
+            label="Refresh"
+            size={CoreButtonSize.MEDIUM}
+            type={CoreButtonType.SOLID_PRIMARY}
+            onClick={() => {
+              window.location.reload()
+            }}
+          />
         </div>
       </div>
 

@@ -1,18 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { prepareImageUrl } from '../utils/image'
 import { getHomePageUrl } from '../utils/routes'
 import CoreButton, { CoreButtonSize, CoreButtonType } from './core/CoreButton'
 import CoreImage, { ImageSourceType } from './core/CoreImage'
-import ApplicationContext from './ApplicationContext'
 
 interface INotFoundProps {}
 
 const NotFound: React.FC<INotFoundProps> = () => {
-  const applicationContext = useContext(ApplicationContext)
-  const {
-    device: { isMobile },
-  } = applicationContext
-
   return (
     <div className="flex flex-col items-center justify-center mt-20">
       <CoreImage
@@ -25,8 +19,8 @@ const NotFound: React.FC<INotFoundProps> = () => {
       <div className="text-center mt-2 lg:mt-3">
         <CoreButton
           label="Go to Home"
-          size={isMobile ? CoreButtonSize.MEDIUM : CoreButtonSize.LARGE}
-          type={CoreButtonType.OUTLINE_SECONDARY}
+          size={CoreButtonSize.MEDIUM}
+          type={CoreButtonType.SOLID_PRIMARY}
           url={getHomePageUrl()}
         />
       </div>

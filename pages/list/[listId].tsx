@@ -24,7 +24,7 @@ import { PopupType } from '../../interface/popup'
 import Loader, { LoaderType } from '../../components/loader/Loader'
 import { LockClosedIcon, ReplyIcon } from '@heroicons/react/solid'
 import { IUserInfo } from '../../interface/user'
-import { isSessionUser } from '../../utils/user'
+import { isAdminProfile, isSessionUser } from '../../utils/user'
 import NotFound from '../../components/NotFound'
 import CoreLink from '../../components/core/CoreLink'
 import { generateListId } from '../../utils/list'
@@ -322,10 +322,17 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
   ].filter(action => action.show)
 
-  const featuredPositions = useMemo(
-    () => getFeaturedRecommendationPositions(listDetail, ads.featuredListsShelf?.listInfos || []),
-    [listDetail, ads.featuredListsShelf]
-  )
+  const featuredPositions = useMemo(() => {
+    let featuredLists: IListDetail[] = []
+
+    if (sessionUser || isAdminProfile(listDetail.owner)) {
+      featuredLists = []
+    } else if (ads.featuredListsShelf?.listInfos) {
+      featuredLists = ads.featuredListsShelf.listInfos
+    }
+
+    return getFeaturedRecommendationPositions(listDetail, featuredLists)
+  }, [listDetail, ads.featuredListsShelf])
 
   const renderContent = () => {
     if (!sessionUser && listDetail.visibility === ListVisibilityType.PRIVATE) {

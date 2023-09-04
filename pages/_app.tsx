@@ -104,8 +104,8 @@ const MyApp: NextPage<IProps> = props => {
 
   return (
     <>
-      <ErrorBoundary key={router.route}>
-        <ApplicationContext.Provider value={applicationContext}>
+      <ApplicationContext.Provider value={applicationContext}>
+        <ErrorBoundary key={router.route}>
           <AppSeo {...seo} />
           <Header topNavVisibility={showTopNav} />
 
@@ -133,10 +133,10 @@ const MyApp: NextPage<IProps> = props => {
           <DesktopView useCSS>
             <GeneralFeedbackFormButton />
           </DesktopView>
-        </ApplicationContext.Provider>
 
-        {!appConfig.isDev && <Analytics />}
-      </ErrorBoundary>
+          {!appConfig.isDev && <Analytics />}
+        </ErrorBoundary>
+      </ApplicationContext.Provider>
     </>
   )
 }

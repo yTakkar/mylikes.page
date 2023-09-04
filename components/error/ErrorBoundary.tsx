@@ -32,7 +32,7 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
 
   render() {
     if (this.state.hasError) {
-      return <Error />
+      return <Error shelf={null} />
     }
 
     return this.props.children

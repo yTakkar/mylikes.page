@@ -6,15 +6,7 @@ import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
 import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
-import {
-  ChartBarIcon,
-  ClipboardIcon,
-  CogIcon,
-  DocumentDuplicateIcon,
-  LinkIcon,
-  PlusIcon,
-  ShareIcon,
-} from '@heroicons/react/outline'
+import { ChartBarIcon, CogIcon, DocumentDuplicateIcon, LinkIcon, PlusIcon, ShareIcon } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
@@ -179,10 +171,10 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
-    if (!user) {
-      methods.togglePopup(PopupType.LOGIN, {})
-      return
-    }
+    // if (!user) {
+    //   methods.togglePopup(PopupType.LOGIN, {})
+    //   return
+    // }
 
     if (!sessionUser) {
       methods.togglePopup(PopupType.ADD_TO_LIST, {
@@ -331,8 +323,8 @@ const List: NextPage<IProps> = (props: IProps) => {
   ].filter(action => action.show)
 
   const featuredPositions = useMemo(
-    () => getFeaturedRecommendationPositions(listDetail, ads.featuredLists),
-    [listDetail, ads.featuredLists]
+    () => getFeaturedRecommendationPositions(listDetail, ads.featuredListsShelf?.listInfos || []),
+    [listDetail, ads.featuredListsShelf]
   )
 
   const renderContent = () => {

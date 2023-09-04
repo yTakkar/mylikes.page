@@ -42,9 +42,9 @@ function useFeaturedAds() {
   useEffect(() => {
     if (shelf) {
       dispatch({
-        type: 'UPDATE_ADS_LISTS',
+        type: 'UPDATE_ADS_SHELF',
         payload: {
-          lists: shelf.listInfos,
+          shelf,
         },
       })
     }

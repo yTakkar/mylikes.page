@@ -26,7 +26,7 @@ export const defaultApplicationContext: IApplicationContextProps = {
   popups: {},
   user: null,
   ads: {
-    featuredLists: [],
+    featuredListsShelf: null,
   },
   methods: {
     togglePopup: () => null,

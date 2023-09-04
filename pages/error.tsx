@@ -7,7 +7,6 @@ import { prepareErrorPageSeo } from '../utils/seo/pages/error'
 import { IShelfDetail } from '../interface/shelf'
 import { getShelfById } from '../firebase/store/shelf'
 import { PAGE_REVALIDATE_TIME } from '../constants/constants'
-import ShelfLists from '../components/list/ShelfLists'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -23,11 +22,7 @@ const ErrorPage: NextPage<IProps> = props => {
   return (
     <div>
       <PageContainer>
-        <Error />
-
-        <div className="mt-10 px-3">
-          <ShelfLists shelf={shelf} source="error" />
-        </div>
+        <Error shelf={shelf || null} />
       </PageContainer>
     </div>
   )

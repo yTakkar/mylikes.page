@@ -34,8 +34,8 @@ const ListInfos: React.FC<IListInfoProps> = props => {
   )
 
   const featuredPositions = useMemo(
-    () => getFeaturedListPositions(profileUser, listsToShow, ads.featuredLists),
-    [profileUser, listsToShow, ads.featuredLists]
+    () => getFeaturedListPositions(profileUser, listsToShow, ads.featuredListsShelf?.listInfos || []),
+    [profileUser, listsToShow, ads.featuredListsShelf]
   )
 
   if (listsToShow.length === 0) {

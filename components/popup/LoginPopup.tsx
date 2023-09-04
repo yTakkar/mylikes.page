@@ -3,13 +3,7 @@ import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import CoreImage, { ImageSourceType } from '../core/CoreImage'
 import Modal from '../modal/Modal'
 import { prepareImageUrl } from '../../utils/image'
-import { signInWithGoogle } from '../../firebase/auth/auth'
-import { toastError, toastSuccess } from '../Toaster'
-import { addUser } from '../../firebase/store/users'
-import { prepareUserInfo } from '../../utils/user'
 import ApplicationContext from '../ApplicationContext'
-import { vibrate } from '../../utils/common'
-import appAnalytics from '../../lib/analytics/appAnalytics'
 
 interface ILoginPopupProps {
   onClose: () => void
@@ -20,25 +14,6 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
 
   const applicationContext = useContext(ApplicationContext)
   const { methods } = applicationContext
-
-  const handleGoogleLogin = () => {
-    const processCommands = async () => {
-      try {
-        const user = await signInWithGoogle()
-        const preparedUserInfo = await prepareUserInfo(user)
-        const userInfo = await addUser(preparedUserInfo)
-        vibrate()
-        methods.updateUser(userInfo)
-        onClose()
-        toastSuccess('Login successful!')
-      } catch (e) {
-        appAnalytics.captureException(e)
-        toastError('Failed to login!')
-      }
-    }
-
-    processCommands()
-  }
 
   return (
     <Modal dismissModal={() => onClose()} className="loginPopupOverrides">
@@ -56,7 +31,7 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
           <CoreButton
             size={CoreButtonSize.LARGE}
             type={CoreButtonType.SOLID_PRIMARY}
-            onClick={handleGoogleLogin}
+            onClick={() => methods.login().then(() => onClose())}
             label={
               <>
                 <CoreImage

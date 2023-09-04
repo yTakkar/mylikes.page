@@ -31,6 +31,9 @@ export const defaultApplicationContext: IApplicationContextProps = {
   methods: {
     togglePopup: () => null,
     updateUser: () => null,
+    login: async () => {
+      return
+    },
     logout: () => null,
     dispatch: () => null,
   },

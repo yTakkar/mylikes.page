@@ -3,11 +3,15 @@ import { getDeviceInfo } from '../utils/applicationContext'
 import useApplicationContextReducer from './useApplicationContextReducer'
 import useOrientation from './useOrientation'
 import { IContextMethods } from '../interface/applicationContext'
-import { deleteLocalUserInfo, getLocalUserInfo, setLocalUserInfo } from '../utils/user'
+import { deleteLocalUserInfo, getLocalUserInfo, prepareUserInfo, setLocalUserInfo } from '../utils/user'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../constants/analytics'
 import appConfig from '../config/appConfig'
 import { APP_LOGO } from '../constants/constants'
+import { signInWithGoogle } from '../firebase/auth/auth'
+import { addUser } from '../firebase/store/users'
+import { vibrate } from '../utils/common'
+import { toastError, toastSuccess } from '../components/Toaster'
 
 const useApplicationContext = () => {
   const { applicationContext, dispatchApplicationContext } = useApplicationContextReducer()
@@ -48,6 +52,26 @@ const useApplicationContext = () => {
     }
   }
 
+  const login = async () => {
+    try {
+      const user = await signInWithGoogle()
+      const preparedUserInfo = await prepareUserInfo(user)
+      const userInfo = await addUser(preparedUserInfo)
+      vibrate()
+      updateUser(userInfo)
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.LOGIN,
+        extra: {
+          method: 'Google',
+        },
+      })
+      toastSuccess('Login successful!')
+    } catch (e) {
+      appAnalytics.captureException(e)
+      toastError('Failed to login!')
+    }
+  }
+
   const logout: IContextMethods['logout'] = () => {
     updateUser(null)
     deleteLocalUserInfo()
@@ -68,6 +92,7 @@ const useApplicationContext = () => {
   applicationContext.methods = {
     togglePopup,
     updateUser,
+    login,
     logout,
     dispatch: dispatchApplicationContext,
   }

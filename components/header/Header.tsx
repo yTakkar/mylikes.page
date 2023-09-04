@@ -12,13 +12,6 @@ import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/r
 import ApplicationContext from '../ApplicationContext'
 import TextLogo from '../logo/TextLogo'
 import HeaderProfileIcon from './HeaderProfileIcon'
-import { signInWithGoogle } from '../../firebase/auth/auth'
-import { prepareUserInfo } from '../../utils/user'
-import { addUser } from '../../firebase/store/users'
-import { vibrate } from '../../utils/common'
-import { toastError, toastSuccess } from '../Toaster'
-import appAnalytics from '../../lib/analytics/appAnalytics'
-import { AnalyticsEventType } from '../../constants/analytics'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -34,30 +27,6 @@ const Header: React.FC<INavbarProps> = props => {
     methods,
     device: { isMobile },
   } = applicationContext
-
-  const handleGoogleLogin = () => {
-    const processCommands = async () => {
-      try {
-        const user = await signInWithGoogle()
-        const preparedUserInfo = await prepareUserInfo(user)
-        const userInfo = await addUser(preparedUserInfo)
-        vibrate()
-        methods.updateUser(userInfo)
-        appAnalytics.sendEvent({
-          action: AnalyticsEventType.LOGIN,
-          extra: {
-            method: 'Google',
-          },
-        })
-        toastSuccess('Login successful!')
-      } catch (e) {
-        appAnalytics.captureException(e)
-        toastError('Failed to login!')
-      }
-    }
-
-    processCommands()
-  }
 
   const pwaInstallLink: IHeaderLink = {
     label: isMobile ? null : 'Install',
@@ -94,7 +63,7 @@ const Header: React.FC<INavbarProps> = props => {
       count: null,
       onClick: e => {
         e.preventDefault()
-        handleGoogleLogin()
+        methods.login()
       },
       show: !user,
       tooltipContent: 'Login with Google',

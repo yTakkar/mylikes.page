@@ -11,6 +11,7 @@ import {
   ClipboardIcon,
   CogIcon,
   DocumentDuplicateIcon,
+  LinkIcon,
   PlusIcon,
   ShareIcon,
 } from '@heroicons/react/outline'
@@ -178,6 +179,11 @@ const List: NextPage<IProps> = (props: IProps) => {
   }
 
   const handleAddToList = (listRecommendation: IListRecommendationInfo) => {
+    if (!user) {
+      methods.togglePopup(PopupType.LOGIN, {})
+      return
+    }
+
     if (!sessionUser) {
       methods.togglePopup(PopupType.ADD_TO_LIST, {
         listDetail,
@@ -276,7 +282,14 @@ const List: NextPage<IProps> = (props: IProps) => {
           </div>
         </Tooltip>
       ),
-      onClick: () => toggleCloneAlert(true),
+      onClick: () => {
+        if (!user) {
+          methods.togglePopup(PopupType.LOGIN, {})
+          return
+        }
+
+        toggleCloneAlert(true)
+      },
       show: !sessionUser,
     },
     {
@@ -305,9 +318,9 @@ const List: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content="Copy list URL">
+        <Tooltip content={'Copy link'}>
           <div className="flex">
-            <ClipboardIcon className="w-4 mr-1" />
+            <LinkIcon className="w-4 mr-1" />
             Copy
           </div>
         </Tooltip>

@@ -7,6 +7,7 @@ import { IUserInfo } from './user'
 export interface IContextMethods {
   togglePopup: (popup: PopupType, params: PopupParams) => void
   updateUser: (userInfo: IUserInfo | null) => void
+  login: () => Promise<void>
   logout: () => void
   dispatch: (action: ApplicationContextAction) => void
 }

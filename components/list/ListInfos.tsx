@@ -36,14 +36,14 @@ const ListInfos: React.FC<IListInfoProps> = props => {
   const featuredPositions = useMemo(() => {
     let featuredLists: IListDetail[] = []
 
-    if (sessionUser || isAdminProfile(profileUser)) {
+    if (isAdminProfile(profileUser)) {
       featuredLists = []
     } else if (ads.featuredListsShelf?.listInfos) {
       featuredLists = ads.featuredListsShelf.listInfos
     }
 
     return getFeaturedListPositions(profileUser, listsToShow, featuredLists)
-  }, [profileUser, user, listsToShow, ads.featuredListsShelf])
+  }, [profileUser, listsToShow, ads.featuredListsShelf])
 
   if (listsToShow.length === 0) {
     return (

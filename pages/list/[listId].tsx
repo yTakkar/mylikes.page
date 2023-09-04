@@ -325,7 +325,7 @@ const List: NextPage<IProps> = (props: IProps) => {
   const featuredPositions = useMemo(() => {
     let featuredLists: IListDetail[] = []
 
-    if (sessionUser || isAdminProfile(listDetail.owner)) {
+    if (isAdminProfile(listDetail.owner)) {
       featuredLists = []
     } else if (ads.featuredListsShelf?.listInfos) {
       featuredLists = ads.featuredListsShelf.listInfos

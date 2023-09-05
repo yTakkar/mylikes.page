@@ -13,10 +13,15 @@ export const listShelfInfos = async (): Promise<IShelfInfo[]> => {
   return querySnapshot.docs.map(doc => doc.data() as IShelfInfo)
 }
 
-export const getShelfById = async (id: string, params: IGetShelfByIdParams): Promise<IShelfDetail> => {
+export const getShelfById = async (id: string, params: IGetShelfByIdParams): Promise<IShelfDetail | null> => {
   const docRef = doc(shelfCollection, id)
   const docSnap = await getDoc(docRef)
   const data = docSnap.data() as IShelfDetail
+
+  if (!data) {
+    return null
+  }
+
   const listIds = shuffle(data.listIds).slice(0, params.limit)
   const uniqueUserEmails = new Set<string>()
 

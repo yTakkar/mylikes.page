@@ -49,7 +49,7 @@ interface IProps extends IGlobalLayoutProps {
   }
 }
 
-const List: NextPage<IProps> = (props: IProps) => {
+const ListPage: NextPage<IProps> = (props: IProps) => {
   const router = useRouter()
 
   if (router.isFallback || !props.pageData) {
@@ -566,4 +566,4 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
   }
 }
 
-export default List
+export default ListPage

@@ -47,6 +47,9 @@ export enum AnalyticsEventType {
   // featured shelf list
   FEATURED_SHELF_LIST_VISIT = 'featured_shelf_list_visit',
 
+  // shelf
+  SHELF_LIST_VISIT = 'shelf_list_visit',
+
   // ads
   AD_FEATURED_LIST_VISIT = 'ad_featured_list_visit',
   AD_FEATURED_RECOMMENDATION_VISIT = 'ad_featured_recommendation_visit',

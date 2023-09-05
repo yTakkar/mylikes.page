@@ -10,7 +10,7 @@ import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
-    shelf: IShelfDetail
+    shelf: IShelfDetail | null
   }
 }
 

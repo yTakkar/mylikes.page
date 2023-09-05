@@ -41,3 +41,7 @@ export const getListPageUrl = (listId: string) => {
 export const getSavedRecommendationsPageUrl = () => {
   return `/saved-recommendations`
 }
+
+export const getShelfPageUrl = (shelfId: string) => {
+  return `/shelf/${shelfId}`
+}

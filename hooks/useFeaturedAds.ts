@@ -25,10 +25,12 @@ function useFeaturedAds() {
       }
 
       const list = await getShelfById('featured-lists', {})
-      setShelf(list)
-      ls.set(CACHE_KEY, list, {
-        ttl: appConfig.ads.featured.listsRevalidateTimeInSec,
-      })
+      if (list) {
+        setShelf(list)
+        ls.set(CACHE_KEY, list, {
+          ttl: appConfig.ads.featured.listsRevalidateTimeInSec,
+        })
+      }
     } catch (e) {
       console.error('Error fetching featured lists', e)
       appAnalytics.captureException(e)

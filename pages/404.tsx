@@ -11,7 +11,7 @@ import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
-    shelf: IShelfDetail
+    shelf: IShelfDetail | null
   }
 }
 
@@ -25,9 +25,11 @@ const NotFoundPage: NextPage<IProps> = props => {
       <PageContainer>
         <NotFound />
 
-        <div className="mt-10 px-3">
-          <ShelfLists shelf={shelf} source="404" />
-        </div>
+        {shelf && (
+          <div className="mt-10 px-3">
+            <ShelfLists shelf={shelf} source="404" />
+          </div>
+        )}
       </PageContainer>
     </div>
   )

@@ -102,6 +102,7 @@ const appConfig = {
       ERROR: 60 * 60,
       PROFILE: 30 * 60,
       LIST: 30 * 60,
+      SHELF: 30 * 60,
     },
     initialPageBuildCount: {
       PROFILE: 100,

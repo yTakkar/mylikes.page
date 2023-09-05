@@ -31,7 +31,7 @@ interface IProps extends IGlobalLayoutProps {
   }
 }
 
-const Home: NextPage<IProps> = (props: IProps) => {
+const ProfilePage: NextPage<IProps> = (props: IProps) => {
   const router = useRouter()
 
   if (router.isFallback || !props.pageData) {
@@ -205,4 +205,4 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
   }
 }
 
-export default Home
+export default ProfilePage

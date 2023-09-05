@@ -16,7 +16,11 @@ const Tooltip: React.FC<ITooltipProps> = props => {
     return <>{children}</>
   }
 
-  return <Tippy content={content}>{children as any}</Tippy>
+  return (
+    <Tippy content={content} maxWidth={500}>
+      {children as any}
+    </Tippy>
+  )
 }
 
 export default Tooltip

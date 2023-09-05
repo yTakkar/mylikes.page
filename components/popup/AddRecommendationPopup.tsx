@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
-import { ArrowLeftIcon, CogIcon, PlusIcon } from '@heroicons/react/outline'
+import { ArrowLeftIcon, CogIcon, InformationCircleIcon, PlusIcon } from '@heroicons/react/outline'
 import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
@@ -22,6 +22,7 @@ import { getListPageUrl, getProfilePageUrl, getSavedRecommendationsPageUrl } fro
 import { revalidateUrls } from '../../utils/revalidate'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
+import Tooltip from '../Tooltip'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -160,7 +161,17 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         <div className="mt-4">
           {savedRecommendations.length === 0 ? (
             <NoContent
-              message="No saved recommendations found."
+              message={
+                <div className="inline-flex items-center">
+                  <span>No saved recommendations found.</span>
+                  <Tooltip
+                    content={`We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly.`}>
+                    <span>
+                      <InformationCircleIcon className="w-5 ml-1" />
+                    </span>
+                  </Tooltip>
+                </div>
+              }
               actions={[
                 {
                   label: 'Add new',

@@ -10,7 +10,7 @@ export enum NoContentType {
 
 interface INoContentProps {
   type?: NoContentType
-  message?: string
+  message?: React.ReactNode
   className?: string
   actions?: ICoreButtonProps[]
   imageClassName?: string

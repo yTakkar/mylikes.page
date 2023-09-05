@@ -6,12 +6,13 @@ import ListAnalyticsRecommendationVisits from '../list/analytics/ListAnalyticsRe
 import ListAnalyticsLibrarySaves from '../list/analytics/ListAnalyticsLibrarySaves'
 import ListAnalyticsAddedToList from '../list/analytics/ListAnalyticsAddedToList'
 import CoreDivider from '../core/CoreDivider'
+import { ArrowLeftIcon } from '@heroicons/react/solid'
 
 const options: ICoreSelectInputOption[] = [
   {
     id: 'recommendation-visits',
     value: 'recommendation-visits',
-    label: 'Recommendation visits',
+    label: 'Recommendations visits',
     selected: true,
   },
   {
@@ -55,9 +56,22 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
     <FullWidthModal
       modal={{
         dismissModal: onClose,
-        title: 'List Analytics',
+        title: (
+          <div className={'flex items-center'}>
+            <div
+              className="w-5 mr-3 cursor-pointer relative transform transition-transform hover:scale-110"
+              onClick={onClose}>
+              <ArrowLeftIcon />
+            </div>
+            <div>List Analytics</div>
+          </div>
+        ),
+        wrapInContainer: true,
+        showCrossIcon: false,
+        disableOutsideClick: true,
       }}
-      className="listAnalyticsPopup">
+      footer={undefined}
+      className="listAnalyticsPopupOverrides">
       <div className="px-3 pt-3">
         <CoreSelectInput value={selectedOption} onChange={setSelectedOption} options={options} />
         <CoreDivider className="my-4" />

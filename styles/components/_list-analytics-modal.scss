@@ -1,0 +1,16 @@
+// List analytics modal overrides
+.listAnalyticsPopupOverrides {
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+
+  & .content, & .modal-body {
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  & .modal-body {
+    padding-bottom: 40px;
+  }
+}

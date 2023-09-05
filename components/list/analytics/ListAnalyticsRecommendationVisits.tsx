@@ -7,11 +7,12 @@ import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
-import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
+import { BanIcon } from '@heroicons/react/outline'
 import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
+import ListAnalyticsCount from './ListAnalyticsCount'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -115,20 +116,7 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
 
     return (
       <div>
-        <div className="inline-flex mb-6">
-          <span className="mt-[2px] mr-1">
-            <PresentationChartLineIcon className="w-5" />
-          </span>
-          <span>
-            Recommendation visits from this list. Updates every {appConfig.analytics.cacheInvalidationTimeInSec / 60}{' '}
-            minutes.
-          </span>
-        </div>
-
-        <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Overall count</div>
-          <div className="text-xl">{totalRecommendationVisits}</div>
-        </div>
+        <ListAnalyticsCount count={totalRecommendationVisits} infoText="Recommendation visits from this list." />
 
         <div>
           {trackingListRecommendationInfos.map((trackingListRecommendationInfo, index) => {

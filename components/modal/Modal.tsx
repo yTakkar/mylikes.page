@@ -6,6 +6,7 @@ import { XIcon } from '@heroicons/react/solid'
 import { addBlur, removeBlur } from '../../utils/common'
 import classnames from 'classnames'
 import useDisablePageScrolling from '../../hooks/useDisablePageScrolling'
+import Container from '../Container'
 
 export interface IModalProps extends PropsWithChildren {
   dismissModal: () => void
@@ -14,6 +15,7 @@ export interface IModalProps extends PropsWithChildren {
   className?: string
   showCrossIcon?: boolean
   disableOutsideClick?: boolean
+  wrapInContainer?: boolean
 }
 
 const Modal: React.FC<IModalProps> = props => {
@@ -25,6 +27,7 @@ const Modal: React.FC<IModalProps> = props => {
     showCrossIcon = true,
     children,
     disableOutsideClick = false,
+    wrapInContainer = false,
   } = props
 
   const ref = useRef<HTMLDivElement | null>(null)
@@ -49,6 +52,23 @@ const Modal: React.FC<IModalProps> = props => {
     },
   })
 
+  const renderHeader = () => {
+    return (
+      <div className="flex justify-between items-start p-3 modal-header">
+        <div>
+          <div className="font-medium font-primary-medium text-typo-title modal-header-title">{title}</div>
+          {subTitle && <div className="text-sm mt-1">{subTitle}</div>}
+        </div>
+        {showCrossIcon ? (
+          <XIcon
+            className="w-6 text-gray-700 font-medium font-primary-medium cursor-pointer"
+            onClick={() => dismissModal()}
+          />
+        ) : null}
+      </div>
+    )
+  }
+
   return (
     <Portal>
       <div id="Modal" className="fixed z-20 left-0 top-0 w-full h-full bg-blackLight overflow-hidden">
@@ -58,19 +78,14 @@ const Modal: React.FC<IModalProps> = props => {
             className
           )}
           ref={ref}>
-          <div className="flex justify-between items-start p-3 modal-header">
-            <div>
-              <div className="font-medium font-primary-medium text-typo-title modal-header-title">{title}</div>
-              {subTitle && <div className="text-sm mt-1">{subTitle}</div>}
-            </div>
-            {showCrossIcon ? (
-              <XIcon
-                className="w-6 text-gray-700 font-medium font-primary-medium cursor-pointer"
-                onClick={() => dismissModal()}
-              />
-            ) : null}
-          </div>
-          <div>{children}</div>
+          {wrapInContainer ? <Container>{renderHeader()}</Container> : renderHeader()}
+          {wrapInContainer ? (
+            <Container className="modal-body">
+              <div>{children}</div>
+            </Container>
+          ) : (
+            <div className="modal-body">{children}</div>
+          )}
         </div>
       </div>
     </Portal>

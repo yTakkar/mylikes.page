@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { IListDetail } from '../../../interface/list'
 import Loader, { LoaderType } from '../../loader/Loader'
 import { getListPageUrl } from '../../../utils/routes'
-import { PresentationChartLineIcon } from '@heroicons/react/outline'
 import { getAddToLibraryTrackingsByList } from '../../../firebase/store/addToLibraryTracking'
 import { IAddToLibraryTrackingInfo } from '../../../interface/addToLibraryTracking'
 import { getRelativeTime } from '../../../utils/date'
@@ -12,6 +11,7 @@ import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
+import ListAnalyticsCount from './ListAnalyticsCount'
 
 interface IListAnalyticsLibrarySavesProps {
   listDetail: IListDetail
@@ -81,20 +81,10 @@ const ListAnalyticsLibrarySaves: React.FC<IListAnalyticsLibrarySavesProps> = pro
 
     return (
       <div>
-        <div className="inline-flex mb-6">
-          <span className="mt-[2px] mr-1">
-            <PresentationChartLineIcon className="w-5" />
-          </span>
-          <span>
-            Whenever someone clones this list to their personal library. Updates every{' '}
-            {appConfig.analytics.cacheInvalidationTimeInSec / 60} minutes.
-          </span>
-        </div>
-
-        <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Overall count</div>
-          <div className="text-xl">{totalLibrarySaves}</div>
-        </div>
+        <ListAnalyticsCount
+          count={totalLibrarySaves}
+          infoText="Whenever someone clones this list to their personal library."
+        />
 
         <div>
           {lists.map((list, index) => {

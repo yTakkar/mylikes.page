@@ -3,7 +3,7 @@ import { IListDetail } from '../../../interface/list'
 import { IAddToListTrackingInfo } from '../../../interface/addToListTracking'
 import { getAddToListTrackingsByList } from '../../../firebase/store/addToListTracking'
 import Loader, { LoaderType } from '../../loader/Loader'
-import { BanIcon, PresentationChartLineIcon } from '@heroicons/react/outline'
+import { BanIcon } from '@heroicons/react/outline'
 import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
@@ -14,6 +14,7 @@ import ls from 'localstorage-slim'
 import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
+import ListAnalyticsCount from './ListAnalyticsCount'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -106,20 +107,10 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
 
     return (
       <div>
-        <div className="inline-flex mb-6">
-          <span className="mt-[2px] mr-1">
-            <PresentationChartLineIcon className="w-5" />
-          </span>
-          <span>
-            Whenever someone adds recommendations from this list to their lists. Updates every{' '}
-            {appConfig.analytics.cacheInvalidationTimeInSec / 60} minutes.
-          </span>
-        </div>
-
-        <div className="flex items-center flex-col mb-6">
-          <div className="font-bold">Overall count</div>
-          <div className="text-xl">{total}</div>
-        </div>
+        <ListAnalyticsCount
+          count={total}
+          infoText="Whenever someone adds recommendations from this list to their lists."
+        />
 
         <div>
           {trackingInfoList.map((list, index) => {

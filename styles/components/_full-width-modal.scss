@@ -31,7 +31,13 @@
   &.noFooter {
     @include mobile {
       & .content {
-        height: calc(100vh - 86px);
+        height: calc(100vh - 50px);
+      }
+    }
+
+    @include desktop {
+      & .content {
+        height: 580px;
       }
     }
 

@@ -8,10 +8,11 @@ interface IBackTitleProps {
   title: string
   backUrl?: string
   className?: string
+  rhsContent?: React.ReactNode
 }
 
 const BackTitle: React.FC<IBackTitleProps> = props => {
-  const { title, backUrl, className } = props
+  const { title, backUrl, className, rhsContent } = props
 
   const router = useRouter()
 
@@ -20,13 +21,17 @@ const BackTitle: React.FC<IBackTitleProps> = props => {
   }
 
   return (
-    <div className={classnames('mt-4 mb-6 flex items-center', className)}>
-      <div
-        className="w-6 text-typo-paragraph mr-3 cursor-pointer rounded-full relative transform transition-transform hover:scale-110"
-        onClick={handleBackIconClick}>
-        <ArrowLeftIcon className="" />
+    <div className={classnames('mt-4 mb-6 flex items-center justify-between', className)}>
+      <div className="inline-flex items-center">
+        <div
+          className="w-6 text-typo-paragraph mr-3 cursor-pointer rounded-full relative transform transition-transform hover:scale-110"
+          onClick={handleBackIconClick}>
+          <ArrowLeftIcon className="" />
+        </div>
+        <div className="font-medium font-primary-medium text-typo-paragraph text-lg">{title}</div>
       </div>
-      <div className="font-medium font-primary-medium text-typo-paragraph text-lg">{title}</div>
+
+      {rhsContent}
     </div>
   )
 }

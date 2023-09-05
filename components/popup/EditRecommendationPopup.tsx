@@ -4,7 +4,7 @@ import AddRecommendationForm from '../recommendation/AddRecommendationForm'
 import { IRecommendationInfo } from '../../interface/recommendation'
 
 interface IEditRecommendationPopupProps {
-  recommendation: IRecommendationInfo
+  recommendation?: IRecommendationInfo
   onClose: () => void
   onSuccess?: () => void
 }
@@ -22,7 +22,7 @@ const EditRecommendationPopup: React.FC<IEditRecommendationPopupProps> = props =
     <FullWidthModal
       modal={{
         dismissModal: onClose,
-        title: 'Edit recommendation',
+        title: recommendation ? 'Edit recommendation' : 'Add recommendation',
         disableOutsideClick: true,
       }}>
       <div className="px-3 py-4">

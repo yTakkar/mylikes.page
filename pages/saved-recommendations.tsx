@@ -69,6 +69,19 @@ const Home: NextPage<IProps> = () => {
     })
   }
 
+  const renderAddNewButton = () => {
+    return (
+      <div
+        className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
+        onClick={handleNewRecommendation}>
+        <div className="flex">
+          <PlusIcon className="w-6 mr-1" />
+          Add new
+        </div>
+      </div>
+    )
+  }
+
   const renderContent = () => {
     if (loading) {
       return <Loader type={LoaderType.ELLIPSIS} />
@@ -76,16 +89,9 @@ const Home: NextPage<IProps> = () => {
 
     return (
       <div className="px-3 py-3">
-        <div className="flex items-center justify-end mb-4">
-          <div
-            className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
-            onClick={handleNewRecommendation}>
-            <div className="flex">
-              <PlusIcon className="w-6 mr-1" />
-              Add new
-            </div>
-          </div>
-        </div>
+        <MobileView>
+          <div className="flex items-center justify-end mb-4">{renderAddNewButton()}</div>
+        </MobileView>
 
         {recommendations.length === 0 ? (
           <NoContent message="You have no saved recommendations." imageClassName="w-full lg:w-[600px]" />
@@ -117,7 +123,7 @@ const Home: NextPage<IProps> = () => {
 
       <PageContainer>
         <DesktopView>
-          <BackTitle title={title} />
+          <BackTitle title={title} rhsContent={renderAddNewButton()} />
         </DesktopView>
 
         {renderContent()}

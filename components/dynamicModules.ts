@@ -15,3 +15,5 @@ export const dynamicUniqueNamesGenerator = () =>
     names: mod.names,
     uniqueNamesGenerator: mod.uniqueNamesGenerator,
   }))
+
+export const dynamicMixPanel = () => import(/* webpackChunkName: "mixpanel-browser" */ 'mixpanel-browser')

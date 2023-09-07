@@ -56,16 +56,17 @@ const useApplicationContext = () => {
     try {
       const user = await signInWithGoogle()
       const preparedUserInfo = await prepareUserInfo(user)
-      const userInfo = await addUser(preparedUserInfo)
+      const { userInfo, newUser } = await addUser(preparedUserInfo)
       vibrate()
       updateUser(userInfo)
+      appAnalytics.setUser(userInfo)
       appAnalytics.sendEvent({
-        action: AnalyticsEventType.LOGIN,
+        action: newUser ? AnalyticsEventType.SIGNUP : AnalyticsEventType.LOGIN,
         extra: {
           method: 'Google',
         },
       })
-      toastSuccess('Login successful!')
+      toastSuccess(newUser ? 'Signup successful!' : 'Login successful!')
     } catch (e) {
       appAnalytics.captureException(e)
       toastError('Failed to login!')
@@ -75,7 +76,7 @@ const useApplicationContext = () => {
   const logout: IContextMethods['logout'] = () => {
     updateUser(null)
     deleteLocalUserInfo()
-    appAnalytics.setUser(null)
+    appAnalytics.removeUser()
     appAnalytics.sendEvent({
       action: AnalyticsEventType.LOGOUT,
     })

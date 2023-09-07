@@ -114,6 +114,10 @@ const appConfig = {
       enabled: process.env.ENV_INTEGRATION_GOOGLE_ANALYTICS_ENABLED === 'true',
       webCode: process.env.ENV_INTEGRATION_GOOGLE_ANALYTICS_WEB_CODE,
     },
+    mixPanelAnalytics: {
+      enabled: process.env.ENV_INTEGRATION_MIXPANEL_ANALYTICS_ENABLED === 'true',
+      code: process.env.ENV_INTEGRATION_MIXPANEL_ANALYTICS_CODE,
+    },
     sentryErrorReporting: {
       enabled: process.env.ENV_INTEGRATION_SENTRY_ENABLED === 'true',
       dsn: process.env.ENV_INTEGRATION_SENTRY_DSN,

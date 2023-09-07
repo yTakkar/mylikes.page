@@ -13,7 +13,7 @@ class GoogleAnalytics implements IGA {
     }
   }
 
-  public pageView(params: IGAPageViewParams): void {
+  public async pageView(params: IGAPageViewParams): Promise<void> {
     const options = {
       page_title: params.pageTitle,
       page_location: `${appConfig.global.baseUrl}${params.pagePath}`,
@@ -24,9 +24,15 @@ class GoogleAnalytics implements IGA {
     ga('set', options)
   }
 
-  public setUser(userInfo: IUserInfo | null): void {
+  public setUser(userInfo: IUserInfo): void {
     ga('set', {
-      user_id: userInfo ? userInfo.id : '',
+      user_id: userInfo.id,
+    })
+  }
+
+  public removeUser(): void {
+    ga('set', {
+      user_id: '',
     })
   }
 

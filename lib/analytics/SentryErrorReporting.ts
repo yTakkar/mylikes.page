@@ -31,24 +31,24 @@ class SentryErrorReporting implements ISentryErrorReporting {
     await this.sentry.init(config)
   }
 
-  public setUser(userInfo: IUserInfo | null): void {
+  public setUser(userInfo: IUserInfo): void {
     this._loadSentry().then(() => {
       this._setUser(userInfo)
     })
   }
 
-  public _setUser(userInfo: IUserInfo | null): void {
-    if (this.sentry) {
-      if (userInfo) {
-        this.sentry.setUser({
-          id: userInfo.id,
-          email: userInfo.email,
-          username: userInfo.username,
-        })
-      } else {
-        this.sentry.configureScope((scope: any) => scope.setUser(null))
-      }
+  public _setUser(userInfo: IUserInfo): void {
+    if (this.sentry && userInfo) {
+      this.sentry.setUser({
+        id: userInfo.id,
+        email: userInfo.email,
+        username: userInfo.username,
+      })
     }
+  }
+
+  public removeUser(): void {
+    this.sentry.configureScope((scope: any) => scope.setUser(null))
   }
 
   public captureException(error: any, info?: any): void {

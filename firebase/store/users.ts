@@ -21,13 +21,19 @@ export const getUserByUsername = async (username: string): Promise<IUserInfo | n
   return querySnapshot[0].data() as IUserInfo
 }
 
-export const addUser = async (userInfo: IUserInfo): Promise<IUserInfo> => {
+export const addUser = async (userInfo: IUserInfo): Promise<{ userInfo: IUserInfo; newUser: boolean }> => {
   const userWithSameEmail = await getUserByEmail(userInfo.email)
   if (userWithSameEmail) {
-    return userWithSameEmail
+    return {
+      userInfo: userWithSameEmail,
+      newUser: false,
+    }
   }
   await setDoc(doc(usersCollection, userInfo.email), userInfo)
-  return userInfo
+  return {
+    userInfo: userInfo,
+    newUser: true,
+  }
 }
 
 export const listUsers = async (params: IListUsersParams): Promise<IUserInfo[]> => {

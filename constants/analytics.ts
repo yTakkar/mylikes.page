@@ -7,6 +7,7 @@ export enum AnalyticsEventType {
   EXCEPTION = 'exception',
 
   // auth
+  SIGNUP = 'signup',
   LOGIN = 'login',
   LOGOUT = 'logout',
 

@@ -11,7 +11,7 @@ import { IListDetail } from '../../interface/list'
 import ApplicationContext from '../ApplicationContext'
 import { isSessionUser } from '../../utils/user'
 import AddRecommendationNote from './AddRecommendationNote'
-import { getProfilePageUrl } from '../../utils/routes'
+import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
@@ -50,6 +50,7 @@ interface IRecommendationInfoProps {
   onRemoveFromList?: () => Promise<void>
   sponsored?: boolean
   loading?: boolean
+  showListName?: boolean
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
@@ -67,6 +68,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     onRemoveFromList,
     sponsored = false,
     loading = false,
+    showListName = false,
   } = props
 
   const applicationContext = useContext(ApplicationContext)
@@ -193,6 +195,38 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     )
   }
 
+  const renderOwnerName = () => {
+    if (!recommendationOwner) {
+      return null
+    }
+
+    return (
+      <span>
+        by{' '}
+        <CoreLink
+          url={getProfilePageUrl(recommendationOwner!.username)}
+          className="text-typo-paragraphLight text-sm underline">
+          {recommendationOwner!.name}
+        </CoreLink>
+      </span>
+    )
+  }
+
+  const renderListName = () => {
+    if (!list) {
+      return null
+    }
+
+    return (
+      <span>
+        From{' '}
+        <CoreLink url={getListPageUrl(list!.id)} className="text-typo-paragraphLight text-sm underline">
+          {list!.name}
+        </CoreLink>
+      </span>
+    )
+  }
+
   return (
     <>
       <div
@@ -233,16 +267,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
           </div>
 
           <div className="text-typo-paragraphLight text-sm flex items-center">
-            {recommendationOwner && (
-              <span>
-                by{' '}
-                <CoreLink
-                  url={getProfilePageUrl(recommendationOwner.username)}
-                  className="text-typo-paragraphLight text-sm hover:underline">
-                  {recommendationOwner.name}
-                </CoreLink>
-              </span>
-            )}
+            {showListName ? renderListName() : renderOwnerName()}
             {recommendationInfo.type !== RecommendationType.OTHER && (
               <>
                 &nbsp;•&nbsp;

@@ -77,6 +77,10 @@ const nextConfig = {
         source: '/ads.txt',
         destination: '/txt/ads.txt',
       },
+      {
+        source: '/most-popular-recommendations',
+        destination: '/custom-list/most-popular-recommendations',
+      },
     ]
   },
 }

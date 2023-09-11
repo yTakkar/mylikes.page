@@ -103,6 +103,9 @@ const appConfig = {
       PROFILE: 30 * 60,
       LIST: 30 * 60,
       SHELF: 30 * 60,
+      CUSTOM: {
+        MOST_POPULAR_RECOMMENDATIONS: 60 * 60,
+      },
     },
     initialPageBuildCount: {
       PROFILE: 100,
@@ -190,6 +193,9 @@ const appConfig = {
       recommendationsFrequency: 5,
       listsFrequency: 3,
     },
+  },
+  customLists: {
+    mostPopularRecommendationsCount: 100,
   },
 }
 

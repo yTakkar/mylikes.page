@@ -51,6 +51,9 @@ export enum AnalyticsEventType {
   // shelf
   SHELF_LIST_VISIT = 'shelf_list_visit',
 
+  // custom lists,
+  MOST_POPULAR_RECOMMENDATION_VISIT = 'most_popular_recommendation_visit',
+
   // ads
   AD_FEATURED_LIST_VISIT = 'ad_featured_list_visit',
   AD_FEATURED_RECOMMENDATION_VISIT = 'ad_featured_recommendation_visit',

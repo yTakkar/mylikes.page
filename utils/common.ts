@@ -2,6 +2,7 @@ import { NextRouter } from 'next/router'
 import { getHomePageUrl } from './routes'
 import { VibratePatternType } from '../constants/constants'
 import { Timestamp } from 'firebase/firestore'
+import numeral from 'numeral'
 
 // Ref: last comment on this page: https://bugs.webkit.org/show_bug.cgi?id=153852#c43
 export const disablePageScrolling = () => {
@@ -99,7 +100,7 @@ export const toPascalCase = (string: string) => {
 
 export const pluralize = (word: string, count: number) => {
   if (count === 1) return `${count} ${word}`
-  return `${count} ${word}s`
+  return `${numeral(count).format()} ${word}s`
 }
 
 export const getUrlParams = (uri: string) => {

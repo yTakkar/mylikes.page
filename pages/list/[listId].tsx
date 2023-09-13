@@ -377,9 +377,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           {listDetail.description && <div className="my-2 text-gray-800">{listDetail.description}</div>}
           <div className="text-typo-paragraphLight flex items-center lg:justify-center">
             by
-            <CoreLink url={getProfilePageUrl(listDetail.owner!.username)} className="ml-1">
-              {listDetail.owner!.name} {sessionUser ? '(You)' : null}
-            </CoreLink>
+            <div className="ml-1">
+              <CoreLink url={getProfilePageUrl(listDetail.owner!.username)} className="underline">
+                {listDetail.owner!.name}
+              </CoreLink>
+              <span> {sessionUser ? '(You)' : null}</span>
+            </div>
             {listDetail.visibility === ListVisibilityType.PRIVATE && (
               <Tooltip content="This is a private list.">
                 <span>

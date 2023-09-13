@@ -188,7 +188,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       <CoreImage
         url={recommendationInfo.imageUrl}
         alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
-        className={classNames('w-20 h-20 min-h-20 min-w-20 shadow-listInfoImage', {
+        className={classNames('', {
           'blur-sm': recommendationInfo.isAdult,
         })}
       />
@@ -203,9 +203,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <span>
         by{' '}
-        <CoreLink
-          url={getProfilePageUrl(recommendationOwner!.username)}
-          className="text-typo-paragraphLight text-sm underline">
+        <CoreLink url={getProfilePageUrl(recommendationOwner!.username)} className="text-typo-paragraphLight text-sm">
           {recommendationOwner!.name}
         </CoreLink>
       </span>
@@ -233,7 +231,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
         className={classNames('flex items-start py-3 relative ', {
           // 'bg-denim': sponsored, // needed?
         })}>
-        <div className="relative">
+        <div className="relative shadow-listInfoImage w-20 h-20 min-h-20 min-w-20">
           {source === RecommendationInfoSourceType.LIST ? (
             <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
               {renderImage()}

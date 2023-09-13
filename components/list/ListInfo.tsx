@@ -3,9 +3,10 @@ import { IListDetail, ListVisibilityType } from '../../interface/list'
 import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { ExclamationIcon, LockClosedIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
 import classNames from 'classnames'
+import Tooltip from '../Tooltip'
 
 interface IListInfoProps {
   list: IListDetail
@@ -17,9 +18,9 @@ interface IListInfoProps {
 const ListInfo: React.FC<IListInfoProps> = props => {
   const { list, sponsored = false, className, onClick } = props
 
-  const MAX_IMAGES = 4
+  const MAX_RECOMMENDATIONS = 4
 
-  const imagesToDisplay = list.recommendations.map(rec => rec.imageUrl).slice(0, MAX_IMAGES)
+  const recommendationsToDisplay = list.recommendations.slice(0, MAX_RECOMMENDATIONS)
 
   return (
     <CoreLink
@@ -36,11 +37,26 @@ const ListInfo: React.FC<IListInfoProps> = props => {
       )}
 
       <div className="p-4 flex items-center justify-center min-h-[150px] shadow-listInfoImages">
-        {imagesToDisplay.length === 0 ? (
+        {recommendationsToDisplay.length === 0 ? (
           <div className="italic text-gray-600">The list is empty</div>
         ) : (
-          imagesToDisplay.map((image, index) => (
-            <CoreImage key={index} url={image} alt={image} className="w-14 shadow-listInfoImage mr-2" />
+          recommendationsToDisplay.map((recommendation, index) => (
+            <div key={index} className="relative shadow-listInfoImage mr-2 w-14">
+              <CoreImage
+                url={recommendation.imageUrl}
+                alt={recommendation.title}
+                className={classNames('', {
+                  'blur-sm': recommendation.isAdult,
+                })}
+              />
+              {recommendation.isAdult && (
+                <Tooltip content="NSFW">
+                  <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
+                    <ExclamationIcon className="w-4 font-medium font-primary-medium" />
+                  </div>
+                </Tooltip>
+              )}
+            </div>
           ))
         )}
       </div>

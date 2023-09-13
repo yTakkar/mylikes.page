@@ -2,6 +2,7 @@ import { InformationCircleIcon } from '@heroicons/react/outline'
 import React from 'react'
 import Tooltip from '../../Tooltip'
 import appConfig from '../../../config/appConfig'
+import numeral from 'numeral'
 
 interface IListAnalyticsCountProps {
   count: number
@@ -20,7 +21,9 @@ const ListAnalyticsCount: React.FC<IListAnalyticsCountProps> = props => {
           </span>
         </Tooltip>
       </div>
-      <div className="text-xl font-medium lg:text-2xl">{props.count}</div>
+      <div className="text-xl font-medium lg:text-2xl" title={`${props.count}`}>
+        {numeral(props.count).format()}
+      </div>
     </div>
   )
 }

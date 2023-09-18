@@ -144,29 +144,29 @@ const appConfig = {
     },
   },
   company: {
-    name: 'MyLikes Pvt. Ltd.',
-    contactEmail: 'mylikes@gmail.com',
+    name: 'MyLikes',
+    contactEmail: 'team@mylikes.page',
     socialLinks: [
       {
         type: 'TWITTER',
-        url: 'https://twitter.com/ownStore_',
+        url: 'https://twitter.com/mylikespage',
         name: 'Twitter',
         isExternal: true,
-        username: 'ownStore_',
+        username: 'mylikespage',
       },
       {
         type: 'FACEBOOK',
-        url: 'https://www.facebook.com/ownStoreFB',
+        url: 'https://www.facebook.com/mylikesFB',
         name: 'Facebook',
         isExternal: true,
-        username: 'ownStoreFB',
+        username: 'mylikesFB',
       },
       {
         type: 'INSTAGRAM',
-        url: 'https://www.instagram.com/ownStore__/',
+        url: 'https://www.instagram.com/mylikes.page',
         name: 'Instagram',
         isExternal: true,
-        username: 'ownStore__',
+        username: 'mylikes.page',
       },
       // {
       //   type: 'YOUTUBE',

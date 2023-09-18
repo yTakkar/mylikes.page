@@ -19,14 +19,14 @@ export const prepareWebsiteStructuredData = () => {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     url: appConfig.global.baseUrl,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${appConfig.global.baseUrl}/search?query={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
+    // potentialAction: {
+    //   '@type': 'SearchAction',
+    //   target: {
+    //     '@type': 'EntryPoint',
+    //     urlTemplate: `${appConfig.global.baseUrl}/search?query={search_term_string}`,
+    //   },
+    //   'query-input': 'required name=search_term_string',
+    // },
   }
 }
 
@@ -56,54 +56,3 @@ export const prepareWebpageStructuredData = ({
     },
   }
 }
-
-export const prepareBreadcrumbListStructuredData = (
-  list: {
-    position: number
-    name: string
-    url: string
-  }[]
-) => {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: list.map(item => ({
-      '@type': 'ListItem',
-      position: item.position,
-      item: {
-        '@id': item.url,
-        name: item.name,
-      },
-    })),
-  }
-}
-
-export const prepareImageObjectStructuredData = (url: string, caption: string) => {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ImageObject',
-    contentUrl: url,
-    caption: caption,
-    license: appConfig.global.baseUrl,
-  }
-}
-
-export const prepareFAQStructuredData = (entities: { question: string; answer: string }[]) => {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: entities.map(entitiy => ({
-      '@type': 'Question',
-      name: entitiy.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: entitiy.answer,
-      },
-    })),
-  }
-}
-
-/**
- * TODO: Faiyaz - Add
- *  - ViewAction: https://github.com/JayHoltslander/Structured-Data-JSON-LD#viewaction
- */

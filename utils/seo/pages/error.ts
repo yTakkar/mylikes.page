@@ -1,11 +1,9 @@
 import { IAppSeoProps } from '../../../components/seo/AppSeo'
+import { prepareHomePageSeo } from './home'
 
 export const prepareErrorPageSeo = (): IAppSeoProps => {
   return {
-    title: '',
-    description: '',
-    canonical: '',
-    keywords: [],
+    ...prepareHomePageSeo(),
     noIndex: true,
     noFollow: true,
   }
@@ -13,10 +11,7 @@ export const prepareErrorPageSeo = (): IAppSeoProps => {
 
 export const prepareNotFoundPageSeo = (): IAppSeoProps => {
   return {
-    title: '',
-    description: '',
-    canonical: '',
-    keywords: [],
+    ...prepareHomePageSeo(),
     noIndex: true,
     noFollow: true,
   }

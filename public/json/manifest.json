@@ -2,7 +2,7 @@
   "id": "MyLikes",
   "name": "MyLikes",
   "short_name": "MyLikes",
-  "description": "A summary",
+  "description": "Share your recommendations with the world",
   "theme_color": "#ce2e35",
   "background_color": "#fff",
   "start_url": "/?utm_source=pwa&utm_medium=homescreen",

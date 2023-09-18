@@ -187,7 +187,7 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
         profileInfo,
         lists: listsByUser,
       },
-      seo: prepareProfilePageSeo(profileInfo),
+      seo: prepareProfilePageSeo(profileInfo, listsByUser),
       layoutData: {
         header: {
           hideTopNav: {

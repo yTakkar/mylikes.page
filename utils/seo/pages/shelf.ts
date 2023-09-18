@@ -5,9 +5,9 @@ import { getShelfPageUrl } from '../../routes'
 
 export const prepareShelfPageSeo = (shelfDetail: IShelfDetail): IAppSeoProps => {
   return {
-    title: `Shelf - ${shelfDetail.name}`,
-    description: `description`,
+    title: `${shelfDetail.name} ${appConfig.seo.titleSuffix}`,
+    description: `Check out ${shelfDetail.name} on ${appConfig.global.app.name}`,
     canonical: `${appConfig.global.baseUrl}${getShelfPageUrl(shelfDetail.id)}`,
-    keywords: [],
+    keywords: [shelfDetail.name],
   }
 }

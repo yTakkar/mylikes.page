@@ -1,7 +1,8 @@
 const app = {
   name: 'MyLikes',
   shortName: 'MyLikes',
-  summary: 'A summary', // TODO:
+  tagLine: 'Share your recommendations with the world',
+  description: 'A platform specially designed to help you share your recommendations with the world',
   key: 'MYLIKES', // should be uppercase
 }
 
@@ -22,6 +23,7 @@ const appConfig = {
     revalidateCacheKey: process.env.ENV_REVALIDATE_CACHE_KEY,
   },
   seo: {
+    titleSuffix: `• ${app.name}`,
     facebook: {
       pageId: process.env.ENV_SEO_FACEBOOK_PAGE_ID,
     },

@@ -9,5 +9,7 @@ export const prepareContactPageSeo = (): IAppSeoProps => {
     description: 'Contact Us description',
     canonical: `${appConfig.global.baseUrl}${getContactPageUrl()}`,
     keywords: [],
+    noFollow: true,
+    noIndex: true,
   }
 }

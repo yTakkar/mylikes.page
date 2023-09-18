@@ -26,14 +26,8 @@ export interface IAppSeoProps {
     description?: string
   }
   imageUrl?: string
-  structuredData?: {
-    breadcrumbList?: { [key: string]: any }
-    FAQs?: { [key: string]: any }
-    product?: { [key: string]: any }
-  }
 }
 
-// TODO: Faiyaz - add link=alternate for apps
 const AppSeo: React.FC<IAppSeoProps> = props => {
   const {
     title: _title,
@@ -44,7 +38,6 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
     noIndex,
     openGraph,
     twitter,
-    structuredData,
     imageUrl: _imageUrl,
   } = props
 
@@ -55,13 +48,20 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
 
   const imageUrl = _imageUrl || APP_LOGO.DEFAULT
 
+  const defaultKeywords = [
+    'recommendations',
+    appConfig.global.app.name,
+    appConfig.global.app.name.toLowerCase(),
+    'recommendation lists',
+  ]
+
   return (
     <Head>
       <title key="title">{title}</title>
       <meta key="meta-title" name="title" content={title} />
 
       <meta key="description" name="description" content={description} />
-      <meta key="keywords" name="keywords" content={(keywords || []).join(',')} />
+      <meta key="keywords" name="keywords" content={(keywords || defaultKeywords).join(',')} />
       <meta
         key="robots"
         name="robots"
@@ -88,7 +88,7 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
 
       {/* Twitter */}
       <meta name="twitter:site" content={appConfig.seo.twitter.username} />
-      <meta key="twitter:card" name="twitter:card" content={twitter?.card || 'summary_large_image'} />
+      <meta key="twitter:card" name="twitter:card" content={twitter?.card || 'summary'} />
       <meta name="twitter:app:name:iphone" content={appConfig.app.iOS.name} />
       <meta name="twitter:app:id:iphone" content={appConfig.app.iOS.id} />
       <meta name="twitter:app:name:googleplay" content={appConfig.app.android.name} />
@@ -124,24 +124,6 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
             })
           ),
         }}></script>
-
-      {!!structuredData?.breadcrumbList ? (
-        <script
-          key="breadcrumbList"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData.breadcrumbList),
-          }}></script>
-      ) : null}
-
-      {!!structuredData?.FAQs ? (
-        <script
-          key="FAQs"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData.FAQs),
-          }}></script>
-      ) : null}
     </Head>
   )
 }

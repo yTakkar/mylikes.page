@@ -2,12 +2,11 @@ import { IAppSeoProps } from '../../../components/seo/AppSeo'
 import appConfig from '../../../config/appConfig'
 import { getHomePageUrl } from '../../routes'
 
-// http://localhost:3000/
 export const prepareHomePageSeo = (): IAppSeoProps => {
   return {
-    title: 'Home',
-    description: 'Home',
+    title: `${appConfig.global.app.name} ${appConfig.seo.titleSuffix}`,
+    description: appConfig.global.app.description,
     canonical: `${appConfig.global.baseUrl}${getHomePageUrl()}`,
-    keywords: [''],
+    keywords: [],
   }
 }

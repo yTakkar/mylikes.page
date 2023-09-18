@@ -4,9 +4,9 @@ import { getMostPopularRecommendationsPageUrl } from '../../routes'
 
 export const prepareMostPopularRecommendationsPageSeo = (): IAppSeoProps => {
   return {
-    title: `Most popular recommendations`,
-    description: `description`,
+    title: `Most popular recommendations ${appConfig.seo.titleSuffix}`,
+    description: `Check out the most popular recommendations on ${appConfig.global.app.name}!`,
     canonical: `${appConfig.global.baseUrl}${getMostPopularRecommendationsPageUrl()}`,
-    keywords: [],
+    keywords: ['most popular recommendations'],
   }
 }

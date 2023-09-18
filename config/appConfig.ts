@@ -182,7 +182,7 @@ const appConfig = {
     links: [
       { label: 'Privacy Policy', url: '/privacy-policy' },
       { label: 'Terms of Use', url: '/terms-conditions' },
-      { label: 'Contact', url: '/contact' },
+      // { label: 'Contact', url: '/contact' },
     ],
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },

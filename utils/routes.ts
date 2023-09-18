@@ -14,10 +14,6 @@ export const getPrivacyPageUrl = () => {
   return '/privacy-policy'
 }
 
-export const getContactPageUrl = () => {
-  return '/contact'
-}
-
 export const getTnCPageUrl = () => {
   return '/terms-conditions'
 }

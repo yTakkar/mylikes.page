@@ -3,7 +3,6 @@ import {
   DocumentTextIcon,
   ShieldCheckIcon,
   LogoutIcon,
-  PhoneIcon,
   LoginIcon,
   BookmarkIcon,
   HomeIcon,
@@ -16,13 +15,7 @@ import classnames from 'classnames'
 import PageContainer from '../components/PageContainer'
 import CoreLink from '../components/core/CoreLink'
 import { toastSuccess } from '../components/Toaster'
-import {
-  getContactPageUrl,
-  getHomePageUrl,
-  getPrivacyPageUrl,
-  getSavedRecommendationsPageUrl,
-  getTnCPageUrl,
-} from '../utils/routes'
+import { getHomePageUrl, getPrivacyPageUrl, getSavedRecommendationsPageUrl, getTnCPageUrl } from '../utils/routes'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
@@ -80,12 +73,6 @@ const MorePage: NextPage<IProps> = () => {
       label: 'Privacy Policy',
       url: getPrivacyPageUrl(),
       icon: DocumentTextIcon,
-      show: true,
-    },
-    {
-      label: 'Contact Us',
-      url: getContactPageUrl(),
-      icon: PhoneIcon,
       show: true,
     },
     {

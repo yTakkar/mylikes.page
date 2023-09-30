@@ -49,10 +49,28 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
   const imageUrl = _imageUrl || APP_LOGO.DEFAULT
 
   const defaultKeywords = [
-    'recommendations',
     appConfig.global.app.name,
     appConfig.global.app.name.toLowerCase(),
-    'recommendation lists',
+    'Recommendations platform',
+    'Social recommendation network',
+    'User-generated reviews',
+    'Online community for recommendations',
+    'Share your favorite products',
+    'Personalized recommendation engine',
+    'Affiliate marketing platform',
+    'Curated recommendation lists',
+    'Boost engagement with recommendations',
+    'Discover trending recommendations',
+    'Influencer marketing network',
+    'Share and discover passions',
+    'Expert insights on products',
+    'Trusted product recommendations',
+    'Build a following for your recommendations',
+    'Explore user-generated content',
+    'Share what you love with the world',
+    'Connect with like-minded enthusiasts',
+    'Explore top-rated recommendations',
+    'Increase your influence through recommendations',
   ]
 
   return (

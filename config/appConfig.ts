@@ -32,18 +32,18 @@ const appConfig = {
     },
   },
   pwa: {
-    shortcuts: [
-      {
-        name: 'Search',
-        short_name: 'Search',
-        url: '/search?utm_source=pwa&utm_medium=shortcut',
-      },
-      {
-        name: 'Catalogues',
-        short_name: 'Catalogues',
-        url: '/catalogue?utm_source=pwa&utm_medium=shortcut',
-      },
-    ],
+    // shortcuts: [
+    //   {
+    //     name: 'Search',
+    //     short_name: 'Search',
+    //     url: '/search?utm_source=pwa&utm_medium=shortcut',
+    //   },
+    //   {
+    //     name: 'Catalogues',
+    //     short_name: 'Catalogues',
+    //     url: '/catalogue?utm_source=pwa&utm_medium=shortcut',
+    //   },
+    // ],
     startUrl: '/?utm_source=pwa&utm_medium=homescreen',
     icons: {
       maskable: false, // make sure icons can be masked before setting to true
@@ -181,8 +181,9 @@ const appConfig = {
   footer: {
     links: [
       { label: 'Privacy Policy', url: '/privacy-policy' },
-      { label: 'Terms of Use', url: '/terms-conditions' },
-      // { label: 'Contact', url: '/contact' },
+      { label: 'Terms & Conditions', url: '/terms-conditions' },
+      { label: 'Featured Lists', url: '/shelf/featured-lists' },
+      { label: 'Popular recommendations', url: '/most-popular-recommendations' },
     ],
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },

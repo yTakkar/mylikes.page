@@ -2,7 +2,23 @@
 
 .html-body {
   & p {
-    @apply py-2;
+    margin: 1rem 0;
+  }
+
+  h1 {
+    @apply text-2xl;
+    font-weight: 600;
+    margin: 1rem 0;    
+  }
+  h2 {
+    @apply text-xl;
+    font-weight: 600;
+    margin: 1rem 0;  
+  }
+  h3 {
+    @apply text-lg;
+    font-weight: 600;
+    margin: 1rem 0;  
   }
 
   & ul {
@@ -11,7 +27,7 @@
   }
 
   & li {
-    @apply py-2;
+    @apply py-1;
   }
 
   & b {

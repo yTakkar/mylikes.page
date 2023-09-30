@@ -57,7 +57,7 @@ const manifestJSON = {
   //     ...shortcut,
   //     icons: [
   //       {
-  //         src: prepareImageUrl(`/images/logos/android-icon-192x192.png`),
+  //         src: prepareImageUrl(`/images/generated-logos/android-icon-192x192.png`),
   //         sizes: '192x192',
   //       },
   //     ],

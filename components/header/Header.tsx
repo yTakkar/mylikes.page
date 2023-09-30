@@ -10,8 +10,9 @@ import usePWAInstall from '../../hooks/usePWAInstall'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
 import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
-import TextLogo from '../logo/TextLogo'
 import HeaderProfileIcon from './HeaderProfileIcon'
+import CoreImage from '../core/CoreImage'
+import { APP_LOGO } from '../../constants/constants'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -92,7 +93,7 @@ const Header: React.FC<INavbarProps> = props => {
             <div className="flex justify-between w-full items-center">
               <div className="flex items-center w-7/12 md:w-10/12 lg:w-auto">
                 <CoreLink url={getHomePageUrl()} className="mr-6">
-                  <TextLogo />
+                  <CoreImage url={APP_LOGO.DEFAULT_LABEL_INLINE} alt="Login promt" className="h-6" disableLazyload />
                 </CoreLink>
 
                 {/* <DesktopView useCSS>

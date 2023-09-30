@@ -72,12 +72,16 @@ const Footer: React.FC<IFooterProps> = () => {
           </div>
 
           <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
-            This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising
-            program designed to provide a means for sites to earn advertising fees by advertising and linking to
-            Amazon.com.{' '}
+            Share your recommendations with the world! Whether you're an expert foodie, a fashion aficionado, a tech
+            guru, or an explorer of hidden gems, MyLikes is your stage to shine.
+          </div>
+
+          <div className="mt-4 text-typo-paragraphLight text-sm">
+            Logos provided by{' '}
             <CoreLink url="https://clearbit.com" isExternal className="underline">
-              Logos provided by Clearbit
+              Clearbit
             </CoreLink>
+            .
           </div>
 
           {appConfig.footer.copyrightText ? (

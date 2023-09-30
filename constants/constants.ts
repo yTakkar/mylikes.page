@@ -13,8 +13,12 @@ export const SCREEN_SIZE = {
 
 // this map can have logos of multiple sizes
 export const APP_LOGO = {
-  DEFAULT: prepareImageUrl(`/images/logo.png`, ImageSourceType.ASSET),
-  1920: prepareImageUrl(`/images/logo-1920.png`, ImageSourceType.ASSET),
+  DEFAULT: prepareImageUrl(`/images/logos/transparent/logo-transparent.png`, ImageSourceType.ASSET),
+  DEFAULT_LABEL: prepareImageUrl(`/images/logos/transparent/logo-label-transparent.png`, ImageSourceType.ASSET),
+  DEFAULT_LABEL_INLINE: prepareImageUrl(
+    `/images/logos/transparent/logo-label-inline-transparent.png`,
+    ImageSourceType.ASSET
+  ),
 }
 
 export const LAZYIMAGE_PLACEHOLDER = prepareImageUrl('/images/lazyimage.png', ImageSourceType.ASSET)

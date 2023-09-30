@@ -6,6 +6,8 @@ import {
   LoginIcon,
   BookmarkIcon,
   HomeIcon,
+  SpeakerphoneIcon,
+  SparklesIcon,
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
@@ -15,7 +17,14 @@ import classnames from 'classnames'
 import PageContainer from '../components/PageContainer'
 import CoreLink from '../components/core/CoreLink'
 import { toastSuccess } from '../components/Toaster'
-import { getHomePageUrl, getPrivacyPageUrl, getSavedRecommendationsPageUrl, getTnCPageUrl } from '../utils/routes'
+import {
+  getHomePageUrl,
+  getMostPopularRecommendationsPageUrl,
+  getPrivacyPageUrl,
+  getSavedRecommendationsPageUrl,
+  getShelfPageUrl,
+  getTnCPageUrl,
+} from '../utils/routes'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
@@ -49,6 +58,7 @@ const MorePage: NextPage<IProps> = () => {
     },
     {
       label: 'Saved Recommendations',
+      subTitle: 'Manage your saved recommendations',
       url: getSavedRecommendationsPageUrl(),
       icon: BookmarkIcon,
       show: !!user,
@@ -60,20 +70,34 @@ const MorePage: NextPage<IProps> = () => {
       icon: LoginIcon,
       show: !user,
       onClick: () => {
-        methods.togglePopup(PopupType.LOGIN, {})
+        methods.login()
       },
     },
     {
-      label: 'Terms & Conditions',
-      url: getTnCPageUrl(),
-      icon: ShieldCheckIcon,
+      label: 'Featured Lists',
+      subTitle: 'Check out our handpicked lists',
+      url: getShelfPageUrl('featured-lists'),
+      icon: SpeakerphoneIcon,
+      show: true,
+    },
+    {
+      label: 'Popular recommendations',
+      subTitle: 'Check out the recommendations that are making waves',
+      url: getMostPopularRecommendationsPageUrl(),
+      icon: SparklesIcon,
       show: true,
     },
     {
       label: 'Privacy Policy',
       url: getPrivacyPageUrl(),
       icon: DocumentTextIcon,
-      show: true,
+      show: !user,
+    },
+    {
+      label: 'Terms & Conditions',
+      url: getTnCPageUrl(),
+      icon: ShieldCheckIcon,
+      show: !user,
     },
     {
       label: 'Logout',

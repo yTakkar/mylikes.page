@@ -1,8 +1,10 @@
 const app = {
   name: 'MyLikes',
   shortName: 'MyLikes',
-  tagLine: 'Share your recommendations with the world',
-  description: 'A platform specially designed to help you share your recommendations with the world',
+  tagLine: 'Empower Your Recommendations, Elevate Your Influence with MyLikes',
+  title: 'MyLikes - Share Recommendations, Discover Passions, and Build Community',
+  description:
+    'MyLikes, the ultimate platform to share your recommendations, expertise, and discoveries with the world. Curate personalized lists, add your favorite recommendations, and engage with a vibrant community. Start sharing your passions today!',
   key: 'MYLIKES', // should be uppercase
 }
 

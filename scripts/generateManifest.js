@@ -39,7 +39,7 @@ const manifestJSON = {
   id: appConfig.global.app.name,
   name: appConfig.global.app.name,
   short_name: appConfig.global.app.shortName,
-  description: appConfig.global.app.tagLine,
+  description: appConfig.global.app.title,
   theme_color: theme.colors.brand.primary,
   background_color: theme.colors.white,
   start_url: appConfig.pwa.startUrl,

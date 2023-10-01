@@ -323,15 +323,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   ].filter(action => action.show)
 
   const featuredPositions = useMemo(() => {
-    let featuredLists: IListDetail[] = []
-
-    if (isAdminProfile(listDetail.owner)) {
-      featuredLists = []
-    } else if (ads.featuredListsShelf?.listInfos) {
-      featuredLists = ads.featuredListsShelf.listInfos
-    }
-
-    return getFeaturedRecommendationPositions(listDetail, featuredLists)
+    return getFeaturedRecommendationPositions(listDetail, ads.featuredListsShelf?.listInfos || [])
   }, [listDetail, ads.featuredListsShelf])
 
   const renderContent = () => {

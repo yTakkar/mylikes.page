@@ -4,15 +4,17 @@ import {
   MenuIcon as MenuIconOutline,
   DownloadIcon as DownloadIconOutline,
   UserCircleIcon as UserCircleIconOutline,
+  SpeakerphoneIcon as SpeakerphoneIconOutline,
 } from '@heroicons/react/outline'
 import CoreLink from '../core/CoreLink'
 import usePWAInstall from '../../hooks/usePWAInstall'
 import HeaderLinks, { IHeaderLink } from './HeaderLinks'
-import { getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
+import { getFeaturedListsPageUrl, getHomePageUrl, getMorePageUrl, getProfilePageUrl } from '../../utils/routes'
 import ApplicationContext from '../ApplicationContext'
 import HeaderProfileIcon from './HeaderProfileIcon'
 import CoreImage from '../core/CoreImage'
 import { APP_LOGO } from '../../constants/constants'
+import appConfig from '../../config/appConfig'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -45,6 +47,16 @@ const Header: React.FC<INavbarProps> = props => {
   }
 
   const NAV_LINKS: IHeaderLink[] = [
+    {
+      label: 'Featured Lists',
+      url: getFeaturedListsPageUrl(),
+      iconComponent: SpeakerphoneIconOutline,
+      activeIconComponent: null,
+      iconClassName: null,
+      count: null,
+      onClick: null,
+      show: !isMobile && !user && appConfig.features.enableFeaturedLists,
+    },
     {
       label: isMobile ? null : user?.name || '',
       url: getProfilePageUrl(user?.username || ''),
@@ -81,7 +93,7 @@ const Header: React.FC<INavbarProps> = props => {
     },
   ]
 
-  if (showPWAInstall) {
+  if (showPWAInstall && isMobile) {
     NAV_LINKS.unshift(pwaInstallLink)
   }
 

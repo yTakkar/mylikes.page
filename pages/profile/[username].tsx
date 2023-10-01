@@ -6,12 +6,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { getUserByUsername, listUsers } from '../../firebase/store/users'
 import { get404PageUrl, getProfileEditPageUrl } from '../../utils/routes'
 import { IUserInfo } from '../../interface/user'
-import {
-  APP_LOGO,
-  INITIAL_PAGE_BUILD_COUNT,
-  PAGE_REVALIDATE_TIME,
-  SOCIAL_ICONS_SRC_MAP,
-} from '../../constants/constants'
+import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
 import { prepareProfilePageSeo } from '../../utils/seo/pages/profile'
 import CoreImage from '../../components/core/CoreImage'
 import appConfig from '../../config/appConfig'
@@ -101,6 +96,9 @@ const ProfilePage: NextPage<IProps> = (props: IProps) => {
           <div className="text-center lg:text-left lg:ml-8">
             <div className="flex flex-col items-center mt-4 lg:flex-row lg:mt-0">
               <div className="font-domaine-bold font-bold text-3xl tracking-wide lg:text-4xl">{profileInfo.name}</div>
+              {profileInfo._isAdmin && !currentUserProfile ? (
+                <span className="ml-2 bg-gallery text-xxs px-1 py-[2px] rounded-sm">Admin</span>
+              ) : null}
               {currentUserProfile && (
                 <div
                   className="bg-gallery text-xxs px-1 py-[2px] rounded-sm mt-3 lg:ml-2 cursor-pointer"
@@ -175,7 +173,6 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
   if (profileInfo) {
     if (appConfig.admin.users.includes(profileInfo.email)) {
       profileInfo!._isAdmin = true
-      profileInfo.avatarUrl = APP_LOGO.DEFAULT
     }
   }
 

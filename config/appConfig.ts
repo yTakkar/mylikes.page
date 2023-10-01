@@ -4,8 +4,17 @@ const app = {
   tagLine: 'Empower Your Recommendations, Elevate Your Influence with MyLikes',
   title: 'MyLikes - Share Recommendations, Discover Passions, and Build Community',
   description:
-    'MyLikes, the ultimate platform to share your recommendations, expertise, and discoveries with the world. Curate personalized lists, add your favorite recommendations, and engage with a vibrant community. Start sharing your passions today!',
+    'The ultimate platform to share your recommendations, expertise, and discoveries with the world. Curate personalized lists, add your favorite recommendations, and engage with a vibrant community. Start sharing your passions today!',
   key: 'MYLIKES', // should be uppercase
+}
+
+const features = {
+  enablePageTransition: process.env.ENV_ENABLE_PAGE_TRANSITION === 'true',
+  enableLandscapeMode: process.env.ENV_ENABLE_LANDSCAPE_MODE === 'true',
+  enablePWAPromotions: process.env.ENV_ENABLE_PWA_PROMOTIONS === 'true',
+  enableAppPromotions: process.env.ENV_ENABLE_APP_PROMOTIONS === 'true',
+  enablePagesPrefetching: process.env.ENV_ENABLE_PAGES_PREFETCHING === 'true',
+  enableFeaturedLists: process.env.ENV_ENABLE_FEATURED_LISTS === 'true',
 }
 
 const appConfig = {
@@ -69,13 +78,7 @@ const appConfig = {
       page: 'Search for influencers, recommendations & more',
     },
   },
-  features: {
-    enablePageTransition: process.env.ENV_ENABLE_PAGE_TRANSITION === 'true',
-    enableLandscapeMode: process.env.ENV_ENABLE_LANDSCAPE_MODE === 'true',
-    enablePWAPromotions: process.env.ENV_ENABLE_PWA_PROMOTIONS === 'true',
-    enableAppPromotions: process.env.ENV_ENABLE_APP_PROMOTIONS === 'true',
-    enablePagesPrefetching: process.env.ENV_ENABLE_PAGES_PREFETCHING === 'true',
-  },
+  features,
   firebase: {
     apiKey: process.env.ENV_FIREBASE_API_KEY,
     authDomain: process.env.ENV_FIREBASE_AUTH_DOMAIN,
@@ -183,14 +186,13 @@ const appConfig = {
   footer: {
     links: [
       { label: 'Privacy Policy', url: '/privacy-policy' },
-      { label: 'Terms & Conditions', url: '/terms-conditions' },
-      { label: 'Featured Lists', url: '/shelf/featured-lists' },
+      { ...(features.enableFeaturedLists && { label: 'Featured Lists', url: '/featured-lists' }) },
       { label: 'Popular recommendations', url: '/most-popular-recommendations' },
-    ],
+    ].filter(Boolean),
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
   admin: {
-    users: ['admin@mylikes.page', 'mylikescontact@gmail.com'],
+    users: ['admin@mylikes.page', 'faiyaz@mylikes.page', 'team@mylikes.page', 'mylikescontact@gmail.com'],
   },
   ads: {
     featured: {

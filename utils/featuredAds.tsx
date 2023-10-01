@@ -67,13 +67,27 @@ const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationI
 
 export const getFeaturedRecommendationPositions = (
   list: IListDetail,
-  featuredLists: IListDetail[]
+  _featuredLists: IListDetail[]
 ): IArrayPositionItemsConfig => {
   const index = appConfig.ads.featured.recommendationsFrequency
   let positions: IArrayPositionItemsConfig = {}
 
+  const featuredLists = shuffle(_featuredLists.filter(featuredList => featuredList.id !== list.id).filter(Boolean))
+
   const listRecommendations = list.recommendations
-  const featuredRecommendations = getFeaturedRecommendations(featuredLists)
+  const initialFeaturedRecommendations = getFeaturedRecommendations(featuredLists)
+
+  let featuredRecommendations = initialFeaturedRecommendations
+
+  if (initialFeaturedRecommendations.length) {
+    if (initialFeaturedRecommendations.length < listRecommendations.length) {
+      const shortage = Math.ceil(
+        (listRecommendations.length - initialFeaturedRecommendations.length) / initialFeaturedRecommendations.length
+      )
+      const featuredRecommendationsToFill = new Array(shortage).fill(initialFeaturedRecommendations).flat()
+      featuredRecommendations = [...initialFeaturedRecommendations, ...featuredRecommendationsToFill]
+    }
+  }
 
   if (featuredRecommendations.length) {
     if (listRecommendations.length <= index) {
@@ -85,7 +99,9 @@ export const getFeaturedRecommendationPositions = (
         const position = i % index
         if (position === 0 && i !== 0) {
           const recommendationInfo = featuredRecommendations.shift()!
-          positions[i] = _renderSponsoredRecommendation(recommendationInfo, list)
+          if (recommendationInfo) {
+            positions[i] = _renderSponsoredRecommendation(recommendationInfo, list)
+          }
         }
       })
     }
@@ -123,7 +139,23 @@ export const getFeaturedListPositions = (
   const index = appConfig.ads.featured.listsFrequency
   let positions: IArrayPositionItemsConfig = {}
 
-  const featuredLists = shuffle(_featuredLists)
+  const initialFeaturedLists = shuffle(
+    _featuredLists
+      .filter(featuredList => {
+        return !lists.some(list => list.id === featuredList.id)
+      })
+      .filter(Boolean)
+  )
+
+  let featuredLists = initialFeaturedLists
+
+  if (initialFeaturedLists.length) {
+    if (initialFeaturedLists.length < lists.length) {
+      const shortage = Math.ceil((lists.length - initialFeaturedLists.length) / initialFeaturedLists.length)
+      const featuredListsToFill = new Array(shortage).fill(initialFeaturedLists).flat()
+      featuredLists = [...initialFeaturedLists, ...featuredListsToFill]
+    }
+  }
 
   if (featuredLists.length) {
     if (lists.length <= index) {
@@ -135,7 +167,9 @@ export const getFeaturedListPositions = (
         const position = i % index
         if (position === 0 && i !== 0) {
           const listInfo = featuredLists.shift()!
-          positions[i] = _renderSponsoredList(listInfo, profileInfo)
+          if (listInfo) {
+            positions[i] = _renderSponsoredList(listInfo, profileInfo)
+          }
         }
       })
     }

@@ -18,19 +18,19 @@ import PageContainer from '../components/PageContainer'
 import CoreLink from '../components/core/CoreLink'
 import { toastSuccess } from '../components/Toaster'
 import {
+  getFeaturedListsPageUrl,
   getHomePageUrl,
   getMostPopularRecommendationsPageUrl,
   getPrivacyPageUrl,
   getSavedRecommendationsPageUrl,
-  getShelfPageUrl,
   getTnCPageUrl,
 } from '../utils/routes'
 import { MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
-import { PopupType } from '../interface/popup'
 import { prepareMorePageSeo } from '../utils/seo/pages/more'
+import appConfig from '../config/appConfig'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -76,9 +76,9 @@ const MorePage: NextPage<IProps> = () => {
     {
       label: 'Featured Lists',
       subTitle: 'Check out our handpicked lists',
-      url: getShelfPageUrl('featured-lists'),
+      url: getFeaturedListsPageUrl(),
       icon: SpeakerphoneIcon,
-      show: true,
+      show: appConfig.features.enableFeaturedLists,
     },
     {
       label: 'Popular recommendations',

@@ -21,7 +21,7 @@ const Footer: React.FC<IFooterProps> = () => {
                 <div className="font-medium font-primary-medium mb-2">{appConfig.global.app.name}</div>
                 <div className="flex flex-col lg:flex-row text-typo-paragraphLight text-sm font-medium">
                   {appConfig.footer.links.map((link, index) => (
-                    <CoreLink key={index} url={link.url} className="py-1 lg:py-0 lg:mr-2 hover:underline">
+                    <CoreLink key={index} url={link.url!} className="py-1 lg:py-0 lg:mr-2 hover:underline">
                       {link.label}
                     </CoreLink>
                   ))}

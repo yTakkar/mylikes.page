@@ -7,7 +7,6 @@ import { deleteLocalUserInfo, getLocalUserInfo, prepareUserInfo, setLocalUserInf
 import appAnalytics from '../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../constants/analytics'
 import appConfig from '../config/appConfig'
-import { APP_LOGO } from '../constants/constants'
 import { signInWithGoogle } from '../firebase/auth/auth'
 import { addUser } from '../firebase/store/users'
 import { vibrate } from '../utils/common'
@@ -39,7 +38,6 @@ const useApplicationContext = () => {
     if (userInfo !== null) {
       if (appConfig.admin.users.includes(userInfo.email)) {
         userInfo!._isAdmin = true
-        userInfo.avatarUrl = APP_LOGO.DEFAULT
       }
     }
     dispatchApplicationContext({

@@ -7,7 +7,7 @@ import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import ApplicationContext from '../ApplicationContext'
 import { PopupType } from '../../interface/popup'
 import { IUserInfo } from '../../interface/user'
-import { isAdminProfile, isSessionUser } from '../../utils/user'
+import { isSessionUser } from '../../utils/user'
 import { pluralize } from '../../utils/common'
 import { insertArrayPositionItems } from '../../utils/array'
 import { getFeaturedListPositions } from '../../utils/featuredAds'
@@ -34,15 +34,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
   )
 
   const featuredPositions = useMemo(() => {
-    let featuredLists: IListDetail[] = []
-
-    if (isAdminProfile(profileUser)) {
-      featuredLists = []
-    } else if (ads.featuredListsShelf?.listInfos) {
-      featuredLists = ads.featuredListsShelf.listInfos
-    }
-
-    return getFeaturedListPositions(profileUser, listsToShow, featuredLists)
+    return getFeaturedListPositions(profileUser, listsToShow, ads.featuredListsShelf?.listInfos || [])
   }, [profileUser, listsToShow, ads.featuredListsShelf])
 
   if (listsToShow.length === 0) {

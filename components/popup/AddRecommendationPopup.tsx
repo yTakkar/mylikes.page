@@ -165,7 +165,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
                 <div className="inline-flex items-center">
                   <span>No saved recommendations found.</span>
                   <Tooltip
-                    content={`We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly.`}>
+                    content={`We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly with a single click.`}>
                     <span>
                       <InformationCircleIcon className="w-5 ml-1" />
                     </span>
@@ -223,7 +223,12 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         title: (
           <div className="flex items-center">
             {panel === 'add' && <ArrowLeftIcon className="w-5 mr-3 cursor-pointer" onClick={() => setPanel('saved')} />}
-            {panel === 'saved' ? 'Select from your saved list' : 'Add a new recommendation'}
+            {panel === 'saved' ? 'Select from saved recommendations' : 'Add a new recommendation'}
+            {/* <Tooltip content="Save time and avoid duplicates! Select recommendations from your saved list to reuse them quickly.">
+              <span>
+                <QuestionMarkCircleIcon className="w-5 ml-1" />
+              </span>
+            </Tooltip> */}
           </div>
         ),
         disableOutsideClick: true,

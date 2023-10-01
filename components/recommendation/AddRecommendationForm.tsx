@@ -249,12 +249,11 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
 
         <div className="user-input-group">
           <div className="user-input-label">Title *</div>
-          <CoreTextInput
-            type={CoreTextInputType.TEXT}
-            placeholder="Eg. An old-school shirt I really like"
+          <CoreTextarea
             value={fields.TITLE}
             setValue={updateField(FieldKeyType.TITLE)}
-            inputClassName={classNames('user-input', {
+            placeholder="Eg. An old-school shirt I really like"
+            className={classNames('user-input h-16', {
               'user-input-error': fieldsWithError.TITLE,
             })}
             sanitizeOnBlur

@@ -87,7 +87,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         shareUrl,
       },
     })
-    toastSuccess('List URL copied!')
+    toastSuccess('Link copied to clipboard!')
   }
 
   const { shouldshowNativeShare, handleNativeShare } = useNativeShare({

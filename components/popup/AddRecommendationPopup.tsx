@@ -113,7 +113,6 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             recommendationId: recommendation.id,
             url: recommendation.url,
             title: recommendation.title,
-            type: recommendation.type,
           },
         })
         handleOnSuccess()

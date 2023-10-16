@@ -33,7 +33,6 @@ const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationI
         recommendationId: listRecommendation.id,
         url: listRecommendation.url,
         title: listRecommendation.title,
-        type: listRecommendation.type,
       },
     })
     appAnalytics.sendEvent({
@@ -44,7 +43,6 @@ const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationI
         listName: listRecommendation.__sponsoredMeta?.list?.name,
         url: listRecommendation.url,
         title: listRecommendation.title,
-        type: listRecommendation.type,
         sourceListId: sourceList.id,
         sourceListName: sourceList.name,
       },

@@ -228,7 +228,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
       <FullWidthModal
         modal={{
           dismissModal: onClose,
-          title: isEditable ? 'List Settings' : 'Create a list',
+          title: isEditable ? 'List settings' : 'Create a list',
           disableOutsideClick: true,
         }}
         footer={{

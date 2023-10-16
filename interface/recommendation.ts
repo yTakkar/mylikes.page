@@ -16,6 +16,5 @@ export interface IRecommendationInfo {
   isAdult: boolean
   createdAt: number // date mills
   notes: string | null
-  type: RecommendationType
   ownerEmail: string
 }

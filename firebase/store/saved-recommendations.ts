@@ -13,7 +13,6 @@ export const addSavedRecommendation = async (params: IRecommendationInfo): Promi
     isAdult: params.isAdult,
     createdAt: params.createdAt,
     notes: params.notes,
-    type: params.type,
     ownerEmail: params.ownerEmail,
   })
 }

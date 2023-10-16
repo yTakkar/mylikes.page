@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { IRecommendationInfo, RecommendationType } from '../../interface/recommendation'
+import { IRecommendationInfo } from '../../interface/recommendation'
 import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
@@ -7,7 +7,7 @@ import CoreLink from '../core/CoreLink'
 import { AnnotationIcon, PencilAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
-import { IListDetail } from '../../interface/list'
+import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import ApplicationContext from '../ApplicationContext'
 import { isSessionUser } from '../../utils/user'
 import AddRecommendationNote from './AddRecommendationNote'
@@ -15,15 +15,13 @@ import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
-import {
-  DocumentTextIcon,
-  ExclamationIcon,
-  MusicNoteIcon,
-  ShoppingBagIcon,
-  VideoCameraIcon,
-} from '@heroicons/react/solid'
-import { RECOMMENDATION_TYPE_DESCRIPTION_MAP } from '../../constants/constants'
+import { ExclamationIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
+import { getRelativeTime } from '../../utils/date'
+import dayjs from 'dayjs'
+import { capitalize } from '../../utils/common'
+const localizedFormat = require('dayjs/plugin/localizedFormat')
+dayjs.extend(localizedFormat)
 
 export enum RecommendationInfoSourceType {
   LIST = 'LIST',
@@ -84,6 +82,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   const [removeLoading, toggleRemoveLoading] = useState(false)
 
   const sessionUser = isSessionUser(user, list?.owner || null)
+
+  const addedAt = (recommendationInfo as IListRecommendationInfo).addedAt
 
   useEffect(() => {
     setNote(recommendationInfo.notes || '')
@@ -166,22 +166,22 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
   }
 
-  const renderTypeIcon = () => {
-    const className = 'w-4'
-    if (recommendationInfo.type === RecommendationType.BLOG) {
-      return <DocumentTextIcon className={className} />
-    }
-    if (recommendationInfo.type === RecommendationType.MUSIC) {
-      return <MusicNoteIcon className={className} />
-    }
-    if (recommendationInfo.type === RecommendationType.VIDEO) {
-      return <VideoCameraIcon className={className} />
-    }
-    if (recommendationInfo.type === RecommendationType.PRODUCT) {
-      return <ShoppingBagIcon className={className} />
-    }
-    return null
-  }
+  // const renderTypeIcon = () => {
+  //   const className = 'w-4'
+  //   if (recommendationInfo.type === RecommendationType.BLOG) {
+  //     return <DocumentTextIcon className={className} />
+  //   }
+  //   if (recommendationInfo.type === RecommendationType.MUSIC) {
+  //     return <MusicNoteIcon className={className} />
+  //   }
+  //   if (recommendationInfo.type === RecommendationType.VIDEO) {
+  //     return <VideoCameraIcon className={className} />
+  //   }
+  //   if (recommendationInfo.type === RecommendationType.PRODUCT) {
+  //     return <ShoppingBagIcon className={className} />
+  //   }
+  //   return null
+  // }
 
   const renderImage = () => {
     return (
@@ -203,7 +203,12 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <span>
         by{' '}
-        <CoreLink url={getProfilePageUrl(recommendationOwner!.username)} className="text-typo-paragraphLight text-sm">
+        <CoreLink
+          url={source === RecommendationInfoSourceType.LIST ? getProfilePageUrl(recommendationOwner!.username) : null}
+          className={classNames('text-typo-paragraphLight text-sm', {
+            underline: source === RecommendationInfoSourceType.LIST,
+            'cursor-auto': source !== RecommendationInfoSourceType.LIST,
+          })}>
           {recommendationOwner!.name}
         </CoreLink>
       </span>
@@ -218,10 +223,36 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <span>
         From{' '}
-        <CoreLink url={getListPageUrl(list!.id)} className="text-typo-paragraphLight text-sm underline">
+        <CoreLink
+          url={getListPageUrl(list!.id)}
+          className={classNames('text-typo-paragraphLight text-sm', {
+            underline: source === RecommendationInfoSourceType.LIST,
+          })}>
           {list!.name}
         </CoreLink>
       </span>
+    )
+  }
+
+  const renderAddedDate = () => {
+    return (
+      <>
+        &nbsp;•&nbsp;
+        <Tooltip content={dayjs(addedAt).format('lll')}>
+          <span>{capitalize(`${getRelativeTime(addedAt)}`)}</span>
+        </Tooltip>
+      </>
+    )
+  }
+
+  const renderCreatedDate = () => {
+    return (
+      <>
+        &nbsp;•&nbsp;
+        <Tooltip content={dayjs(recommendationInfo.createdAt).format('lll')}>
+          <span>{capitalize(`${getRelativeTime(recommendationInfo.createdAt)}`)}</span>
+        </Tooltip>
+      </>
     )
   }
 
@@ -266,14 +297,18 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
           <div className="text-typo-paragraphLight text-sm flex items-center">
             {showListName ? renderListName() : renderOwnerName()}
-            {recommendationInfo.type !== RecommendationType.OTHER && (
+            {/* {recommendationInfo.type !== RecommendationType.OTHER && (
               <>
                 &nbsp;•&nbsp;
                 <Tooltip content={RECOMMENDATION_TYPE_DESCRIPTION_MAP[recommendationInfo.type]}>
                   <span>{renderTypeIcon()}</span>
                 </Tooltip>
               </>
-            )}
+            )} */}
+            {addedAt && renderAddedDate()}
+            {source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE
+              ? renderCreatedDate()
+              : null}
           </div>
 
           {sponsored && (

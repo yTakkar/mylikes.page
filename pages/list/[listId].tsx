@@ -200,7 +200,6 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           recommendationId: listRecommendation.id,
           url: listRecommendation.url,
           title: listRecommendation.title,
-          type: listRecommendation.type,
         },
       })
       refetchListDetail()
@@ -224,7 +223,6 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         recommendationId: listRecommendation.id,
         url: listRecommendation.url,
         title: listRecommendation.title,
-        type: listRecommendation.type,
       },
     })
   }

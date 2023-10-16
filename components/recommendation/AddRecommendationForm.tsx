@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
 import classNames from 'classnames'
-import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
-import { RECOMMENDATION_TYPE_LABEL_MAP, REGEX_MAP } from '../../constants/constants'
+import { REGEX_MAP } from '../../constants/constants'
 import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
@@ -20,14 +19,12 @@ import { generateRecommendationImageUrl } from '../../utils/recommendation'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import Alert from '../modal/Alert'
 import CoreLink from '../core/CoreLink'
-import appConfig from '../../config/appConfig'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 
 enum FieldKeyType {
   URL = 'URL',
   TITLE = 'TITLE',
-  TYPE = 'TYPE',
   NOTES = 'NOTES',
   IS_ADULT = 'IS_ADULT',
 }
@@ -51,7 +48,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   const initialFields: Record<FieldKeyType, any> = {
     URL: '',
     TITLE: '',
-    TYPE: '',
     NOTES: '',
     IS_ADULT: false,
   }
@@ -70,7 +66,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       setFields({
         [FieldKeyType.URL]: recommendation.url,
         [FieldKeyType.TITLE]: recommendation.title,
-        [FieldKeyType.TYPE]: recommendation.type,
         [FieldKeyType.NOTES]: recommendation.notes,
         [FieldKeyType.IS_ADULT]: recommendation.isAdult,
       })
@@ -90,13 +85,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       error: 'Invalid Title',
       value: fields.TITLE,
       key: FieldKeyType.TITLE,
-      optional: false,
-    },
-    [FieldKeyType.TYPE]: {
-      regex: REGEX_MAP.NOT_EMPTY,
-      error: 'Invalid Type',
-      value: fields.TYPE,
-      key: FieldKeyType.TYPE,
       optional: false,
     },
     [FieldKeyType.NOTES]: {
@@ -129,7 +117,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       isAdult: fields.IS_ADULT,
       createdAt,
       notes: fields.NOTES,
-      type: fields.TYPE,
       ownerEmail: user!.email,
     })
     appAnalytics.sendEvent({
@@ -137,7 +124,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       extra: {
         url,
         title: fields.TITLE,
-        type: fields.TYPE,
         ownerEmail: user!.email,
         isAdult: fields.IS_ADULT,
         imageUrl,
@@ -156,7 +142,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       imageUrl: generateRecommendationImageUrl(url),
       isAdult: fields.IS_ADULT,
       notes: fields.NOTES,
-      type: fields.TYPE,
     })
     onSuccess?.()
     toastSuccess('Updated!')
@@ -176,7 +161,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
         extra: {
           id: recommendation!.id,
           url: recommendation!.url,
-          type: recommendation!.type,
           ownerEmail: user!.email,
         },
       })
@@ -215,12 +199,12 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     handleValidation(FIELD_VALIDATION_MAPPING, fieldsWithError, setFieldsWithError, onValidationSuccess)
   }
 
-  const typeOptions: ICoreSelectInputOption[] = Object.entries(RECOMMENDATION_TYPE_LABEL_MAP).map(([key, value]) => ({
-    id: key,
-    value: key,
-    label: value,
-    selected: false,
-  }))
+  // const typeOptions: ICoreSelectInputOption[] = Object.entries(RECOMMENDATION_TYPE_LABEL_MAP).map(([key, value]) => ({
+  //   id: key,
+  //   value: key,
+  //   label: value,
+  //   selected: false,
+  // }))
 
   return (
     <div>
@@ -260,7 +244,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
           />
         </div>
 
-        <div className="user-input-group ">
+        {/* <div className="user-input-group ">
           <div className="user-input-label">Type *</div>
           <div className="text-typo-paragraphLight text-sm mb-2 -mt-1">What kind of recommendation is this?</div>
           <CoreSelectInput
@@ -285,7 +269,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
               Suggest here
             </CoreLink>
           </div>
-        </div>
+        </div> */}
 
         <div className="user-input-group">
           <div className="user-input-label">Notes</div>

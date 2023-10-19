@@ -272,8 +272,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
           )}
           {recommendationInfo.isAdult && (
             <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
-              <ExclamationIcon className="w-4 mr-1 font-medium font-primary-medium" />{' '}
-              <span className="text-xs">NSFW</span>
+              <ExclamationIcon className="w-4 mr-1 font-medium" /> <span className="text-xs">NSFW</span>
             </div>
           )}
         </div>
@@ -283,13 +282,9 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               'block max-w-[87%]': source === RecommendationInfoSourceType.LIST && isDesktop,
             })}>
             {source === RecommendationInfoSourceType.ADD ? (
-              <span className="font-medium font-primary-medium">{recommendationInfo.title}</span>
+              <span className="font-bold">{recommendationInfo.title}</span>
             ) : (
-              <CoreLink
-                url={recommendationInfo.url}
-                isExternal
-                className="font-medium font-primary-medium"
-                onClick={onLinkClick}>
+              <CoreLink url={recommendationInfo.url} isExternal className="font-bold" onClick={onLinkClick}>
                 {recommendationInfo.title}
               </CoreLink>
             )}

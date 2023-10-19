@@ -35,7 +35,7 @@ const PrivacyPolicyPage: NextPage<IProps> = props => {
           <div className="mt-4">
             {privacyPolicyDetail.updatedDateTime ? (
               <div className="mb-3">
-                <div className="font-medium font-primary-medium">
+                <div className="font-semibold">
                   <EscapeHTML
                     element="span"
                     html={`Date of last revision: ${new Date(

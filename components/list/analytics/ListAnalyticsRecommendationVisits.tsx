@@ -96,7 +96,7 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
           </div>
           <div className="ml-3 flex-grow">
             <span
-              className={classNames('font-medium font-primary-medium', {
+              className={classNames('font-semibold', {
                 'text-gray-600 ital': !listRecommendation,
               })}>
               {listRecommendation ? listRecommendation.title : '<Deleted>'}

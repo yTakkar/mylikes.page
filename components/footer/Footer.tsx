@@ -18,7 +18,7 @@ const Footer: React.FC<IFooterProps> = () => {
           <div className="lg:flex justify-between items-start">
             <div className="flex flex-col">
               <div>
-                <div className="font-medium font-primary-medium mb-2">{appConfig.global.app.name}</div>
+                <div className="font-bold mb-2">{appConfig.global.app.name}</div>
                 <div className="flex flex-col lg:flex-row text-typo-paragraphLight text-sm font-medium">
                   {appConfig.footer.links.map((link, index) => (
                     <CoreLink key={index} url={link.url!} className="py-1 lg:py-0 lg:mr-2 hover:underline">
@@ -51,7 +51,7 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
 
             <div className="mt-6 lg:mt-0">
-              <div className="font-medium font-primary-medium mb-2">Stay in touch</div>
+              <div className="font-bold mb-2">Stay in touch</div>
               <div className="flex">
                 {appConfig.company.socialLinks.map((socialLink, index) => {
                   const socialIconSrc = SOCIAL_ICONS_SRC_MAP[socialLink.type] || SOCIAL_ICONS_SRC_MAP.GLOBE

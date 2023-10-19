@@ -1,5 +1,5 @@
 .feedbackFormButton {
-  @apply fixed overflow-hidden left-full bottom-0 text-white bg-emerald font-semibold font-primary-medium;
+  @apply fixed overflow-hidden left-full bottom-0 text-white bg-emerald font-semibold;
   transition: all .3s ease-out;
   transform: translate3d(-33px,-2px,0) rotate(-90deg);
   transform-origin: top left;

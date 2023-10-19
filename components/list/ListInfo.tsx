@@ -52,7 +52,7 @@ const ListInfo: React.FC<IListInfoProps> = props => {
               {recommendation.isAdult && (
                 <Tooltip content="NSFW">
                   <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
-                    <ExclamationIcon className="w-4 font-medium font-primary-medium" />
+                    <ExclamationIcon className="w-4 font-semibold" />
                   </div>
                 </Tooltip>
               )}
@@ -63,7 +63,7 @@ const ListInfo: React.FC<IListInfoProps> = props => {
 
       <div className="bg-alabaster py-3 px-4 flex items-center justify-between">
         <div>
-          <div className="font-medium font-primary-medium">{list.name}</div>
+          <div className="font-bold">{list.name}</div>
           <div className=" text-typo-paragraphLight text-sm">{list.recommendations.length} recommendations</div>
         </div>
 

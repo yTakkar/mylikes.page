@@ -29,7 +29,7 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
       <CoreActiveLink
         key={index}
         url={navLink.url}
-        className="flex font-primary-medium text-typo-paragraph text-sm items-center group relative ml-4 lg:ml-5"
+        className="flex text-typo-paragraph text-sm items-center group relative ml-4 lg:ml-5"
         title={navLink.label || ''}
         onClick={e => {
           if (navLink.onClick) {
@@ -53,9 +53,9 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
                   />
                 </span>
               </Tooltip>
-              <span className="ml-1">{navLink.label}</span>
+              <span className="ml-1 font-semibold">{navLink.label}</span>
               {navLink.count && !isActive ? (
-                <span className="absolute -right-3 -top-4 bg-primary text-xxs text-white rounded-lg py-[1px] px-1 font-primary-medium">
+                <span className="absolute -right-3 -top-4 bg-primary text-xxs text-white rounded-lg py-[1px] px-1">
                   {navLink.count}
                 </span>
               ) : null}

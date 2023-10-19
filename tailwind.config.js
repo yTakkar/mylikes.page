@@ -194,6 +194,16 @@ module.exports = {
       mercury: '#e3e3e3',
       clementine: '#e86800',
       emerald: '#48c289',
+      dolly: '#F8FD86',
+      seaPink: '#eda0a8',
+      pictonBlue: '#40C4EA',
+      lavenderGray: '#C8BAD4',
+      mandy: '#EC4966',
+      morningGlory: '#A0E3E2',
+      tautara: '#282826',
+      creamCan: '#F4CB57',
+      amaranth: '#ea3e5c',
+      mediumPurple: '#af4adc',
     }),
     columns: {
       auto: 'auto',
@@ -336,14 +346,7 @@ module.exports = {
       DEFAULT: '1',
     },
     fontFamily: {
-      // primary: ['"National2-Regular"', 'sans-serif'],
-      // 'primary-medium': ['"National2-Medium"', 'sans-serif'],
-      // 'primary-bold': ['"National2-Bold"', 'sans-serif'],
-
-      primary: ['"BentonSans"', 'Arial', 'Noto Sans', 'sans-serif'],
-      'primary-bold': ['"BentonSans-Bold"', 'Arial', 'Noto Sans', 'sans-serif'],
-      'primary-medium': ['"BentonSans-Medium"', 'Arial', 'Noto Sans', 'sans-serif'],
-
+      primary: ['"Nunito"', 'Helvetica'],
       'domaine-bold': ['"Domaine-Bold"', 'Georgia', 'Serif'],
 
       sans: [

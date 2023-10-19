@@ -71,9 +71,7 @@ const Home: NextPage<IProps> = () => {
 
   const renderAddNewButton = () => {
     return (
-      <div
-        className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
-        onClick={handleNewRecommendation}>
+      <div className="bg-gallery font-semibold cursor-pointer py-2 px-3 rounded" onClick={handleNewRecommendation}>
         <div className="flex">
           <PlusIcon className="w-6 mr-1" />
           Add new

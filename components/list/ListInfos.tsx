@@ -75,9 +75,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
         <div className="flex items-center justify-between mb-4">
           <div className="font-semibold">Showing {pluralize('list', listsToShow.length)}</div>
 
-          <div
-            className="bg-gallery font-medium cursor-pointer py-2 px-3 rounded font-primary-medium"
-            onClick={handleNewList}>
+          <div className="bg-gallery font-semibold cursor-pointer py-2 px-3 rounded" onClick={handleNewList}>
             <div className="flex">
               <PlusIcon className="w-6 mr-1" />
               New List

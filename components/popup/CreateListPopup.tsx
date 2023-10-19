@@ -310,7 +310,7 @@ const CreateListPopup: React.FC<ICreateListPopupProps> = props => {
                     onClick={() => {
                       updateField(FieldKeyType.VISIBILITY)(option.value)
                     }}>
-                    <div className="font-medium font-primary-medium flex items-center">
+                    <div className="font-bold flex items-center">
                       {option.label}
                       {isSelected && <CheckIcon className="w-5 h-5 text-brand-logo ml-1 relative top-[-1px]" />}
                     </div>

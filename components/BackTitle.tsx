@@ -28,7 +28,7 @@ const BackTitle: React.FC<IBackTitleProps> = props => {
           onClick={handleBackIconClick}>
           <ArrowLeftIcon className="" />
         </div>
-        <div className="font-medium font-primary-medium text-typo-paragraph text-lg">{title}</div>
+        <div className="font-bold text-typo-paragraph text-lg">{title}</div>
       </div>
 
       {rhsContent}

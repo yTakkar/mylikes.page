@@ -148,7 +148,7 @@ const MorePage: NextPage<IProps> = () => {
 
                 <div className="flex flex-grow justify-between items-center">
                   <div>
-                    <div className="text-gray-900 font-normal font-primary-medium">{link.label}</div>
+                    <div className="text-gray-900 font-bold">{link.label}</div>
                     <div className="text-sm text-gray-700">{link.subTitle}</div>
                   </div>
                   <div>

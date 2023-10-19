@@ -56,14 +56,11 @@ const Modal: React.FC<IModalProps> = props => {
     return (
       <div className="flex justify-between items-start p-3 modal-header">
         <div>
-          <div className="font-medium font-primary-medium text-typo-title modal-header-title">{title}</div>
+          <div className="font-bold text-typo-title modal-header-title">{title}</div>
           {subTitle && <div className="text-sm mt-1">{subTitle}</div>}
         </div>
         {showCrossIcon ? (
-          <XIcon
-            className="w-6 text-gray-700 font-medium font-primary-medium cursor-pointer"
-            onClick={() => dismissModal()}
-          />
+          <XIcon className="w-6 text-gray-700 font-bold cursor-pointer" onClick={() => dismissModal()} />
         ) : null}
       </div>
     )

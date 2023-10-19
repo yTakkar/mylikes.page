@@ -24,7 +24,7 @@ import { PopupType } from '../../interface/popup'
 import Loader, { LoaderType } from '../../components/loader/Loader'
 import { LockClosedIcon, ReplyIcon } from '@heroicons/react/solid'
 import { IUserInfo } from '../../interface/user'
-import { isAdminProfile, isSessionUser } from '../../utils/user'
+import { isSessionUser } from '../../utils/user'
 import NotFound from '../../components/NotFound'
 import CoreLink from '../../components/core/CoreLink'
 import { generateListId } from '../../utils/list'
@@ -411,7 +411,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
                 <div
                   key={index}
                   className={classNames(
-                    'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium mr-1 lg:mr-2',
+                    'bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded mr-1 lg:mr-2',
                     {
                       'mr-0': isLast,
                     }
@@ -434,9 +434,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         {sessionUser && (
           <div className="flex justify-end mb-5">
             <div
-              className={classNames(
-                'bg-gallery font-medium text-sm cursor-pointer py-1 px-2 rounded font-primary-medium'
-              )}
+              className={classNames('bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded')}
               onClick={handleNewRecommendation}>
               <Tooltip content="Add a new recommendation">
                 <div className="flex">

@@ -114,10 +114,10 @@ const Home: NextPage<IProps> = props => {
         </div>
 
         {/* HTD */}
-        <div className="mt-20  px-4">
-          <div className="relative mb-[60px]">
+        <div className="mt-20 px-4">
+          <div className="relative mb-[60px] lg:mb-[100px] md:w-[500px] md:mx-auto">
             <CoreImage
-              className="absolute w-[51px] h-[71px] top-[53px] left-[210px] lg:top-[30px] lg:left-[75%]"
+              className="absolute w-[51px] h-[71px] top-[53px] left-[210px] md:top-[30px] md:left-auto md:right-[-40px]"
               alt="A"
               url={prepareImageUrl('/images/landing-page/htd-down.svg', ImageSourceType.ASSET)}
               disableLazyload
@@ -126,7 +126,7 @@ const Home: NextPage<IProps> = props => {
           </div>
 
           {/* Step 1 */}
-          <div className="lg:flex justify-between">
+          <div className="lg:mt-10 lg:flex justify-between">
             <CoreImage
               className="md:w-[450px]"
               alt="Step 1"

@@ -6,7 +6,7 @@ import { prepareHomePageSeo } from '../utils/seo/pages/home'
 import PageContainer from '../components/PageContainer'
 import CoreImage, { ImageSourceType } from '../components/core/CoreImage'
 import { prepareImageUrl } from '../utils/image'
-import { DesktopView, MobileView } from '../components/ResponsiveViews'
+import { DesktopView } from '../components/ResponsiveViews'
 import { getShelfById } from '../firebase/store/shelf'
 import { IShelfDetail } from '../interface/shelf'
 import { PAGE_REVALIDATE_TIME } from '../constants/constants'
@@ -62,7 +62,7 @@ const Home: NextPage<IProps> = props => {
                   <CoreImage
                     className="absolute bottom-0"
                     alt="Underline"
-                    url={prepareImageUrl('/images/landing-page/underline.png', ImageSourceType.ASSET)}
+                    url={prepareImageUrl('/images/landing-page/underline.svg', ImageSourceType.ASSET)}
                     disableLazyload
                   />
                 </div>
@@ -88,10 +88,10 @@ const Home: NextPage<IProps> = props => {
           <DesktopView>
             <div>
               <CoreImage
-                className="min-w-[400px]"
+                className="min-w-[400px] w-[400px]"
                 alt="Underline"
-                url={prepareImageUrl('/images/landing-page/banner-1-showcase.svg', ImageSourceType.ASSET)}
-                disableLazyload
+                url={prepareImageUrl('/images/landing-page/banner-1-showcase.png', ImageSourceType.ASSET)}
+                useTransparentPlaceholder
               />
             </div>
           </DesktopView>
@@ -99,27 +99,17 @@ const Home: NextPage<IProps> = props => {
 
         {/* divider */}
         <div className="mt-14 lg:-mt-4 relative">
-          <MobileView>
-            <CoreImage
-              className=""
-              alt="Underline"
-              url={prepareImageUrl('/images/landing-page/line-1.svg', ImageSourceType.ASSET)}
-              disableLazyload
-            />
-          </MobileView>
-          <DesktopView>
-            <CoreImage
-              className=""
-              alt="Underline"
-              url={prepareImageUrl('/images/landing-page/line-2.svg', ImageSourceType.ASSET)}
-              disableLazyload
-            />
-          </DesktopView>
+          <CoreImage
+            className="object-none"
+            alt="Underline"
+            url={prepareImageUrl('/images/landing-page/line-2.svg', ImageSourceType.ASSET)}
+            disableLazyload
+          />
           <CoreImage
             className="absolute w-16 h-16 left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%] lg:left-[10%]"
             alt="Ellipse"
-            url={prepareImageUrl('/images/landing-page/ellipse-2.png', ImageSourceType.ASSET)}
-            disableLazyload
+            url={prepareImageUrl('/images/landing-page/line-down.png', ImageSourceType.ASSET)}
+            useTransparentPlaceholder
           />
         </div>
 
@@ -138,10 +128,10 @@ const Home: NextPage<IProps> = props => {
           {/* Step 1 */}
           <div className="lg:flex justify-between">
             <CoreImage
-              className=""
+              className="md:w-[450px]"
               alt="Step 1"
-              url={prepareImageUrl('/images/landing-page/step-1.svg', ImageSourceType.ASSET)}
-              disableLazyload
+              url={prepareImageUrl('/images/landing-page/step-1.png', ImageSourceType.ASSET)}
+              useTransparentPlaceholder
             />
             <div className="lg:w-[500px]">
               <div className="relative font-extrabold text-black tracking-normal text-2xl lg:text-3xl whitespace-nowrap mt-6">
@@ -162,10 +152,10 @@ const Home: NextPage<IProps> = props => {
           {/* Step 2 */}
           <div className="mt-16 lg:flex justify-between flex-row-reverse">
             <CoreImage
-              className=""
+              className="md:w-[450px]"
               alt="Step 1"
-              url={prepareImageUrl('/images/landing-page/step-2.svg', ImageSourceType.ASSET)}
-              disableLazyload
+              url={prepareImageUrl('/images/landing-page/step-2.png', ImageSourceType.ASSET)}
+              useTransparentPlaceholder
             />
             <div className="lg:w-[500px]">
               <div className="relative font-extrabold text-black tracking-normal text-2xl lg:text-3xl mt-6">
@@ -186,10 +176,10 @@ const Home: NextPage<IProps> = props => {
           {/* Step 3 */}
           <div className="mt-16 lg:flex justify-between">
             <CoreImage
-              className=""
+              className="md:w-[450px]"
               alt="Step 1"
-              url={prepareImageUrl('/images/landing-page/step-3.svg', ImageSourceType.ASSET)}
-              disableLazyload
+              url={prepareImageUrl('/images/landing-page/step-3.png', ImageSourceType.ASSET)}
+              useTransparentPlaceholder
             />
             <div className="lg:w-[500px]">
               <div className="relative font-extrabold text-black tracking-normal text-2xl  mt-6">
@@ -210,10 +200,10 @@ const Home: NextPage<IProps> = props => {
           {/* Step 4 */}
           <div className="mt-16 lg:flex justify-between flex-row-reverse">
             <CoreImage
-              className=""
+              className="md:w-[450px]"
               alt="Step 1"
-              url={prepareImageUrl('/images/landing-page/step-4.svg', ImageSourceType.ASSET)}
-              disableLazyload
+              url={prepareImageUrl('/images/landing-page/step-4.png', ImageSourceType.ASSET)}
+              useTransparentPlaceholder
             />
             <div className="lg:w-[500px]">
               <div className="relative font-extrabold text-black tracking-normal text-2xl  mt-6">
@@ -234,10 +224,10 @@ const Home: NextPage<IProps> = props => {
           {/* Step 5 */}
           <div className="mt-16 lg:flex justify-between">
             <CoreImage
-              className=""
+              className="md:w-[450px]"
               alt="Step 1"
-              url={prepareImageUrl('/images/landing-page/step-5.svg', ImageSourceType.ASSET)}
-              disableLazyload
+              url={prepareImageUrl('/images/landing-page/step-5.png', ImageSourceType.ASSET)}
+              useTransparentPlaceholder
             />
             <div className="lg:w-[500px]">
               <div className="relative font-extrabold text-black tracking-normal text-2xl  mt-6">
@@ -261,8 +251,8 @@ const Home: NextPage<IProps> = props => {
           <CoreImage
             className="w-56 lg:w-64"
             alt="Ellipse"
-            url={prepareImageUrl('/images/landing-page/banner-2-preview.svg', ImageSourceType.ASSET)}
-            disableLazyload
+            url={prepareImageUrl('/images/landing-page/banner-2-preview.png', ImageSourceType.ASSET)}
+            useTransparentPlaceholder
           />
           <div className="lg:w-[600px] md:flex flex-col items-center lg:items-start">
             <p className="font-bold text-transparent text-[40px] text-center lg:text-left tracking-[0] leading-[48px] mt-8">
@@ -309,8 +299,8 @@ const Home: NextPage<IProps> = props => {
           <CoreImage
             className="w-40 absolute left-[50%] transform translate-x-[-50%] -top-[80px] lg:left-[85%]"
             alt="Ellipse"
-            url={prepareImageUrl('/images/landing-page/banner-3-preview.svg', ImageSourceType.ASSET)}
-            disableLazyload
+            url={prepareImageUrl('/images/landing-page/banner-3-preview.png', ImageSourceType.ASSET)}
+            useTransparentPlaceholder
           />
 
           <div className="font-bold text-black text-4xl leading-[48px] text-center tracking-[0] mt-10">

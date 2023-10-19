@@ -99,6 +99,14 @@
     }
   }
 
+  .tablet-view {
+    display: none;
+
+    @include tablet {
+      display: inherit;
+    }
+  }
+
   .force-hide {
     display: none !important;
   }

@@ -102,7 +102,7 @@ const appConfig = {
   },
   build: {
     pageRevalidateTimeInSec: {
-      // HOME: 15 * 60,
+      HOME: 60 * 60,
       PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
       404: 60 * 60,

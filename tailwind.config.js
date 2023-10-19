@@ -204,6 +204,7 @@ module.exports = {
       creamCan: '#F4CB57',
       amaranth: '#ea3e5c',
       mediumPurple: '#af4adc',
+      beige: '#FFF9ED',
     }),
     columns: {
       auto: 'auto',

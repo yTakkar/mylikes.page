@@ -50,7 +50,7 @@ const useApplicationContext = () => {
     }
   }
 
-  const login = async () => {
+  const login: IContextMethods['login'] = async onSuccess => {
     try {
       const user = await signInWithGoogle()
       const preparedUserInfo = await prepareUserInfo(user)
@@ -65,6 +65,7 @@ const useApplicationContext = () => {
         },
       })
       toastSuccess(newUser ? 'Signup successful!' : 'Login successful!')
+      onSuccess?.(userInfo)
     } catch (e) {
       appAnalytics.captureException(e)
       toastError('Failed to login!')

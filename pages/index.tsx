@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react'
+import React, { useContext } from 'react'
 import { IGlobalLayoutProps } from './_app'
 import { GetStaticProps, NextPage } from 'next'
 import { prepareHomePageSeo } from '../utils/seo/pages/home'
@@ -7,12 +7,43 @@ import PageContainer from '../components/PageContainer'
 import CoreImage, { ImageSourceType } from '../components/core/CoreImage'
 import { prepareImageUrl } from '../utils/image'
 import { DesktopView, MobileView } from '../components/ResponsiveViews'
+import { getShelfById } from '../firebase/store/shelf'
+import { IShelfDetail } from '../interface/shelf'
+import { PAGE_REVALIDATE_TIME } from '../constants/constants'
+import ShelfLists from '../components/list/ShelfLists'
+import CoreLink from '../components/core/CoreLink'
+import { getFeaturedListsPageUrl, getProfilePageUrl } from '../utils/routes'
+import ApplicationContext from '../components/ApplicationContext'
+import { useRouter } from 'next/router'
 
 interface IProps extends IGlobalLayoutProps {
-  pageData: {}
+  pageData: {
+    shelf: IShelfDetail | null
+  }
 }
 
-const Home: NextPage<IProps> = () => {
+const Home: NextPage<IProps> = props => {
+  const {
+    pageData: { shelf },
+  } = props
+
+  const applicationContext = useContext(ApplicationContext)
+  const { user, methods } = applicationContext
+
+  const router = useRouter()
+
+  const loggedIn = !!user
+
+  const handleActionsClick = () => {
+    if (loggedIn) {
+      router.push(getProfilePageUrl(user.username))
+      return
+    }
+    methods.login(userInfo => {
+      router.push(getProfilePageUrl(userInfo.username))
+    })
+  }
+
   return (
     <PageContainer>
       <div className="">
@@ -47,7 +78,9 @@ const Home: NextPage<IProps> = () => {
               Tell the world about the things you like. Your recommendations matter, and MyLikes is your megaphone.
             </div>
 
-            <div className="bg-mediumPurple rounded-[44px] border border-solid border-black font-medium text-white text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-5 lg:mt-6 lg:inline-flex lg:px-[30px]">
+            <div
+              className="bg-mediumPurple rounded-[44px] border border-solid border-black font-medium text-white text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-5 lg:mt-6 md:inline-flex md:px-[30px] cursor-pointer"
+              onClick={handleActionsClick}>
               Get Started
             </div>
           </div>
@@ -118,7 +151,9 @@ const Home: NextPage<IProps> = () => {
                 Every great recommendation starts with a list. Give your list a catchy name. For instance, &#34;My
                 Ultimate Travel Adventures&#34; or &#34;Top Tech Gadgets of 2023.&#34;
               </p>
-              <div className="bg-seaPink rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 lg:inline-flex lg:px-[30px]">
+              <div
+                className="bg-seaPink rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 md:inline-flex md:px-[30px] cursor-pointer"
+                onClick={handleActionsClick}>
                 Create Yours Now
               </div>
             </div>
@@ -140,7 +175,9 @@ const Home: NextPage<IProps> = () => {
                 The heart of your list is the recommendations you share. You can add a wide range of content, from
                 YouTube videos to affiliate links. Share what you love!
               </p>
-              <div className="bg-pictonBlue rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 lg:inline-flex lg:px-[30px]">
+              <div
+                className="bg-pictonBlue rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 md:inline-flex md:px-[30px] cursor-pointer"
+                onClick={handleActionsClick}>
                 Start making your lists
               </div>
             </div>
@@ -162,7 +199,9 @@ const Home: NextPage<IProps> = () => {
                 Once you've curated your list, it's time to share it with the world. Let your recommendations reach a
                 global audience and make an impact.
               </p>
-              <div className="bg-lavenderGray rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 lg:inline-flex lg:px-[30px]">
+              <div
+                className="bg-lavenderGray rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 md:inline-flex md:px-[30px] cursor-pointer"
+                onClick={handleActionsClick}>
                 Share your heart out
               </div>
             </div>
@@ -184,7 +223,9 @@ const Home: NextPage<IProps> = () => {
                 MyLikes offers a suite of tools to help you monitor the performance of your recommendations. Analyze key
                 parameters and gain insights into how your list is doing.
               </p>
-              <div className="bg-mandy rounded-[44px] border border-solid border-black font-medium text-white text-sm whitespace-nowrap text-center p-[14px] mt-5 lg:inline-flex lg:px-[30px]">
+              <div
+                className="bg-mandy rounded-[44px] border border-solid border-black font-medium text-white text-sm whitespace-nowrap text-center p-[14px] mt-5 md:inline-flex md:px-[30px] cursor-pointer"
+                onClick={handleActionsClick}>
                 Start making your lists
               </div>
             </div>
@@ -206,7 +247,9 @@ const Home: NextPage<IProps> = () => {
                 MyLikes isn't just about sharing; it's about engaging. We provide you with a wealth of features to
                 captivate your audience.
               </p>
-              <div className="bg-morningGlory rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 lg:inline-flex lg:px-[30px]">
+              <div
+                className="bg-morningGlory rounded-[44px] border border-solid border-black font-medium text-black text-sm whitespace-nowrap text-center p-[14px] mt-5 md:inline-flex md:px-[30px] cursor-pointer"
+                onClick={handleActionsClick}>
                 Get going today
               </div>
             </div>
@@ -221,7 +264,7 @@ const Home: NextPage<IProps> = () => {
             url={prepareImageUrl('/images/landing-page/banner-2-preview.svg', ImageSourceType.ASSET)}
             disableLazyload
           />
-          <div className="lg:w-[600px]">
+          <div className="lg:w-[600px] md:flex flex-col items-center lg:items-start">
             <p className="font-bold text-transparent text-[40px] text-center lg:text-left tracking-[0] leading-[48px] mt-8">
               <span className="text-white">With MyLikes, you&#39;re not just </span>
               <span className="text-morningGlory">sharing</span>
@@ -231,17 +274,30 @@ const Home: NextPage<IProps> = () => {
               <span className="text-amaranth">passions</span>
               <span className="text-white">.</span>
             </p>
-            <div className="bg-creamCan rounded-[44px] border border-solid border-black font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full lg:w-auto lg:inline-flex lg:px-[30px]">
+            <div
+              className="bg-creamCan rounded-[44px] border border-solid border-black font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full md:w-auto md:inline-flex md:px-[30px] cursor-pointer"
+              onClick={handleActionsClick}>
               Get Started
             </div>
           </div>
         </div>
 
         {/* Featured lists */}
-        <div className="mt-10">
-          <div className="font-bold text-black text-3xl  text-center">Featured lists</div>
-          <div className="h-32"></div>
-        </div>
+        {shelf && (
+          <div className="mt-12">
+            <div className="font-bold text-black text-3xl text-center">Featured lists</div>
+            <div className="mt-10 px-3">
+              <ShelfLists shelf={shelf} source="home" showHeader={false} />
+              <div className="flex justify-center">
+                <CoreLink
+                  url={getFeaturedListsPageUrl()}
+                  className="bg-alabaster rounded-[44px] border border-solid border-black text-black font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-6 w-full md:w-auto md:inline-flex md:px-[30px]">
+                  View All
+                </CoreLink>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Ppopular recommendations */}
         {/* <div className="mt-10">
@@ -249,9 +305,9 @@ const Home: NextPage<IProps> = () => {
         </div> */}
 
         {/* Banner 3 */}
-        <div className="bg-creamCan flex flex-col items-center  px-4 lg:px-24 py-20 relative">
+        <div className="bg-creamCan flex flex-col items-center mt-[120px] px-4 lg:px-24 py-20 relative">
           <CoreImage
-            className="w-40 absolute left-[50%] transform translate-x-[-50%] -top-[80px]"
+            className="w-40 absolute left-[50%] transform translate-x-[-50%] -top-[80px] lg:left-[85%]"
             alt="Ellipse"
             url={prepareImageUrl('/images/landing-page/banner-3-preview.svg', ImageSourceType.ASSET)}
             disableLazyload
@@ -261,7 +317,9 @@ const Home: NextPage<IProps> = () => {
             Whether you&#39;re an expert foodie, a fashion aficionado, a tech guru, or an explorer of hidden gems,
             MyLikes is your stage to shine.
           </div>
-          <div className="bg-mandy rounded-[44px] border border-solid border-[#000000] text-white font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full lg:w-auto lg:inline-flex lg:px-[30px]">
+          <div
+            className="bg-mandy rounded-[44px] border border-solid border-[#000000] text-white font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full md:w-auto md:inline-flex md:px-[30px] cursor-pointer"
+            onClick={handleActionsClick}>
             Get Started
           </div>
         </div>
@@ -271,10 +329,15 @@ const Home: NextPage<IProps> = () => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  // TODO: - get data, revalidate
+  const shelf = await getShelfById('featured-lists', {
+    limit: 4,
+  })
+
   return {
     props: {
-      pageData: {},
+      pageData: {
+        shelf,
+      },
       seo: prepareHomePageSeo(),
       layoutData: {
         header: {},
@@ -284,7 +347,7 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       },
       analytics: null,
     },
-    // revalidate: PAGE_REVALIDATE_TIME.HOME,
+    revalidate: PAGE_REVALIDATE_TIME.HOME,
   }
 }
 

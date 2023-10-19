@@ -55,7 +55,7 @@ const Header: React.FC<INavbarProps> = props => {
       iconClassName: null,
       count: null,
       onClick: null,
-      show: !isMobile && !user && appConfig.features.enableFeaturedLists,
+      show: !isMobile && appConfig.features.enableFeaturedLists,
     },
     {
       label: isMobile ? null : user?.name || '',
@@ -100,7 +100,7 @@ const Header: React.FC<INavbarProps> = props => {
   const renderTopNav = () => {
     return (
       <div>
-        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-4 lg:py-5 z-10">
+        <nav className="top-nav lg:flex fixed top-0 left-0 right-0 bg-white shadow-md px-3 lg:px-4 py-5 lg:py-5 z-10">
           <div className="container mx-auto">
             <div className="flex justify-between w-full items-center">
               <div className="flex items-center w-7/12 md:w-10/12 lg:w-auto">

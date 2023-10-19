@@ -43,7 +43,8 @@ export const getShelfPageUrl = (shelfId: string) => {
 }
 
 export const getFeaturedListsPageUrl = () => {
-  return getShelfPageUrl('featured-lists')
+  // return getShelfPageUrl('featured-lists')
+  return '/featured-lists'
 }
 
 export const getMostPopularRecommendationsPageUrl = () => {

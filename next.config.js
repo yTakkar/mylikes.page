@@ -81,6 +81,10 @@ const nextConfig = {
         source: '/most-popular-recommendations',
         destination: '/custom-list/most-popular-recommendations',
       },
+      {
+        source: '/featured-lists',
+        destination: '/shelf/featured-lists',
+      },
     ]
   },
 }

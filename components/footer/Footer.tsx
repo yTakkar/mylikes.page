@@ -71,9 +71,7 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
-            {`Welcome to MyLikes, where your passions become your power! Our platform empowers you to share your recommendations with the world. Whether you're an expert foodie, a fashion aficionado, a tech guru, or an explorer of hidden gems, MyLikes is your stage to shine.`}
-          </div>
+          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">{appConfig.global.app.description}</div>
 
           <div className="mt-4 text-typo-paragraphLight text-sm">
             Logos provided by{' '}

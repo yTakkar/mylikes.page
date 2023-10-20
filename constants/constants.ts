@@ -19,6 +19,9 @@ export const APP_LOGO = {
     `/images/logos/transparent/logo-label-inline-transparent.png`,
     ImageSourceType.ASSET
   ),
+
+  // white
+  DEFAULT_WHITE: prepareImageUrl(`/images/logos/white/logo.png`, ImageSourceType.ASSET),
 }
 
 export const LAZYIMAGE_PLACEHOLDER = prepareImageUrl('/images/lazyimage.png', ImageSourceType.ASSET)

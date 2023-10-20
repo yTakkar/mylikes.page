@@ -46,7 +46,7 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
   const title = _title || defaultSeoData.title
   const description = _description || defaultSeoData.description
 
-  const imageUrl = _imageUrl || APP_LOGO.DEFAULT
+  const imageUrl = _imageUrl || APP_LOGO.DEFAULT_WHITE
 
   const defaultKeywords = [
     appConfig.global.app.name,

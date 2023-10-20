@@ -15,6 +15,7 @@ import CoreLink from '../components/core/CoreLink'
 import { getFeaturedListsPageUrl, getProfilePageUrl } from '../utils/routes'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
+import appConfig from '../config/appConfig'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -308,7 +309,7 @@ const Home: NextPage<IProps> = props => {
             MyLikes is your stage to shine.
           </div>
           <div
-            className="bg-mandy rounded-[44px] border border-solid border-[#000000] text-white font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full md:w-auto md:inline-flex md:px-[30px] cursor-pointer"
+            className="bg-mandy rounded-[44px] border border-solid border-black text-white font-medium text-[14px] tracking-[0] leading-[14px] whitespace-nowrap text-center p-[14px] mt-8 w-full md:w-auto md:inline-flex md:px-[30px] cursor-pointer"
             onClick={handleActionsClick}>
             Get Started
           </div>
@@ -319,9 +320,13 @@ const Home: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  const shelf = await getShelfById('featured-lists', {
-    limit: 4,
-  })
+  let shelf = null
+
+  if (appConfig.features.enableFeaturedLists) {
+    shelf = await getShelfById('featured-lists', {
+      limit: 4,
+    })
+  }
 
   return {
     props: {

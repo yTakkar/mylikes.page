@@ -70,3 +70,5 @@ export const RECOMMENDATION_TYPE_DESCRIPTION_MAP = {
   [RecommendationType.MUSIC]: 'This is a music recommendation',
   [RecommendationType.OTHER]: '',
 }
+
+export const RECOMMENDATION_FALLBACK_IMAGE_URL = prepareImageUrl('/images/icons/url.svg', ImageSourceType.ASSET)

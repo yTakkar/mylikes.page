@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { IRecommendationInfo } from '../../interface/recommendation'
-import CoreImage from '../core/CoreImage'
+import CoreImage, { ImageSourceType } from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
@@ -20,6 +20,8 @@ import FeaturedLabel from '../FeaturedLabel'
 import { getRelativeTime } from '../../utils/date'
 import dayjs from 'dayjs'
 import { capitalize } from '../../utils/common'
+import { prepareImageUrl } from '../../utils/image'
+import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
@@ -84,6 +86,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   const sessionUser = isSessionUser(user, list?.owner || null)
 
   const addedAt = (recommendationInfo as IListRecommendationInfo).addedAt
+
+  const imageUrl = recommendationInfo.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL
 
   useEffect(() => {
     setNote(recommendationInfo.notes || '')
@@ -186,7 +190,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   const renderImage = () => {
     return (
       <CoreImage
-        url={recommendationInfo.imageUrl}
+        url={imageUrl}
         alt={`${recommendationInfo.title} recommendation on ${appConfig.global.app.name}`}
         className={classNames('', {
           'blur-sm': recommendationInfo.isAdult,

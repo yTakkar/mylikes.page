@@ -15,6 +15,7 @@ import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
 import ListAnalyticsCount from './ListAnalyticsCount'
+import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../../constants/constants'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -70,7 +71,7 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
           <div className="relative">
             {recommendation ? (
               <CoreImage
-                url={recommendation.imageUrl}
+                url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
                 alt={`${recommendation.title} recommendation on ${appConfig.global.app.name}`}
                 className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
               />

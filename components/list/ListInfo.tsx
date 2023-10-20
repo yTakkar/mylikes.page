@@ -7,6 +7,7 @@ import { ExclamationIcon, LockClosedIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
+import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
 
 interface IListInfoProps {
   list: IListDetail
@@ -43,7 +44,7 @@ const ListInfo: React.FC<IListInfoProps> = props => {
           recommendationsToDisplay.map((recommendation, index) => (
             <div key={index} className="relative shadow-listInfoImage mr-2 w-14">
               <CoreImage
-                url={recommendation.imageUrl}
+                url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
                 alt={recommendation.title}
                 className={classNames('', {
                   'blur-sm': recommendation.isAdult,

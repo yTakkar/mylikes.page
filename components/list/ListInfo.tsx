@@ -42,13 +42,16 @@ const ListInfo: React.FC<IListInfoProps> = props => {
           <div className="italic text-gray-600">The list is empty</div>
         ) : (
           recommendationsToDisplay.map((recommendation, index) => (
-            <div key={index} className="relative shadow-listInfoImage mr-2 w-14">
+            <div key={index} className="relative shadow-listInfoImage mr-2 w-14 h-14">
               <CoreImage
                 url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
                 alt={recommendation.title}
                 className={classNames('', {
                   'blur-sm': recommendation.isAdult,
                 })}
+                onError={e => {
+                  e.currentTarget.src = RECOMMENDATION_FALLBACK_IMAGE_URL
+                }}
               />
               {recommendation.isAdult && (
                 <Tooltip content="NSFW">

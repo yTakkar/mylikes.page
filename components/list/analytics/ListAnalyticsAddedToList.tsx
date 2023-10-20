@@ -74,6 +74,9 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
                 url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
                 alt={`${recommendation.title} recommendation on ${appConfig.global.app.name}`}
                 className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
+                onError={e => {
+                  e.currentTarget.src = RECOMMENDATION_FALLBACK_IMAGE_URL
+                }}
               />
             ) : (
               <BanIcon

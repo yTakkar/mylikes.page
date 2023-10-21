@@ -115,7 +115,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
               type={CoreButtonType.SOLID_PRIMARY}
               label="Add"
               onClick={() => handleAddToList(list)}
-              disabled={selectedListId === list.id && operationLoading}
+              disabled={operationLoading}
               loading={selectedListId === list.id && operationLoading}
             />
           </div>

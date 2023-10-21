@@ -21,6 +21,12 @@ import { getRelativeTime } from '../../utils/date'
 import dayjs from 'dayjs'
 import { capitalize } from '../../utils/common'
 import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
+import {
+  generateLogoByClearbit,
+  generateLogoByDuckDuckGo,
+  generateLogoByGoogle,
+  generateLogoByYandex,
+} from '../../utils/recommendation'
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
@@ -49,6 +55,7 @@ interface IRecommendationInfoProps {
   onRemoveFromList?: () => Promise<void>
   sponsored?: boolean
   loading?: boolean
+  disabled?: boolean
   showListName?: boolean
 }
 
@@ -67,6 +74,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     onRemoveFromList,
     sponsored = false,
     loading = false,
+    disabled = false,
     showListName = false,
   } = props
 
@@ -330,7 +338,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                   size={CoreButtonSize.SMALL}
                   type={CoreButtonType.SOLID_PRIMARY}
                   onClick={onAddToList}
-                  disabled={loading}
+                  disabled={disabled}
                   loading={loading}
                 />
               ) : null}

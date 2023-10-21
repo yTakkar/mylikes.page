@@ -104,7 +104,10 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   const hasRecommendations = listRecommendations.length > 0
 
   const refetchListDetail = async () => {
-    toggleLoading(true)
+    if (!listDetail) {
+      toggleLoading(true)
+    }
+
     const data = await getListById(listDetail.id)
     if (data) {
       setListDetail(data)
@@ -185,9 +188,10 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     }
   }
 
-  const onRemoveFromList = async (listRecommendation: IListRecommendationInfo) => {
+  const onRemoveFromList = async (index: number) => {
     try {
-      const updatedList = listRecommendations.filter(recommendation => recommendation.id !== listRecommendation.id)
+      const listRecommendation = listRecommendations[index]
+      const updatedList = [...listRecommendations].filter((_, i) => i !== index)
       await updateList(listDetail.id, {
         recommendations: updatedList,
       })
@@ -337,7 +341,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
       )
     }
 
-    const mappedRecommendations = listRecommendations.map(recommendationInfo => {
+    const mappedRecommendations = listRecommendations.map((recommendationInfo, index) => {
       return (
         <RecommendationInfo
           key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
@@ -350,7 +354,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           showAddToList={!sessionUser}
           onAddToList={() => handleAddToList(recommendationInfo)}
           showRemoveFromList={sessionUser}
-          onRemoveFromList={() => onRemoveFromList(recommendationInfo)}
+          onRemoveFromList={() => onRemoveFromList(index)}
         />
       )
     })

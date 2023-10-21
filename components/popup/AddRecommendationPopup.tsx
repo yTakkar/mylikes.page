@@ -182,16 +182,18 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             />
           ) : (
             savedRecommendations.map(recommendationInfo => (
-              <RecommendationInfo
-                key={recommendationInfo.id}
-                layout={RecommendationInfoLayoutType.INLINE}
-                source={RecommendationInfoSourceType.ADD}
-                recommendationInfo={recommendationInfo}
-                recommendationOwner={user!}
-                showAddToList={true}
-                onAddToList={() => handleAddToList(recommendationInfo)}
-                loading={selectedRecommendationId === recommendationInfo.id && operationLoading}
-              />
+              <React.Fragment key={recommendationInfo.id}>
+                <RecommendationInfo
+                  layout={RecommendationInfoLayoutType.INLINE}
+                  source={RecommendationInfoSourceType.ADD}
+                  recommendationInfo={recommendationInfo}
+                  recommendationOwner={user!}
+                  showAddToList={true}
+                  onAddToList={() => handleAddToList(recommendationInfo)}
+                  loading={selectedRecommendationId === recommendationInfo.id && operationLoading}
+                  disabled={operationLoading}
+                />
+              </React.Fragment>
             ))
           )}
         </div>

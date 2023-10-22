@@ -4,7 +4,7 @@ import CoreImage from '../core/CoreImage'
 import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
-import { AnnotationIcon, PencilAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
+import { AnnotationIcon, PencilAltIcon, PlusIcon, TrashIcon, XIcon } from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
@@ -21,12 +21,6 @@ import { getRelativeTime } from '../../utils/date'
 import dayjs from 'dayjs'
 import { capitalize } from '../../utils/common'
 import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
-import {
-  generateLogoByClearbit,
-  generateLogoByDuckDuckGo,
-  generateLogoByGoogle,
-  generateLogoByYandex,
-} from '../../utils/recommendation'
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
@@ -48,10 +42,9 @@ interface IRecommendationInfoProps {
   recommendationOwner?: IUserInfo
   list?: IListDetail
   onLinkClick?: () => void
-  showAddToList?: boolean
   onAddToList?: () => void
-  onManageClick?: () => void
-  showRemoveFromList?: boolean
+  onManageEditClick?: () => void
+  onManageDeleteClick?: () => void
   onRemoveFromList?: () => Promise<void>
   sponsored?: boolean
   loading?: boolean
@@ -67,10 +60,9 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     recommendationOwner,
     list,
     onLinkClick,
-    showAddToList = false,
     onAddToList,
-    onManageClick,
-    showRemoveFromList = false,
+    onManageDeleteClick,
+    onManageEditClick,
     onRemoveFromList,
     sponsored = false,
     loading = false,
@@ -115,7 +107,13 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
   const showCtaContainer = sponsored
     ? false
-    : [showAddToList, showRemoveFromList, source === RecommendationInfoSourceType.MANAGE].some(v => !!v)
+    : [
+        !!onAddToList,
+        !!onRemoveFromList,
+        !!onManageDeleteClick,
+        !!onManageEditClick,
+        source === RecommendationInfoSourceType.MANAGE,
+      ].some(v => !!v)
 
   const renderNote = () => {
     if (sponsored) {
@@ -250,7 +248,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <>
         &nbsp;•&nbsp;
-        <Tooltip content={dayjs(addedAt).format('lll')}>
+        <Tooltip content={`Added: ${dayjs(addedAt).format('lll')}`}>
           <span>{capitalize(`${getRelativeTime(addedAt)}`)}</span>
         </Tooltip>
       </>
@@ -261,7 +259,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <>
         &nbsp;•&nbsp;
-        <Tooltip content={dayjs(recommendationInfo.createdAt).format('lll')}>
+        <Tooltip content={`Created: ${dayjs(recommendationInfo.createdAt).format('lll')}`}>
           <span>{capitalize(`${getRelativeTime(recommendationInfo.createdAt)}`)}</span>
         </Tooltip>
       </>
@@ -331,18 +329,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               className={classNames('flex items-center justify-end mt-2', {
                 'mt-0 absolute right-1 top-1': source === RecommendationInfoSourceType.LIST && isDesktop,
               })}>
-              {showAddToList ? (
-                <CoreButton
-                  label={'Add to list'}
-                  icon={PlusIcon}
-                  size={CoreButtonSize.SMALL}
-                  type={CoreButtonType.SOLID_PRIMARY}
-                  onClick={onAddToList}
-                  disabled={disabled}
-                  loading={loading}
-                />
-              ) : null}
-              {showRemoveFromList ? (
+              {onRemoveFromList ? (
                 <Tooltip content="Remove from list">
                   <span>
                     <CoreButton
@@ -355,13 +342,35 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                   </span>
                 </Tooltip>
               ) : null}
-              {source === RecommendationInfoSourceType.MANAGE ? (
+              {onManageDeleteClick && (
+                <Tooltip content="Delete">
+                  <div
+                    className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+                    onClick={onManageDeleteClick}>
+                    <TrashIcon className="w-4 " />
+                  </div>
+                </Tooltip>
+              )}
+              {onManageEditClick && (
+                <Tooltip content="Edit">
+                  <div
+                    className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+                    onClick={onManageEditClick}>
+                    <PencilAltIcon className="w-4 " />
+                  </div>
+                </Tooltip>
+              )}
+
+              {onAddToList ? (
                 <CoreButton
-                  label={'Edit'}
-                  icon={PencilAltIcon}
+                  label={'Add to list'}
+                  icon={PlusIcon}
                   size={CoreButtonSize.SMALL}
                   type={CoreButtonType.SOLID_PRIMARY}
-                  onClick={onManageClick}
+                  onClick={onAddToList}
+                  disabled={disabled}
+                  loading={loading}
+                  className="ml-2"
                 />
               ) : null}
             </div>

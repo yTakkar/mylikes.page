@@ -343,19 +343,18 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
 
     const mappedRecommendations = listRecommendations.map((recommendationInfo, index) => {
       return (
-        <RecommendationInfo
-          key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
-          layout={RecommendationInfoLayoutType.INLINE}
-          source={RecommendationInfoSourceType.LIST}
-          recommendationInfo={recommendationInfo}
-          recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
-          list={listDetail}
-          onLinkClick={() => onLinkClick(recommendationInfo)}
-          showAddToList={!sessionUser}
-          onAddToList={() => handleAddToList(recommendationInfo)}
-          showRemoveFromList={sessionUser}
-          onRemoveFromList={() => onRemoveFromList(index)}
-        />
+        <div key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}>
+          <RecommendationInfo
+            layout={RecommendationInfoLayoutType.INLINE}
+            source={RecommendationInfoSourceType.LIST}
+            recommendationInfo={recommendationInfo}
+            recommendationOwner={profileInfoMap[recommendationInfo.ownerEmail]}
+            list={listDetail}
+            onLinkClick={() => onLinkClick(recommendationInfo)}
+            onAddToList={!sessionUser ? () => handleAddToList(recommendationInfo) : undefined}
+            onRemoveFromList={sessionUser ? () => onRemoveFromList(index) : undefined}
+          />
+        </div>
       )
     })
 

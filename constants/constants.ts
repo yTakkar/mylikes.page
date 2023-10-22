@@ -24,6 +24,14 @@ export const APP_LOGO = {
   DEFAULT_WHITE: prepareImageUrl(`/images/logos/white/logo.png`, ImageSourceType.ASSET),
 }
 
+export const SOCIAL_SHARE_BANNERS: Record<number, string> = {
+  1: prepareImageUrl(`/images/social-share-banners/share-banner-01.png`, ImageSourceType.ASSET),
+  2: prepareImageUrl(`/images/social-share-banners/share-banner-02.png`, ImageSourceType.ASSET),
+  3: prepareImageUrl(`/images/social-share-banners/share-banner-03.png`, ImageSourceType.ASSET),
+  4: prepareImageUrl(`/images/social-share-banners/share-banner-04.png`, ImageSourceType.ASSET),
+  5: prepareImageUrl(`/images/social-share-banners/share-banner-05.png`, ImageSourceType.ASSET),
+}
+
 export const LAZYIMAGE_PLACEHOLDER = prepareImageUrl('/images/lazyimage.png', ImageSourceType.ASSET)
 export const LAZYIMAGE_PLACEHOLDER_TRANSPARENT = prepareImageUrl(
   '/images/lazyimage-transparent.png',

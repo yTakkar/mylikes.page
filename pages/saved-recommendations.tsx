@@ -7,9 +7,9 @@ import { IRecommendationInfo } from '../interface/recommendation'
 import { DesktopView, MobileView } from '../components/ResponsiveViews'
 import Snackbar from '../components/header/Snackbar'
 import BackTitle from '../components/BackTitle'
-import { listSavedRecommendationsByEmail } from '../firebase/store/saved-recommendations'
+import { deleteSavedRecommendationById, listSavedRecommendationsByEmail } from '../firebase/store/saved-recommendations'
 import ApplicationContext from '../components/ApplicationContext'
-import { toastError } from '../components/Toaster'
+import { toastError, toastSuccess } from '../components/Toaster'
 import Loader, { LoaderType } from '../components/loader/Loader'
 import RecommendationInfo, {
   RecommendationInfoLayoutType,
@@ -19,6 +19,8 @@ import { PopupType } from '../interface/popup'
 import NoContent from '../components/NoContent'
 import { PlusIcon } from '@heroicons/react/solid'
 import appAnalytics from '../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../constants/analytics'
+import Alert from '../components/modal/Alert'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -26,13 +28,20 @@ interface IProps extends IGlobalLayoutProps {
 
 const Home: NextPage<IProps> = () => {
   const [recommendations, setRecommendations] = useState<IRecommendationInfo[]>([])
+
   const [loading, toggleLoading] = useState(false)
+
+  const [recommendationToDelete, setRecommendationToDelete] = useState<IRecommendationInfo | null>(null)
+  const [deleteLoading, toggleDeleteLoading] = useState(false)
 
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
 
   const fetchRecommendations = () => {
-    toggleLoading(true)
+    if (!recommendations?.length) {
+      toggleLoading(true)
+    }
+
     listSavedRecommendationsByEmail(user!.email)
       .then(recommendations => {
         setRecommendations(recommendations.sort((a, b) => b.createdAt - a.createdAt))
@@ -52,13 +61,40 @@ const Home: NextPage<IProps> = () => {
     }
   }, [user])
 
-  const handleManageClick = (recommendation: IRecommendationInfo) => {
+  const handleManageEditClick = (recommendation: IRecommendationInfo) => {
     methods.togglePopup(PopupType.EDIT_RECOMMENDATION, {
       recommendation,
       onSuccess: () => {
         fetchRecommendations()
       },
     })
+  }
+
+  const handleDelete = async () => {
+    if (deleteLoading) {
+      return
+    }
+
+    toggleDeleteLoading(true)
+    try {
+      await deleteSavedRecommendationById(recommendationToDelete!.id)
+      fetchRecommendations()
+      toastSuccess('Recommendation deleted!')
+      setRecommendationToDelete(null)
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.SAVED_RECOMMENDATION_REMOVE,
+        extra: {
+          id: recommendationToDelete!.id,
+          url: recommendationToDelete!.url,
+          ownerEmail: user!.email,
+        },
+      })
+    } catch (e) {
+      appAnalytics.captureException(e)
+      console.error('list:delete:error', e)
+      toastError('Failed to delete recommendation!')
+    }
+    toggleDeleteLoading(false)
   }
 
   const handleNewRecommendation = () => {
@@ -94,16 +130,22 @@ const Home: NextPage<IProps> = () => {
         {recommendations.length === 0 ? (
           <NoContent message="You have no saved recommendations." imageClassName="w-full lg:w-[600px]" />
         ) : (
-          recommendations.map(recommendationInfo => {
+          recommendations.map((recommendationInfo, index) => {
+            const isLast = index === recommendations.length - 1
             return (
-              <RecommendationInfo
-                key={`${recommendationInfo.id}`}
-                layout={RecommendationInfoLayoutType.INLINE}
-                source={RecommendationInfoSourceType.MANAGE}
-                recommendationInfo={recommendationInfo}
-                recommendationOwner={user!}
-                onManageClick={() => handleManageClick(recommendationInfo)}
-              />
+              <div key={`${recommendationInfo.id}`}>
+                <RecommendationInfo
+                  layout={RecommendationInfoLayoutType.INLINE}
+                  source={RecommendationInfoSourceType.MANAGE}
+                  recommendationInfo={recommendationInfo}
+                  recommendationOwner={user!}
+                  onManageEditClick={() => handleManageEditClick(recommendationInfo)}
+                  onManageDeleteClick={() => {
+                    setRecommendationToDelete(recommendationInfo)
+                  }}
+                />
+                {!isLast && <div className="w-full h-[1px] bg-gallery" />}
+              </div>
             )
           })
         )}
@@ -126,6 +168,27 @@ const Home: NextPage<IProps> = () => {
 
         {renderContent()}
       </PageContainer>
+
+      {recommendationToDelete ? (
+        <Alert
+          dismissModal={() => setRecommendationToDelete(null)}
+          title="Delete Confirmation"
+          subTitle="Are you sure you want to do this? You cannot undo this."
+          cta={{
+            primary: {
+              show: true,
+              label: 'Delete',
+              loading: deleteLoading,
+              onClick: handleDelete,
+            },
+            secondary: {
+              show: true,
+              label: 'Cancel',
+              onClick: () => setRecommendationToDelete(null),
+            },
+          }}
+        />
+      ) : null}
     </div>
   )
 }

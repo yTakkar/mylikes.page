@@ -1,11 +1,11 @@
 export enum RecommendationType {
-  PRODUCT = 'PRODUCT',
-  BLOG = 'BLOG',
-  VIDEO = 'VIDEO',
-  MUSIC = 'MUSIC',
+  PRODUCT = 'PRODUCT', // blue #356cf4
+  BLOG = 'BLOG', // black #191919
+  VIDEO = 'VIDEO', // red #FF0000
+  AUDIO = 'AUDIO', // green #1CD670
   // BOOK = 'BOOK',
   // PODCAST = 'PODCAST',
-  OTHER = 'OTHER',
+  OTHER = 'OTHER', // gray #eaeaea
 }
 
 export interface IRecommendationInfo {

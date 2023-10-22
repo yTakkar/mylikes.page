@@ -4,20 +4,15 @@ import classNames from 'classnames'
 import { REGEX_MAP } from '../../constants/constants'
 import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
-import { CheckIcon, TrashIcon } from '@heroicons/react/outline'
+import { CheckIcon } from '@heroicons/react/outline'
 import { handleValidation } from '../../utils/form'
 import CoreCheckbox from '../core/CoreCheckbox'
-import {
-  addSavedRecommendation,
-  deleteSavedRecommendationById,
-  updateSavedRecommendation,
-} from '../../firebase/store/saved-recommendations'
+import { addSavedRecommendation, updateSavedRecommendation } from '../../firebase/store/saved-recommendations'
 import { nanoid } from 'nanoid'
 import ApplicationContext from '../ApplicationContext'
 import { toastError, toastSuccess } from '../Toaster'
 import { generateRecommendationImageUrl } from '../../utils/recommendation'
 import { IRecommendationInfo } from '../../interface/recommendation'
-import Alert from '../modal/Alert'
 import CoreLink from '../core/CoreLink'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
@@ -55,9 +50,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   const [fields, setFields] = useState<Record<FieldKeyType, any>>(initialFields)
   const [fieldsWithError, setFieldsWithError] = useState<Record<FieldKeyType, boolean>>(defaultFieldsWithError)
   const [loading, toggleLoading] = useState(false)
-
-  const [showDeleteAlert, toggleDeleteAlert] = useState(false)
-  const [deleteLoading, toggleDeleteLoading] = useState(false)
 
   const formRef = useRef<HTMLDivElement | null>(null)
 
@@ -145,32 +137,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     })
     onSuccess?.()
     toastSuccess('Updated!')
-  }
-
-  const handleDelete = async () => {
-    if (deleteLoading) {
-      return null
-    }
-
-    toggleDeleteLoading(true)
-    try {
-      await deleteSavedRecommendationById(recommendation!.id)
-      toastSuccess('Recommendation deleted!')
-      appAnalytics.sendEvent({
-        action: AnalyticsEventType.SAVED_RECOMMENDATION_REMOVE,
-        extra: {
-          id: recommendation!.id,
-          url: recommendation!.url,
-          ownerEmail: user!.email,
-        },
-      })
-      onSuccess?.()
-    } catch (e) {
-      appAnalytics.captureException(e)
-      console.error('list:delete:error', e)
-      toastError('Failed to delete recommendation!')
-    }
-    toggleDeleteLoading(false)
   }
 
   const handleSubmit = () => {
@@ -308,41 +274,8 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             icon={CheckIcon}
             onClick={handleSubmit}
           />
-          {isEditable && (
-            <CoreButton
-              label="Delete"
-              size={CoreButtonSize.MEDIUM}
-              type={CoreButtonType.OUTLINE_SECONDARY}
-              onClick={() => {
-                toggleDeleteAlert(true)
-              }}
-              icon={TrashIcon}
-              className="ml-1"
-            />
-          )}
         </div>
       </div>
-
-      {showDeleteAlert ? (
-        <Alert
-          dismissModal={() => toggleDeleteAlert(false)}
-          title="Delete Confirmation"
-          subTitle="Are you sure you want to do this? You cannot undo this."
-          cta={{
-            primary: {
-              show: true,
-              label: 'Delete',
-              loading: deleteLoading,
-              onClick: handleDelete,
-            },
-            secondary: {
-              show: true,
-              label: 'Cancel',
-              onClick: () => toggleDeleteAlert(false),
-            },
-          }}
-        />
-      ) : null}
     </div>
   )
 }

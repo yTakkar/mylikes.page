@@ -11,6 +11,10 @@ export const getArrayChunks = <T>(array: T[], size: number) => {
   )
 }
 
+export const getRandomArrayItem = <T>(array: T[]): T => {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
 export const isArray = (value: any): boolean => {
   return value !== null && Array.isArray(value)
 }

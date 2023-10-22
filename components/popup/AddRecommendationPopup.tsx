@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
-import { ArrowLeftIcon, CogIcon, InformationCircleIcon, PlusIcon } from '@heroicons/react/outline'
+import { ArrowLeftIcon, CogIcon, ExternalLinkIcon, InformationCircleIcon, PlusIcon } from '@heroicons/react/outline'
 import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
@@ -11,7 +11,10 @@ import AddRecommendationForm from '../recommendation/AddRecommendationForm'
 import NoContent from '../NoContent'
 import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IRecommendationInfo } from '../../interface/recommendation'
-import { listSavedRecommendationsByEmail } from '../../firebase/store/saved-recommendations'
+import {
+  deleteSavedRecommendationById,
+  listSavedRecommendationsByEmail,
+} from '../../firebase/store/saved-recommendations'
 import ApplicationContext from '../ApplicationContext'
 import Loader, { LoaderType } from '../loader/Loader'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
@@ -23,6 +26,7 @@ import { revalidateUrls } from '../../utils/revalidate'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import Tooltip from '../Tooltip'
+import Alert from '../modal/Alert'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -41,6 +45,11 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   const [selectedRecommendationId, setSelectedRecommendationId] = useState<string | null>(null)
   const [operationLoading, toggleOperationLoading] = useState(false)
 
+  const [recommendationToDelete, setRecommendationToDelete] = useState<IRecommendationInfo | null>(null)
+  const [deleteLoading, toggleDeleteLoading] = useState(false)
+
+  const [recommendationToEdit, setRecommendationToEdit] = useState<IRecommendationInfo | null>(null)
+
   const containerRef = useRef<HTMLDivElement>(null)
 
   const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
@@ -48,7 +57,10 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
   const fetchRecommendations = async () => {
     try {
-      toggleLoading(true)
+      if (!savedRecommendations?.length) {
+        toggleLoading(true)
+      }
+
       const recommendations = await listSavedRecommendationsByEmail(user!.email)
       const sortedRecommendations = recommendations.sort((a, b) => {
         return b.createdAt - a.createdAt
@@ -86,6 +98,33 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     if (onSuccess) {
       onSuccess()
     }
+  }
+
+  const handleDelete = async () => {
+    if (deleteLoading) {
+      return
+    }
+
+    toggleDeleteLoading(true)
+    try {
+      await deleteSavedRecommendationById(recommendationToDelete!.id)
+      fetchRecommendations()
+      toastSuccess('Recommendation deleted!')
+      setRecommendationToDelete(null)
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.SAVED_RECOMMENDATION_REMOVE,
+        extra: {
+          id: recommendationToDelete!.id,
+          url: recommendationToDelete!.url,
+          ownerEmail: user!.email,
+        },
+      })
+    } catch (e) {
+      appAnalytics.captureException(e)
+      console.error('list:delete:error', e)
+      toastError('Failed to delete recommendation!')
+    }
+    toggleDeleteLoading(false)
   }
 
   const handleAddToList = (recommendation: IRecommendationInfo) => {
@@ -140,10 +179,13 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             url={getSavedRecommendationsPageUrl()}
             onClick={onClose}
             className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded">
-            <div className="flex">
-              <CogIcon className="w-4 mr-1" />
-              Manage
-            </div>
+            <Tooltip content="Manage saved recommendations">
+              <div className="flex">
+                <CogIcon className="w-4 mr-1" />
+                Manage
+                <ExternalLinkIcon className="w-4 ml-1" />
+              </div>
+            </Tooltip>
           </CoreLink>
           <div
             className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
@@ -181,20 +223,28 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
               ]}
             />
           ) : (
-            savedRecommendations.map(recommendationInfo => (
-              <React.Fragment key={recommendationInfo.id}>
-                <RecommendationInfo
-                  layout={RecommendationInfoLayoutType.INLINE}
-                  source={RecommendationInfoSourceType.ADD}
-                  recommendationInfo={recommendationInfo}
-                  recommendationOwner={user!}
-                  showAddToList={true}
-                  onAddToList={() => handleAddToList(recommendationInfo)}
-                  loading={selectedRecommendationId === recommendationInfo.id && operationLoading}
-                  disabled={operationLoading}
-                />
-              </React.Fragment>
-            ))
+            savedRecommendations.map((recommendationInfo, index) => {
+              const isLast = index === savedRecommendations.length - 1
+              return (
+                <div key={recommendationInfo.id}>
+                  <RecommendationInfo
+                    layout={RecommendationInfoLayoutType.INLINE}
+                    source={RecommendationInfoSourceType.ADD}
+                    recommendationInfo={recommendationInfo}
+                    recommendationOwner={user!}
+                    onAddToList={() => handleAddToList(recommendationInfo)}
+                    loading={selectedRecommendationId === recommendationInfo.id && operationLoading}
+                    disabled={operationLoading}
+                    onManageDeleteClick={() => setRecommendationToDelete(recommendationInfo)}
+                    onManageEditClick={() => {
+                      setRecommendationToEdit(recommendationInfo)
+                      setPanel('add')
+                    }}
+                  />
+                  {!isLast && <div className="w-full h-[1px] bg-gallery" />}
+                </div>
+              )
+            })
           )}
         </div>
       </div>
@@ -208,6 +258,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
           shown: panel === 'add',
         })}>
         <AddRecommendationForm
+          recommendation={recommendationToEdit || undefined}
           onSuccess={() => {
             setPanel('saved')
             fetchRecommendations()
@@ -218,28 +269,59 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   }
 
   return (
-    <FullWidthModal
-      modal={{
-        dismissModal: onClose,
-        title: (
-          <div className="flex items-center">
-            {panel === 'add' && <ArrowLeftIcon className="w-5 mr-3 cursor-pointer" onClick={() => setPanel('saved')} />}
-            {panel === 'saved' ? 'Select from saved recommendations' : 'Add a new recommendation'}
-            {/* <Tooltip content="Save time and avoid duplicates! Select recommendations from your saved list to reuse them quickly.">
-              <span>
-                <QuestionMarkCircleIcon className="w-5 ml-1" />
-              </span>
-            </Tooltip> */}
-          </div>
-        ),
-        disableOutsideClick: true,
-        showCrossIcon: panel === 'saved',
-      }}>
-      <div className="addRecommendation" ref={containerRef}>
-        {renderSavedRecommendations()}
-        {renderAddRecommendation()}
-      </div>
-    </FullWidthModal>
+    <>
+      <FullWidthModal
+        modal={{
+          dismissModal: onClose,
+          title: (
+            <div className="flex items-center">
+              {panel === 'add' && (
+                <ArrowLeftIcon className="w-5 mr-3 cursor-pointer" onClick={() => setPanel('saved')} />
+              )}
+              {panel === 'saved'
+                ? 'Select from saved recommendations'
+                : recommendationToEdit
+                ? 'Edit saved recommendation'
+                : 'Add a new recommendation'}
+              {savedRecommendations.length > 0 && (
+                <Tooltip content="We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly with a single click.">
+                  <span>
+                    <InformationCircleIcon className="w-5 ml-1" />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
+          ),
+          disableOutsideClick: true,
+          showCrossIcon: panel === 'saved',
+        }}>
+        <div className="addRecommendation" ref={containerRef}>
+          {renderSavedRecommendations()}
+          {renderAddRecommendation()}
+        </div>
+      </FullWidthModal>
+
+      {recommendationToDelete ? (
+        <Alert
+          dismissModal={() => setRecommendationToDelete(null)}
+          title="Delete Confirmation"
+          subTitle="Are you sure you want to do this? You cannot undo this."
+          cta={{
+            primary: {
+              show: true,
+              label: 'Delete',
+              loading: deleteLoading,
+              onClick: handleDelete,
+            },
+            secondary: {
+              show: true,
+              label: 'Cancel',
+              onClick: () => setRecommendationToDelete(null),
+            },
+          }}
+        />
+      ) : null}
+    </>
   )
 }
 

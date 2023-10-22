@@ -115,7 +115,9 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         action: AnalyticsEventType.SAVED_RECOMMENDATION_REMOVE,
         extra: {
           id: recommendationToDelete!.id,
+          title: recommendationToDelete!.title,
           url: recommendationToDelete!.url,
+          type: recommendationToDelete!.type,
           ownerEmail: user!.email,
         },
       })
@@ -152,6 +154,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             recommendationId: recommendation.id,
             url: recommendation.url,
             title: recommendation.title,
+            type: recommendation.type,
           },
         })
         handleOnSuccess()

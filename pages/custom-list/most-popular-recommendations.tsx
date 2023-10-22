@@ -49,6 +49,7 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
       recommendationId: popularRecommendation.listRecommendation?.id,
       url: popularRecommendation.listRecommendation?.url,
       title: popularRecommendation.listRecommendation?.title,
+      type: popularRecommendation.listRecommendation?.type,
     }
     appAnalytics.sendEvent({
       action: AnalyticsEventType.RECOMMENDATION_VISIT,

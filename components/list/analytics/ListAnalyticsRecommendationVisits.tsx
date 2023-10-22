@@ -3,7 +3,6 @@ import { IListDetail, IListRecommendationInfo } from '../../../interface/list'
 import { IRecommendationClickInfo } from '../../../interface/recommendationClickTracking'
 import { getRecommendationClickTrackingsByList } from '../../../firebase/store/recommendationClickTracking'
 import Loader, { LoaderType } from '../../loader/Loader'
-import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { pluralize } from '../../../utils/common'
@@ -13,7 +12,7 @@ import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
 import ListAnalyticsCount from './ListAnalyticsCount'
-import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../../constants/constants'
+import RecommendationTypeIcon from '../../recommendation/RecommendationTypeIcon'
 
 interface IListAnalyticsRecommendationVisitsProps {
   listDetail: IListDetail
@@ -82,17 +81,12 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
         <div className="flex items-start mb-4 relative">
           <div className="relative">
             {listRecommendation ? (
-              <CoreImage
-                url={listRecommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
-                alt={`${listRecommendation.title} recommendation on ${appConfig.global.app.name}`}
-                className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
-                onError={e => {
-                  e.currentTarget.src = RECOMMENDATION_FALLBACK_IMAGE_URL
-                }}
-              />
+              <div className="w-10 h-10">
+                <RecommendationTypeIcon recommendation={listRecommendation} source="recommendation" />
+              </div>
             ) : (
               <BanIcon
-                className={classNames('w-11 h-11 min-h-11 min-w-11', {
+                className={classNames('w-10 h-10 min-h-10 min-w-10', {
                   'text-gray-600': !listRecommendation,
                 })}
               />

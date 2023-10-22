@@ -73,14 +73,6 @@ const Footer: React.FC<IFooterProps> = () => {
 
           <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">{appConfig.global.app.description}</div>
 
-          <div className="mt-4 text-typo-paragraphLight text-sm">
-            Logos provided by{' '}
-            <CoreLink url="https://clearbit.com" isExternal className="underline">
-              Clearbit
-            </CoreLink>
-            .
-          </div>
-
           {appConfig.footer.copyrightText ? (
             <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
               <EscapeHTML html={appConfig.footer.copyrightText} element="span" />

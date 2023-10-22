@@ -70,16 +70,9 @@ export const RECOMMENDATION_TYPE_LABEL_MAP = {
   [RecommendationType.PRODUCT]: 'Online Product',
   [RecommendationType.BLOG]: 'Blog',
   [RecommendationType.VIDEO]: 'Video',
-  [RecommendationType.MUSIC]: 'Music',
+  [RecommendationType.AUDIO]: 'Audio',
+  [RecommendationType.IMAGE]: 'Image',
   [RecommendationType.OTHER]: 'Other',
-}
-
-export const RECOMMENDATION_TYPE_DESCRIPTION_MAP = {
-  [RecommendationType.PRODUCT]: 'This is an online product recommendation',
-  [RecommendationType.BLOG]: 'This is a blog recommendation',
-  [RecommendationType.VIDEO]: 'This is a video recommendation',
-  [RecommendationType.MUSIC]: 'This is a music recommendation',
-  [RecommendationType.OTHER]: '',
 }
 
 export const RECOMMENDATION_FALLBACK_IMAGE_URL = prepareImageUrl('/images/icons/url.svg', ImageSourceType.ASSET)

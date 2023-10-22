@@ -1,11 +1,13 @@
 export enum RecommendationType {
-  PRODUCT = 'PRODUCT', // blue #356cf4
-  BLOG = 'BLOG', // black #191919
-  VIDEO = 'VIDEO', // red #FF0000
-  AUDIO = 'AUDIO', // green #1CD670
+  PRODUCT = 'PRODUCT',
+  BLOG = 'BLOG',
+  VIDEO = 'VIDEO',
+  AUDIO = 'AUDIO',
+  IMAGE = 'IMAGE',
+  // GAME = 'GAME',
   // BOOK = 'BOOK',
   // PODCAST = 'PODCAST',
-  OTHER = 'OTHER', // gray #eaeaea
+  OTHER = 'OTHER',
 }
 
 export interface IRecommendationInfo {
@@ -16,5 +18,6 @@ export interface IRecommendationInfo {
   isAdult: boolean
   createdAt: number // date mills
   notes: string | null
+  type: RecommendationType
   ownerEmail: string
 }

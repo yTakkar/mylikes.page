@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { IRecommendationInfo } from '../../interface/recommendation'
-import CoreImage from '../core/CoreImage'
-import appConfig from '../../config/appConfig'
 import QuotesWrapper from '../QuotesWrapper'
 import CoreLink from '../core/CoreLink'
-import { AnnotationIcon, PencilAltIcon, PlusIcon, TrashIcon, XIcon } from '@heroicons/react/outline'
+import {
+  DocumentTextIcon,
+  GlobeAltIcon,
+  PencilAltIcon,
+  PlusIcon,
+  TrashIcon,
+  UserCircleIcon,
+  XIcon,
+} from '@heroicons/react/outline'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IUserInfo } from '../../interface/user'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
@@ -15,12 +21,16 @@ import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import classNames from 'classnames'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
-import { ExclamationIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
 import { getRelativeTime } from '../../utils/date'
 import dayjs from 'dayjs'
 import { capitalize } from '../../utils/common'
+import { AnnotationIcon } from '@heroicons/react/solid'
+import URLParse from 'url-parse'
+import CoreImage from '../core/CoreImage'
 import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
+import appConfig from '../../config/appConfig'
+import RecommendationTypeIcon from './RecommendationTypeIcon'
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
@@ -83,6 +93,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   const [removeLoading, toggleRemoveLoading] = useState(false)
 
   const sessionUser = isSessionUser(user, list?.owner || null)
+
+  const parsedUrl = URLParse(recommendationInfo.url, false)
 
   const addedAt = (recommendationInfo as IListRecommendationInfo).addedAt
 
@@ -161,7 +173,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       if (sessionUser) {
         return (
           <div
-            className="text-typo-paragraphLight inline-flex items-center border-b cursor-pointer"
+            className="text-typo-paragraphLight inline-flex items-center border-b cursor-pointer text-sm"
             onClick={() => setAddNote(true)}>
             <AnnotationIcon className="w-4 mr-1" />
             <span className="">Add a note</span>
@@ -173,24 +185,12 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
   }
 
-  // const renderTypeIcon = () => {
-  //   const className = 'w-4'
-  //   if (recommendationInfo.type === RecommendationType.BLOG) {
-  //     return <DocumentTextIcon className={className} />
-  //   }
-  //   if (recommendationInfo.type === RecommendationType.MUSIC) {
-  //     return <MusicNoteIcon className={className} />
-  //   }
-  //   if (recommendationInfo.type === RecommendationType.VIDEO) {
-  //     return <VideoCameraIcon className={className} />
-  //   }
-  //   if (recommendationInfo.type === RecommendationType.PRODUCT) {
-  //     return <ShoppingBagIcon className={className} />
-  //   }
-  //   return null
-  // }
+  const renderTypeIcon = () => {
+    return <RecommendationTypeIcon recommendation={recommendationInfo} source="recommendation" />
+  }
 
-  const renderImage = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _renderImage = () => {
     return (
       <CoreImage
         url={recommendationInfo.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
@@ -210,16 +210,18 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       return null
     }
 
+    const sameUser = isSessionUser(user, recommendationOwner)
+
     return (
-      <span>
-        by{' '}
+      <span className="flex items-center">
+        <UserCircleIcon className="w-[14px] mr-[2px]" />
         <CoreLink
           url={source === RecommendationInfoSourceType.LIST ? getProfilePageUrl(recommendationOwner!.username) : null}
           className={classNames('text-typo-paragraphLight text-sm', {
             underline: source === RecommendationInfoSourceType.LIST,
             'cursor-auto': source !== RecommendationInfoSourceType.LIST,
           })}>
-          {recommendationOwner!.name}
+          {recommendationOwner!.name} {sameUser ? '(You)' : null}
         </CoreLink>
       </span>
     )
@@ -231,8 +233,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
 
     return (
-      <span>
-        From{' '}
+      <span className="flex items-center">
+        <DocumentTextIcon className="w-[14px] mr-[2px]" />
         <CoreLink
           url={getListPageUrl(list!.id)}
           className={classNames('text-typo-paragraphLight text-sm', {
@@ -244,7 +246,20 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     )
   }
 
-  const renderAddedDate = () => {
+  const renderDomain = () => {
+    return (
+      <>
+        &nbsp;•&nbsp;
+        <span className="flex items-center">
+          <GlobeAltIcon className="w-[14px] mr-[2px]" />
+          <span>{`${parsedUrl.hostname}`.replace('www.', '')}</span>
+        </span>
+      </>
+    )
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _renderAddedDate = () => {
     return (
       <>
         &nbsp;•&nbsp;
@@ -255,7 +270,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     )
   }
 
-  const renderCreatedDate = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _renderCreatedDate = () => {
     return (
       <>
         &nbsp;•&nbsp;
@@ -269,26 +285,26 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   return (
     <>
       <div
-        className={classNames('flex items-start py-3 relative ', {
+        className={classNames('flex py-3 relative ', {
           // 'bg-denim': sponsored, // needed?
         })}>
-        <div className="relative shadow-listInfoImage w-20 h-20 min-h-20 min-w-20">
+        <div className="relative w-10 h-10 top-1">
           {source === RecommendationInfoSourceType.LIST ? (
             <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
-              {renderImage()}
+              {renderTypeIcon()}
             </CoreLink>
           ) : (
-            renderImage()
+            renderTypeIcon()
           )}
           {recommendationInfo.isAdult && (
-            <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
-              <ExclamationIcon className="w-4 mr-1 font-medium" /> <span className="text-xs">NSFW</span>
+            <div className="flex items-center relative justify-center bg-clementine text-white rounded p-[2px] px-1 mt-1 font-semibold text-xxs">
+              <span>NSFW</span>
             </div>
           )}
         </div>
         <div className="ml-3 flex-grow">
           <div
-            className={classNames({
+            className={classNames('text-lg', {
               'block max-w-[87%]': source === RecommendationInfoSourceType.LIST && isDesktop,
             })}>
             {source === RecommendationInfoSourceType.ADD ? (
@@ -302,18 +318,11 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
 
           <div className="text-typo-paragraphLight text-sm flex items-center">
             {showListName ? renderListName() : renderOwnerName()}
-            {/* {recommendationInfo.type !== RecommendationType.OTHER && (
-              <>
-                &nbsp;•&nbsp;
-                <Tooltip content={RECOMMENDATION_TYPE_DESCRIPTION_MAP[recommendationInfo.type]}>
-                  <span>{renderTypeIcon()}</span>
-                </Tooltip>
-              </>
-            )} */}
-            {addedAt && renderAddedDate()}
+            {/* {addedAt && renderAddedDate()}
             {source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE
               ? renderCreatedDate()
-              : null}
+              : null} */}
+            {renderDomain()}
           </div>
 
           {sponsored && (

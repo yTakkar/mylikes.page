@@ -4,7 +4,6 @@ import { IAddToListTrackingInfo } from '../../../interface/addToListTracking'
 import { getAddToListTrackingsByList } from '../../../firebase/store/addToListTracking'
 import Loader, { LoaderType } from '../../loader/Loader'
 import { BanIcon } from '@heroicons/react/outline'
-import CoreImage from '../../core/CoreImage'
 import classNames from 'classnames'
 import appConfig from '../../../config/appConfig'
 import { getRelativeTime } from '../../../utils/date'
@@ -15,7 +14,7 @@ import appAnalytics from '../../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../../constants/analytics'
 import { toastError } from '../../Toaster'
 import ListAnalyticsCount from './ListAnalyticsCount'
-import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../../constants/constants'
+import RecommendationTypeIcon from '../../recommendation/RecommendationTypeIcon'
 
 interface IListAnalyticsAddedToListProps {
   listDetail: IListDetail
@@ -70,17 +69,12 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
         <div className="flex items-start mb-4 relative">
           <div className="relative">
             {recommendation ? (
-              <CoreImage
-                url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
-                alt={`${recommendation.title} recommendation on ${appConfig.global.app.name}`}
-                className={classNames('w-11 h-11 min-h-11 min-w-11 shadow-listInfoImage', {})}
-                onError={e => {
-                  e.currentTarget.src = RECOMMENDATION_FALLBACK_IMAGE_URL
-                }}
-              />
+              <div className="w-10 h-10">
+                <RecommendationTypeIcon recommendation={recommendation} source="recommendation" />
+              </div>
             ) : (
               <BanIcon
-                className={classNames('w-11 h-11 min-h-11 min-w-11', {
+                className={classNames('w-10 h-10 min-h-10 min-w-10', {
                   'text-gray-600': !recommendation,
                 })}
               />

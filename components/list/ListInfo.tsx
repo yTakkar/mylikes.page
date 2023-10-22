@@ -1,13 +1,11 @@
 import React from 'react'
 import { IListDetail, ListVisibilityType } from '../../interface/list'
-import CoreImage from '../core/CoreImage'
 import CoreLink from '../core/CoreLink'
 import { getListPageUrl } from '../../utils/routes'
-import { ExclamationIcon, LockClosedIcon } from '@heroicons/react/solid'
+import { LockClosedIcon } from '@heroicons/react/solid'
 import FeaturedLabel from '../FeaturedLabel'
 import classNames from 'classnames'
-import Tooltip from '../Tooltip'
-import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
+import RecommendationTypeIcon from '../recommendation/RecommendationTypeIcon'
 
 interface IListInfoProps {
   list: IListDetail
@@ -42,24 +40,8 @@ const ListInfo: React.FC<IListInfoProps> = props => {
           <div className="italic text-gray-600">The list is empty</div>
         ) : (
           recommendationsToDisplay.map((recommendation, index) => (
-            <div key={index} className="relative shadow-listInfoImage mr-2 w-14 h-14">
-              <CoreImage
-                url={recommendation.imageUrl || RECOMMENDATION_FALLBACK_IMAGE_URL}
-                alt={recommendation.title}
-                className={classNames('', {
-                  'blur-sm': recommendation.isAdult,
-                })}
-                onError={e => {
-                  e.currentTarget.src = RECOMMENDATION_FALLBACK_IMAGE_URL
-                }}
-              />
-              {recommendation.isAdult && (
-                <Tooltip content="NSFW">
-                  <div className="flex items-center absolute justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-clementine text-white p-1 rounded">
-                    <ExclamationIcon className="w-4 font-semibold" />
-                  </div>
-                </Tooltip>
-              )}
+            <div key={index} className="relative mr-2 w-14 h-14">
+              <RecommendationTypeIcon recommendation={recommendation} source="list" />
             </div>
           ))
         )}

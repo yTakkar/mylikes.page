@@ -35,7 +35,7 @@ const RecommendationTypeIcon: React.FC<IProps> = props => {
     [RecommendationType.VIDEO]: <PlayIcon className={classNames(iconPadding, 'text-white')} />,
     [RecommendationType.AUDIO]: <VolumeUpIcon className={classNames(iconPadding, 'text-white')} />,
     [RecommendationType.IMAGE]: <PhotographIcon className={classNames(iconPadding, 'text-white')} />,
-    [RecommendationType.OTHER]: <LinkIcon className={classNames(iconPadding)} />,
+    [RecommendationType.OTHER]: <LinkIcon className={classNames(iconPadding, '')} />,
   }
 
   const bg = TYPE_COLOR_MAP[recommendation.type] || TYPE_COLOR_MAP[RecommendationType.OTHER]

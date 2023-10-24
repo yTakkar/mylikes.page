@@ -288,7 +288,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
         className={classNames('flex py-3 relative ', {
           // 'bg-denim': sponsored, // needed?
         })}>
-        <div className="relative w-10 h-10 top-1">
+        <div className="relative w-10 h-10 min-w-10 min-h-10 top-1">
           {source === RecommendationInfoSourceType.LIST ? (
             <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
               {renderTypeIcon()}
@@ -304,7 +304,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
         </div>
         <div className="ml-3 flex-grow">
           <div
-            className={classNames('text-lg', {
+            className={classNames('text-base md:text-lg md:leading-6', {
               'block max-w-[87%]': source === RecommendationInfoSourceType.LIST && isDesktop,
             })}>
             {source === RecommendationInfoSourceType.ADD ? (

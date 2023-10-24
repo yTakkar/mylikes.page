@@ -40,7 +40,7 @@ const ListInfo: React.FC<IListInfoProps> = props => {
           <div className="italic text-gray-600">The list is empty</div>
         ) : (
           recommendationsToDisplay.map((recommendation, index) => (
-            <div key={index} className="relative mr-2 w-14 h-14">
+            <div key={index} className="relative mr-2 w-14 h-14 min-w-14 min-h-14">
               <RecommendationTypeIcon recommendation={recommendation} source="list" />
             </div>
           ))

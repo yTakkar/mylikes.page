@@ -22,6 +22,7 @@ import {
   getHomePageUrl,
   getMostPopularRecommendationsPageUrl,
   getPrivacyPageUrl,
+  getProfilePageUrl,
   getSavedRecommendationsPageUrl,
   getTnCPageUrl,
 } from '../utils/routes'
@@ -70,7 +71,9 @@ const MorePage: NextPage<IProps> = () => {
       icon: LoginIcon,
       show: !user,
       onClick: () => {
-        methods.login()
+        methods.login(userInfo => {
+          router.push(getProfilePageUrl(userInfo.username))
+        })
       },
     },
     {

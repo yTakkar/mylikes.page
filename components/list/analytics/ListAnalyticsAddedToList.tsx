@@ -69,7 +69,7 @@ const ListAnalyticsAddedToList: React.FC<IListAnalyticsAddedToListProps> = props
         <div className="flex items-start mb-4 relative">
           <div className="relative">
             {recommendation ? (
-              <div className="w-10 h-10">
+              <div className="w-10 h-10 min-w-10 min-h-10">
                 <RecommendationTypeIcon recommendation={recommendation} source="recommendation" />
               </div>
             ) : (

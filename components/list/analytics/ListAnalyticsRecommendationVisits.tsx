@@ -81,7 +81,7 @@ const ListAnalyticsRecommendationVisits: React.FC<IListAnalyticsRecommendationVi
         <div className="flex items-start mb-4 relative">
           <div className="relative">
             {listRecommendation ? (
-              <div className="w-10 h-10">
+              <div className="w-10 h-10 min-w-10 min-h-10">
                 <RecommendationTypeIcon recommendation={listRecommendation} source="recommendation" />
               </div>
             ) : (

@@ -71,7 +71,11 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">{appConfig.global.app.description}</div>
+          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
+            This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising
+            program designed to provide a means for sites to earn advertising fees by advertising and linking to
+            Amazon.com.
+          </div>
 
           {appConfig.footer.copyrightText ? (
             <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">

@@ -15,6 +15,7 @@ import HeaderProfileIcon from './HeaderProfileIcon'
 import CoreImage from '../core/CoreImage'
 import { APP_LOGO } from '../../constants/constants'
 import appConfig from '../../config/appConfig'
+import { useRouter } from 'next/router'
 
 interface INavbarProps {
   topNavVisibility: boolean
@@ -30,6 +31,8 @@ const Header: React.FC<INavbarProps> = props => {
     methods,
     device: { isMobile },
   } = applicationContext
+
+  const router = useRouter()
 
   const pwaInstallLink: IHeaderLink = {
     label: isMobile ? null : 'Install',
@@ -76,7 +79,9 @@ const Header: React.FC<INavbarProps> = props => {
       count: null,
       onClick: e => {
         e.preventDefault()
-        methods.login()
+        methods.login(userInfo => {
+          router.push(getProfilePageUrl(userInfo.username))
+        })
       },
       show: !user,
       tooltipContent: 'Login with Google',

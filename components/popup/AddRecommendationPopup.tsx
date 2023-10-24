@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
-import { ArrowLeftIcon, CogIcon, ExternalLinkIcon, InformationCircleIcon, PlusIcon } from '@heroicons/react/outline'
+import {
+  ArrowLeftIcon,
+  CogIcon,
+  ExternalLinkIcon,
+  InformationCircleIcon,
+  PlusIcon,
+  SearchIcon,
+} from '@heroicons/react/outline'
 import RecommendationInfo, {
   RecommendationInfoLayoutType,
   RecommendationInfoSourceType,
@@ -9,7 +16,7 @@ import CoreDivider from '../core/CoreDivider'
 import classNames from 'classnames'
 import AddRecommendationForm from '../recommendation/AddRecommendationForm'
 import NoContent from '../NoContent'
-import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
+import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import {
   deleteSavedRecommendationById,
@@ -27,6 +34,8 @@ import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import Tooltip from '../Tooltip'
 import Alert from '../modal/Alert'
+import CoreTextInput, { CoreTextInputType } from '../core/CoreInput'
+import { dynamicFuseJs } from '../dynamicModules'
 
 interface IAddRecommendationPopupProps {
   list: IListDetail
@@ -52,12 +61,41 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const [initialSavedRecommendations, setInitialSavedRecommendations] = useState<IRecommendationInfo[]>([])
   const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
+
   const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
+
+  const [showSearch, toggleSearch] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    setSavedRecommendations(initialSavedRecommendations)
+  }, [initialSavedRecommendations])
+
+  const handleSearch = () => {
+    dynamicFuseJs().then(mod => {
+      const result = new mod.default(initialSavedRecommendations, {
+        keys: ['title', 'url'],
+        includeScore: true,
+        minMatchCharLength: 1,
+      }).search(searchTerm)
+      const results = result.filter(resultItem => resultItem.score! <= 0.5).map(resultItem => resultItem.item)
+      setSavedRecommendations(results)
+    })
+  }
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch()
+    } else {
+      setSavedRecommendations(initialSavedRecommendations)
+    }
+  }, [searchTerm, initialSavedRecommendations])
 
   const fetchRecommendations = async () => {
     try {
-      if (!savedRecommendations?.length) {
+      if (!initialSavedRecommendations?.length) {
         toggleLoading(true)
       }
 
@@ -65,7 +103,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
       const sortedRecommendations = recommendations.sort((a, b) => {
         return b.createdAt - a.createdAt
       })
-      setSavedRecommendations(sortedRecommendations)
+      setInitialSavedRecommendations(sortedRecommendations)
       toggleLoading(false)
     } catch (e) {
       console.log(e)
@@ -169,6 +207,75 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     processCommands()
   }
 
+  const renderActions = () => {
+    if (showSearch) {
+      return (
+        <div className="flex items-center">
+          <Tooltip content="View actions">
+            <span>
+              <CoreButton
+                label={null}
+                icon={ArrowLeftIcon}
+                size={CoreButtonSize.SMALL}
+                type={CoreButtonType.OUTLINE_SECONDARY}
+                onClick={() => {
+                  toggleSearch(false)
+                  setSearchTerm('')
+                }}
+              />
+            </span>
+          </Tooltip>
+          <CoreTextInput
+            type={CoreTextInputType.TEXT}
+            placeholder="Search by title or URL"
+            value={searchTerm}
+            setValue={setSearchTerm}
+            autoComplete="off"
+            autoFocus
+            inputClassName={'!py-1 !px-2'}
+            className="flex-grow ml-2"
+            showClearIcon
+            onClearClick={() => setSearchTerm('')}
+          />
+        </div>
+      )
+    }
+
+    return (
+      <div className="flex items-center">
+        {/* <div className="font-semibold">Choose from the saved list</div> */}
+        <CoreLink
+          url={getSavedRecommendationsPageUrl()}
+          onClick={onClose}
+          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded">
+          <Tooltip content="Manage saved recommendations">
+            <div className="flex">
+              <CogIcon className="w-4 mr-1" />
+              Manage
+              <ExternalLinkIcon className="w-4 ml-1" />
+            </div>
+          </Tooltip>
+        </CoreLink>
+        <div
+          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+          onClick={() => setPanel('add')}>
+          <div className="flex">
+            <PlusIcon className="w-4 mr-1" />
+            Add new
+          </div>
+        </div>
+        <div
+          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+          onClick={() => toggleSearch(true)}>
+          <div className="flex">
+            <SearchIcon className="w-4 mr-1" />
+            Search
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const renderSavedRecommendations = () => {
     if (loading) {
       return <Loader type={LoaderType.ELLIPSIS} />
@@ -176,34 +283,12 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
     return (
       <div className="saved">
-        <div className="flex items-center">
-          {/* <div className="font-semibold">Choose from the saved list</div> */}
-          <CoreLink
-            url={getSavedRecommendationsPageUrl()}
-            onClick={onClose}
-            className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded">
-            <Tooltip content="Manage saved recommendations">
-              <div className="flex">
-                <CogIcon className="w-4 mr-1" />
-                Manage
-                <ExternalLinkIcon className="w-4 ml-1" />
-              </div>
-            </Tooltip>
-          </CoreLink>
-          <div
-            className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
-            onClick={() => setPanel('add')}>
-            <div className="flex">
-              <PlusIcon className="w-4 mr-1" />
-              Add new
-            </div>
-          </div>
-        </div>
+        {renderActions()}
 
         <CoreDivider className="my-5" />
 
         <div className="mt-4">
-          {savedRecommendations.length === 0 ? (
+          {initialSavedRecommendations.length === 0 ? (
             <NoContent
               message={
                 <div className="inline-flex items-center">
@@ -286,7 +371,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
                 : recommendationToEdit
                 ? 'Edit saved recommendation'
                 : 'Add a new recommendation'}
-              {savedRecommendations.length > 0 && (
+              {initialSavedRecommendations.length > 0 && (
                 <Tooltip content="We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly with a single click.">
                   <span>
                     <InformationCircleIcon className="w-5 ml-1" />

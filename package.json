@@ -25,6 +25,7 @@
     "dompurify": "^3.0.5",
     "esm": "^3.2.25",
     "firebase": "^9.22.1",
+    "fuse.js": "^6.6.2",
     "localstorage-slim": "^2.4.0",
     "mixpanel-browser": "^2.47.0",
     "nanoid": "^4.0.2",

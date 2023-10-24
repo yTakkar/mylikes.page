@@ -58,7 +58,7 @@ const Header: React.FC<INavbarProps> = props => {
       iconClassName: null,
       count: null,
       onClick: null,
-      show: !isMobile && appConfig.features.enableFeaturedLists,
+      show: !isMobile && !user && appConfig.features.enableFeaturedLists,
     },
     {
       label: isMobile ? null : user?.name || '',

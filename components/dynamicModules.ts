@@ -17,3 +17,5 @@ export const dynamicUniqueNamesGenerator = () =>
   }))
 
 export const dynamicMixPanel = () => import(/* webpackChunkName: "mixpanel-browser" */ 'mixpanel-browser')
+
+export const dynamicFuseJs = () => import(/* webpackChunkName: "fuse.js" */ 'fuse.js')

@@ -35,6 +35,7 @@ export enum AnalyticsEventType {
 
   // list recommendation
   RECOMMENDATION_ADD = 'recommendation_add',
+  RECOMMENDATION_ADD_FROM_LIST = 'recommendation_add_from_list',
   RECOMMENDATION_REMOVE = 'recommendation_remove',
   RECOMMENDATION_ADD_TO_LIST = 'recommendation_add_to_list',
   RECOMMENDATION_ADD_UPDATE_NOTE = 'recommendation_add_update_note',

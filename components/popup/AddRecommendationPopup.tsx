@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import {
   ArrowLeftIcon,
-  CogIcon,
-  ExternalLinkIcon,
+  ChevronRightIcon,
+  ClipboardListIcon,
   InformationCircleIcon,
-  PlusIcon,
   SearchIcon,
 } from '@heroicons/react/outline'
 import RecommendationInfo, {
@@ -16,7 +15,7 @@ import CoreDivider from '../core/CoreDivider'
 import classNames from 'classnames'
 import AddRecommendationForm from '../recommendation/AddRecommendationForm'
 import NoContent from '../NoContent'
-import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
+import { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 import { IRecommendationInfo } from '../../interface/recommendation'
 import {
   deleteSavedRecommendationById,
@@ -27,8 +26,7 @@ import Loader, { LoaderType } from '../loader/Loader'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
-import CoreLink from '../core/CoreLink'
-import { getListPageUrl, getProfilePageUrl, getSavedRecommendationsPageUrl } from '../../utils/routes'
+import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 import { revalidateUrls } from '../../utils/revalidate'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
@@ -50,7 +48,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   const { user } = applicationContext
 
   const [loading, toggleLoading] = useState(false)
-  const [panel, setPanel] = useState<'saved' | 'add'>('saved')
+  const [panel, setPanel] = useState<'saved' | 'add'>('add')
   const [selectedRecommendationId, setSelectedRecommendationId] = useState<string | null>(null)
   const [operationLoading, toggleOperationLoading] = useState(false)
 
@@ -64,9 +62,6 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   const [initialSavedRecommendations, setInitialSavedRecommendations] = useState<IRecommendationInfo[]>([])
   const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
 
-  const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
-
-  const [showSearch, toggleSearch] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
@@ -93,6 +88,12 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     }
   }, [searchTerm, initialSavedRecommendations])
 
+  useEffect(() => {
+    if (panel === 'saved') {
+      setRecommendationToEdit(null)
+    }
+  }, [panel])
+
   const fetchRecommendations = async () => {
     try {
       if (!initialSavedRecommendations?.length) {
@@ -113,10 +114,10 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   }
 
   useEffect(() => {
-    if (user) {
+    if (user && panel === 'saved') {
       fetchRecommendations()
     }
-  }, [user])
+  }, [user, panel])
 
   useEffect(() => {
     if (containerRef.current) {
@@ -176,17 +177,16 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         ...recommendation,
         addedAt: new Date().getTime(),
       }
-      const updatedList = [listRecommendation, ...listRecommendations]
+      const updatedList = [listRecommendation, ...list.recommendations]
 
       try {
         await updateList(list.id, {
           recommendations: updatedList,
         })
         await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner!.username)])
-        setListRecommendations(updatedList)
         toastSuccess('Added to the list')
         appAnalytics.sendEvent({
-          action: AnalyticsEventType.RECOMMENDATION_ADD,
+          action: AnalyticsEventType.RECOMMENDATION_ADD_FROM_LIST,
           extra: {
             listId: list.id,
             recommendationId: recommendation.id,
@@ -208,69 +208,20 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
   }
 
   const renderActions = () => {
-    if (showSearch) {
-      return (
-        <div className="flex items-center">
-          <Tooltip content="View actions">
-            <span>
-              <CoreButton
-                label={null}
-                icon={ArrowLeftIcon}
-                size={CoreButtonSize.SMALL}
-                type={CoreButtonType.OUTLINE_SECONDARY}
-                onClick={() => {
-                  toggleSearch(false)
-                  setSearchTerm('')
-                }}
-              />
-            </span>
-          </Tooltip>
+    return (
+      <div className="flex items-center">
+        <div className="flex-grow relative">
           <CoreTextInput
             type={CoreTextInputType.TEXT}
             placeholder="Search by title or URL"
             value={searchTerm}
             setValue={setSearchTerm}
             autoComplete="off"
-            autoFocus
-            inputClassName={'!py-1 !px-2'}
-            className="flex-grow ml-2"
+            inputClassName={'!py-1 !pr-8 !pl-2'}
             showClearIcon
             onClearClick={() => setSearchTerm('')}
           />
-        </div>
-      )
-    }
-
-    return (
-      <div className="flex items-center">
-        {/* <div className="font-semibold">Choose from the saved list</div> */}
-        <CoreLink
-          url={getSavedRecommendationsPageUrl()}
-          onClick={onClose}
-          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded">
-          <Tooltip content="Manage saved recommendations">
-            <div className="flex">
-              <CogIcon className="w-4 mr-1" />
-              Manage
-              <ExternalLinkIcon className="w-4 ml-1" />
-            </div>
-          </Tooltip>
-        </CoreLink>
-        <div
-          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
-          onClick={() => setPanel('add')}>
-          <div className="flex">
-            <PlusIcon className="w-4 mr-1" />
-            Add new
-          </div>
-        </div>
-        <div
-          className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
-          onClick={() => toggleSearch(true)}>
-          <div className="flex">
-            <SearchIcon className="w-4 mr-1" />
-            Search
-          </div>
+          <SearchIcon className="w-5 absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500" />
         </div>
       </div>
     )
@@ -339,21 +290,43 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
     )
   }
 
+  const showSelectMessage = panel === 'add' && !recommendationToEdit
+
   const renderAddRecommendation = () => {
     return (
-      <div
-        className={classNames('add', {
-          shown: panel === 'add',
-        })}>
-        <AddRecommendationForm
-          recommendation={recommendationToEdit || undefined}
-          onSuccess={() => {
-            setPanel('saved')
-            fetchRecommendations()
-          }}
-        />
-      </div>
+      <>
+        <div
+          className={classNames('add', {
+            shown: panel === 'add',
+            showSelectMessage,
+          })}>
+          <AddRecommendationForm
+            key={recommendationToEdit?.id}
+            list={list}
+            recommendation={recommendationToEdit || undefined}
+            onSuccess={() => {
+              if (recommendationToEdit) {
+                setPanel('saved')
+                fetchRecommendations()
+              } else {
+                handleOnSuccess()
+                onClose()
+              }
+            }}
+          />
+        </div>
+      </>
     )
+  }
+
+  const getTitle = () => {
+    if (panel === 'saved') {
+      return 'Select from saved recommendations'
+    }
+    if (panel === 'add') {
+      return recommendationToEdit ? 'Edit saved recommendation' : 'Add a new recommendation'
+    }
+    return null
   }
 
   return (
@@ -363,29 +336,37 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
           dismissModal: onClose,
           title: (
             <div className="flex items-center">
-              {panel === 'add' && (
-                <ArrowLeftIcon className="w-5 mr-3 cursor-pointer" onClick={() => setPanel('saved')} />
-              )}
-              {panel === 'saved'
-                ? 'Select from saved recommendations'
-                : recommendationToEdit
-                ? 'Edit saved recommendation'
-                : 'Add a new recommendation'}
-              {initialSavedRecommendations.length > 0 && (
-                <Tooltip content="We allow you to select recommendations from the saved list. This helps you to save a recommendation only once and use it across quickly with a single click.">
-                  <span>
-                    <InformationCircleIcon className="w-5 ml-1" />
-                  </span>
-                </Tooltip>
-              )}
+              {panel === 'saved' || recommendationToEdit ? (
+                <ArrowLeftIcon
+                  className="w-5 mr-3 cursor-pointer"
+                  onClick={() => {
+                    if (recommendationToEdit) {
+                      setPanel('saved')
+                      // setRecommendationToEdit(null)
+                    } else {
+                      setPanel('add')
+                    }
+                  }}
+                />
+              ) : null}
+              {getTitle()}
             </div>
           ),
           disableOutsideClick: true,
-          showCrossIcon: panel === 'saved',
+          showCrossIcon: panel === 'add',
         }}>
+        {showSelectMessage ? (
+          <div
+            className="text-sm flex items-center bg-gallery p-2 absolute w-full z-10 cursor-pointer"
+            onClick={() => setPanel('saved')}>
+            <ClipboardListIcon className="inline-block w-4 h-4 mr-1" />
+            Select from your saved recommendations list
+            <ChevronRightIcon className="inline-block w-4 h-4 ml-1" />
+          </div>
+        ) : null}
         <div className="addRecommendation" ref={containerRef}>
-          {renderSavedRecommendations()}
           {renderAddRecommendation()}
+          {renderSavedRecommendations()}
         </div>
       </FullWidthModal>
 

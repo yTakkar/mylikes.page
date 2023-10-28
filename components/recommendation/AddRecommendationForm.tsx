@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { RECOMMENDATION_TYPE_LABEL_MAP, REGEX_MAP } from '../../constants/constants'
 import CoreTextarea from '../core/CoreTextarea'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
-import { CheckIcon } from '@heroicons/react/outline'
+import { CheckIcon, InformationCircleIcon } from '@heroicons/react/outline'
 import { handleValidation } from '../../utils/form'
 import CoreCheckbox from '../core/CoreCheckbox'
 import { addSavedRecommendation, updateSavedRecommendation } from '../../firebase/store/saved-recommendations'
@@ -18,6 +18,10 @@ import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
 import appConfig from '../../config/appConfig'
+import { IListDetail, IListRecommendationInfo } from '../../interface/list'
+import { updateList } from '../../firebase/store/list'
+import { revalidateUrls } from '../../utils/revalidate'
+import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
 
 enum FieldKeyType {
   URL = 'URL',
@@ -28,12 +32,13 @@ enum FieldKeyType {
 }
 
 interface IAddRecommendationFormProps {
+  list: IListDetail | null
   recommendation?: IRecommendationInfo
   onSuccess?: () => void
 }
 
 const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
-  const { recommendation, onSuccess } = props
+  const { list, recommendation, onSuccess } = props
 
   const applicationContext = useContext(ApplicationContext)
   const { user } = applicationContext
@@ -109,11 +114,38 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     })
   }
 
+  const handleAddToList = async (recommendation: IRecommendationInfo) => {
+    const listDetail = list as IListDetail
+
+    const listRecommendation: IListRecommendationInfo = {
+      ...recommendation,
+      addedAt: new Date().getTime(),
+    }
+    const updatedList = [listRecommendation, ...listDetail.recommendations]
+
+    await updateList(listDetail.id, {
+      recommendations: updatedList,
+    })
+    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner!.username)])
+    toastSuccess('Added to the list')
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.RECOMMENDATION_ADD,
+      extra: {
+        listId: listDetail.id,
+        recommendationId: recommendation.id,
+        url: recommendation.url,
+        title: recommendation.title,
+        type: recommendation.type,
+      },
+    })
+  }
+
   const handleAdd = async () => {
     const url = fields.URL
     const imageUrl = generateRecommendationImageUrl(url)
     const createdAt = new Date().getTime()
-    await addSavedRecommendation({
+
+    const recommendation: IRecommendationInfo = {
       id: nanoid(),
       url,
       title: fields.TITLE,
@@ -123,7 +155,13 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       notes: fields.NOTES,
       type: fields.TYPE,
       ownerEmail: user!.email,
-    })
+    }
+
+    if (list) {
+      await handleAddToList(recommendation)
+    }
+
+    await addSavedRecommendation(recommendation)
     appAnalytics.sendEvent({
       action: AnalyticsEventType.SAVED_RECOMMENDATION_ADD,
       extra: {
@@ -137,7 +175,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
       },
     })
     onSuccess?.()
-    toastSuccess('Recommendation is saved!')
+    toastSuccess('Recommendation is saved')
   }
 
   const handleUpdate = async () => {
@@ -170,8 +208,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
         setFields(initialFields)
       } catch (e) {
         appAnalytics.captureException(e)
-        console.error('recommendation:add:error', e)
-        toastError('Something went wrong')
+        toastError('Failed to add to the list')
       } finally {
         toggleLoading(false)
       }
@@ -190,12 +227,6 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
   return (
     <div>
       <div ref={formRef}>
-        {/* <div className="user-input-group">
-        <div className="text-typo-paragraphLight text-sm">
-          You can edit the recommendation at any time from the settings page.
-        </div>
-      </div> */}
-
         <div className="user-input-group">
           <div className="user-input-label">URL *</div>
           <CoreTextInput
@@ -272,7 +303,7 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             checked={fields.IS_ADULT}
             label={'Mark as NSFW'}
           />
-          <div className="text-typo-paragraphLight text-sm mt-1">
+          <div className="text-typo-paragraphLight text-sm mt-[2px]">
             {`Is this recommendation not safe for work? `}
             <CoreLink isExternal url={'https://wikipedia.org/wiki/Not_safe_for_work'} className="underline">
               Read more
@@ -289,6 +320,10 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
             icon={CheckIcon}
             onClick={handleSubmit}
           />
+          <div className="text-typo-paragraphLight text-sm mt-1 flex items-center">
+            <InformationCircleIcon className="w-4 mr-1" />
+            {'Recommendation will also be added to your saved list'}
+          </div>
         </div>
       </div>
     </div>

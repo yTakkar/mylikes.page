@@ -11,6 +11,10 @@
     &.shown {
       @apply transform-none;
     }
+
+    &.showSelectMessage {
+      @apply top-[40px];
+    }
   }
 }
 

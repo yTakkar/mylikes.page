@@ -27,6 +27,7 @@ const EditRecommendationPopup: React.FC<IEditRecommendationPopupProps> = props =
       }}>
       <div className="px-3 py-4">
         <AddRecommendationForm
+          list={null}
           recommendation={recommendation}
           onSuccess={() => {
             onClose()

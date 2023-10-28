@@ -6,7 +6,15 @@ import PageLoader from '../../components/loader/PageLoader'
 import { prepareListPageSeo } from '../../utils/seo/pages/list'
 import PageContainer from '../../components/PageContainer'
 import { IListDetail, IListRecommendationInfo, ListVisibilityType } from '../../interface/list'
-import { ChartBarIcon, CogIcon, DocumentDuplicateIcon, LinkIcon, PlusIcon, ShareIcon } from '@heroicons/react/outline'
+import {
+  ChartBarIcon,
+  CogIcon,
+  DocumentDuplicateIcon,
+  LinkIcon,
+  PlusIcon,
+  ShareIcon,
+  SpeakerphoneIcon,
+} from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
 import RecommendationInfo, {
@@ -41,6 +49,7 @@ import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
 import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
+import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -70,8 +79,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
 
   const [listDetail, setListDetail] = useState(initialListDetail)
   const [loading, toggleLoading] = useState(false)
+
   const [showCloneAlert, toggleCloneAlert] = useState(false)
   const [cloneLoading, toggleCloneLoading] = useState(false)
+
+  const [showBoostAlert, toggleBoostAlert] = useState(false)
+  const [boostLoading, toggleBoostLoading] = useState(false)
 
   const shareUrl = `${appConfig.global.baseUrl}${getListPageUrl(listDetail.id)}`
   const shareText = appConfig.share.list.title
@@ -147,7 +160,6 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           clonedListName: listDetail.name,
           addedAt: createdAt,
         })
-        toggleCloneLoading(false)
         toggleCloneAlert(false)
         toastSuccess('List cloned to your library!')
         appAnalytics.sendEvent({
@@ -165,8 +177,8 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         appAnalytics.captureException(e)
         toastError(`Failed to clone list!`)
         console.error('Error cloning list', e)
+      } finally {
         toggleCloneLoading(false)
-        toggleCloneAlert(false)
       }
     }
 
@@ -231,6 +243,27 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         type: listRecommendation.type,
       },
     })
+  }
+
+  const handleRequestBoost = async () => {
+    toggleBoostLoading(true)
+
+    try {
+      await addListBoostInvite({
+        id: `${user!.email}-${listDetail.id}`,
+        listId: listDetail.id,
+        email: user!.email,
+        createdAt: new Date().getTime(),
+      })
+      toggleBoostAlert(false)
+      toastSuccess('Thanks for requesting boost! We will get back to you soon.')
+    } catch (e: any) {
+      appAnalytics.captureException(e)
+      toastError(`Failed to request boost!`)
+      console.error('Error requesting boost', e)
+    } finally {
+      toggleBoostLoading(false)
+    }
   }
 
   const actions = [
@@ -323,6 +356,18 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
       ),
       onClick: handleURLCopy,
       show: !shouldshowNativeShare,
+    },
+    {
+      label: (
+        <Tooltip content={`Boost list's recommendations`}>
+          <div className="flex">
+            <SpeakerphoneIcon className="w-4 mr-1" />
+            Boost
+          </div>
+        </Tooltip>
+      ),
+      onClick: () => toggleBoostAlert(true),
+      show: true,
     },
   ].filter(action => action.show)
 
@@ -497,6 +542,27 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
               show: true,
               label: 'Cancel',
               onClick: () => toggleCloneAlert(false),
+            },
+          }}
+        />
+      ) : null}
+
+      {showBoostAlert ? (
+        <Alert
+          dismissModal={() => toggleBoostAlert(false)}
+          title="Unlock List Recommendation Boosting"
+          subTitle="Request an invite to unlock the powerful 'Recommendation Boosting' feature. Supercharge your list's influence today!"
+          cta={{
+            primary: {
+              show: true,
+              label: 'Request Invite',
+              loading: boostLoading,
+              onClick: handleRequestBoost,
+            },
+            secondary: {
+              show: true,
+              label: 'No Thanks',
+              onClick: () => toggleBoostAlert(false),
             },
           }}
         />

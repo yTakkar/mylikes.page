@@ -213,17 +213,17 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     const sameUser = isSessionUser(user, recommendationOwner)
 
     return (
-      <span className="flex items-center">
-        <UserCircleIcon className="w-[14px] mr-[2px]" />
+      <>
+        <UserCircleIcon className="min-w-[14px] w-[14px] mr-[2px] inline relative top-[-1px]" />
         <CoreLink
           url={source === RecommendationInfoSourceType.LIST ? getProfilePageUrl(recommendationOwner!.username) : null}
-          className={classNames('text-typo-paragraphLight text-sm', {
+          className={classNames('text-typo-paragraphLight text-sm inline', {
             underline: source === RecommendationInfoSourceType.LIST,
             'cursor-auto': source !== RecommendationInfoSourceType.LIST,
           })}>
           {recommendationOwner!.name} {sameUser ? '(You)' : null}
         </CoreLink>
-      </span>
+      </>
     )
   }
 
@@ -233,16 +233,16 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     }
 
     return (
-      <span className="flex items-center">
-        <DocumentTextIcon className="w-[14px] mr-[2px]" />
+      <>
+        <DocumentTextIcon className="min-w-[14px] w-[14px] mr-[2px] inline relative top-[-1px]" />
         <CoreLink
           url={getListPageUrl(list!.id)}
-          className={classNames('text-typo-paragraphLight text-sm', {
+          className={classNames('text-typo-paragraphLight text-sm inline', {
             underline: source === RecommendationInfoSourceType.LIST,
           })}>
           {list!.name}
         </CoreLink>
-      </span>
+      </>
     )
   }
 
@@ -250,10 +250,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     return (
       <>
         &nbsp;•&nbsp;
-        <span className="flex items-center">
-          <GlobeAltIcon className="w-[14px] mr-[2px]" />
-          <span>{`${parsedUrl.hostname}`.replace('www.', '')}</span>
-        </span>
+        <GlobeAltIcon className="min-w-[14px] w-[14px] mr-[2px] inline relative top-[-1px]" />
+        <span className="inline break-all">{`${parsedUrl.hostname}`.replace('www.', '')}</span>
       </>
     )
   }
@@ -316,7 +314,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             )}
           </div>
 
-          <div className="text-typo-paragraphLight text-sm flex items-center">
+          <div className="text-typo-paragraphLight text-sm inline">
             {showListName ? renderListName() : renderOwnerName()}
             {/* {addedAt && renderAddedDate()}
             {source === RecommendationInfoSourceType.ADD || source === RecommendationInfoSourceType.MANAGE

@@ -153,7 +153,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           clonedListId: listDetail.id,
           createdAt: createdAt,
         })
-        await revalidateUrls([getListPageUrl(id)])
+        await revalidateUrls([getProfilePageUrl(user!.username)])
         trackAddToLibrary({
           listId: listDetail.id,
           clonedListId: id,

@@ -19,12 +19,12 @@ const QuotesWrapper: React.FC<IQuotesWrapperProps> = props => {
       </span>
       {allowEdit && (
         <Tooltip content="Edit note">
-          <span>
+          <button>
             <PencilIcon
               className="w-4 ml-4 text-typo-paragraphLight cursor-pointer inline relative"
               onClick={onClick}
             />
-          </span>
+          </button>
         </Tooltip>
       )}
     </>

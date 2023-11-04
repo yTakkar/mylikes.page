@@ -362,11 +362,13 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               )}
               {onManageEditClick && (
                 <Tooltip content="Edit">
-                  <div
-                    className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
-                    onClick={onManageEditClick}>
-                    <PencilAltIcon className="w-4 " />
-                  </div>
+                  <span>
+                    <button
+                      className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+                      onClick={onManageEditClick}>
+                      <PencilAltIcon className="w-4 " />
+                    </button>
+                  </span>
                 </Tooltip>
               )}
 

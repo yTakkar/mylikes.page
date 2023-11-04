@@ -269,13 +269,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   const actions = [
     {
       label: (
-        <Tooltip content="Manage list">
-          <div className="flex">
-            <CogIcon className="w-4 mr-1" />
-            Settings
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <CogIcon className="w-4 mr-1" />
+          Settings
+        </div>
       ),
+      tooltipContent: 'Manage list',
       onClick: () => {
         methods.togglePopup(PopupType.CREATE_LIST, {
           listDetail,
@@ -288,13 +287,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content="View list analytics">
-          <div className="flex">
-            <ChartBarIcon className="w-4 mr-1" />
-            Analytics
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <ChartBarIcon className="w-4 mr-1" />
+          Analytics
+        </div>
       ),
+      tooltipContent: 'View list analytics',
       onClick: () => {
         methods.togglePopup(PopupType.LIST_ANALYTICS, {
           listDetail,
@@ -304,13 +302,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content="Clone this list to your library">
-          <div className="flex">
-            <DocumentDuplicateIcon className="w-4 mr-1" />
-            Clone List
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <DocumentDuplicateIcon className="w-4 mr-1" />
+          Clone List
+        </div>
       ),
+      tooltipContent: 'Clone this list to your library',
       onClick: () => {
         if (!user) {
           methods.togglePopup(PopupType.LOGIN, {})
@@ -323,13 +320,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content="Share this list">
-          <div className="flex">
-            <ShareIcon className="w-4 mr-1" />
-            Share
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <ShareIcon className="w-4 mr-1" />
+          Share
+        </div>
       ),
+      tooltipContent: 'Share this list',
       onClick: () => {
         handleNativeShare({
           text: shareText,
@@ -347,25 +343,23 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     },
     {
       label: (
-        <Tooltip content={'Copy link'}>
-          <div className="flex">
-            <LinkIcon className="w-4 mr-1" />
-            Copy
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <LinkIcon className="w-4 mr-1" />
+          Copy
+        </div>
       ),
+      tooltipContent: 'Copy list link',
       onClick: handleURLCopy,
       show: !shouldshowNativeShare,
     },
     {
       label: (
-        <Tooltip content={`Boost list's recommendations`}>
-          <div className="flex">
-            <SpeakerphoneIcon className="w-4 mr-1" />
-            Boost
-          </div>
-        </Tooltip>
+        <div className="flex">
+          <SpeakerphoneIcon className="w-4 mr-1" />
+          Boost
+        </div>
       ),
+      tooltipContent: 'Boost list',
       onClick: () => toggleBoostAlert(true),
       show: sessionUser,
     },
@@ -458,17 +452,20 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
               const isLast = index === actions.length - 1
 
               return (
-                <div
-                  key={index}
-                  className={classNames(
-                    'bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded mr-1 lg:mr-2',
-                    {
-                      'mr-0': isLast,
-                    }
-                  )}
-                  onClick={action.onClick}>
-                  {action.label}
-                </div>
+                <Tooltip key={index} content={action.tooltipContent}>
+                  <span>
+                    <button
+                      className={classNames(
+                        'bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded mr-1 lg:mr-2',
+                        {
+                          'mr-0': isLast,
+                        }
+                      )}
+                      onClick={action.onClick}>
+                      {action.label}
+                    </button>
+                  </span>
+                </Tooltip>
               )
             })}
           </div>
@@ -486,12 +483,10 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
             <div
               className={classNames('bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded')}
               onClick={handleNewRecommendation}>
-              <Tooltip content="Add a new recommendation">
-                <div className="flex">
-                  <PlusIcon className="w-4 mr-1" />
-                  Recommendation
-                </div>
-              </Tooltip>
+              <div className="flex">
+                <PlusIcon className="w-4 mr-1" />
+                Recommendation
+              </div>
             </div>
           </div>
         )}

@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
 import CoreActiveLink from '../core/CoreActiveLink'
-import Tooltip from '../Tooltip'
 
 export interface IHeaderLink {
   label: string | null
@@ -43,16 +42,14 @@ const HeaderLinks: React.FC<IHeaderLinksProps> = props => {
 
           return (
             <React.Fragment>
-              <Tooltip content={navLink.tooltipContent}>
-                <span>
-                  <IconComponent
-                    className={classnames(
-                      'w-[24px] transform transition-transform group-hover:scale-105',
-                      navLink.iconClassName
-                    )}
-                  />
-                </span>
-              </Tooltip>
+              <span>
+                <IconComponent
+                  className={classnames(
+                    'w-[24px] transform transition-transform group-hover:scale-105',
+                    navLink.iconClassName
+                  )}
+                />
+              </span>
               <span className="ml-1 font-semibold">{navLink.label}</span>
               {navLink.count && !isActive ? (
                 <span className="absolute -right-3 -top-4 bg-primary text-xxs text-white rounded-lg py-[1px] px-1">

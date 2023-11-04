@@ -30,12 +30,12 @@ const RecommendationTypeIcon: React.FC<IProps> = props => {
   const iconPadding = source === 'list' ? 'p-3' : 'p-2'
 
   const TYPE_ICON_MAP = {
-    [RecommendationType.PRODUCT]: <ShoppingCartIcon className={classNames(iconPadding, 'z-[3]', 'text-white')} />,
-    [RecommendationType.BLOG]: <DocumentTextIcon className={classNames(iconPadding, 'z-[3]', 'text-white')} />,
-    [RecommendationType.VIDEO]: <PlayIcon className={classNames(iconPadding, 'z-[3]', 'text-white')} />,
-    [RecommendationType.AUDIO]: <VolumeUpIcon className={classNames(iconPadding, 'z-[3]', 'text-white')} />,
-    [RecommendationType.IMAGE]: <PhotographIcon className={classNames(iconPadding, 'z-[3]', 'text-white')} />,
-    [RecommendationType.OTHER]: <LinkIcon className={classNames(iconPadding, 'z-[3]', '')} />,
+    [RecommendationType.PRODUCT]: <ShoppingCartIcon className={classNames(iconPadding, 'w-full h-full text-white')} />,
+    [RecommendationType.BLOG]: <DocumentTextIcon className={classNames(iconPadding, 'w-full h-full text-white')} />,
+    [RecommendationType.VIDEO]: <PlayIcon className={classNames(iconPadding, 'w-full h-full text-white')} />,
+    [RecommendationType.AUDIO]: <VolumeUpIcon className={classNames(iconPadding, 'w-full h-full text-white')} />,
+    [RecommendationType.IMAGE]: <PhotographIcon className={classNames(iconPadding, 'w-full h-full text-white')} />,
+    [RecommendationType.OTHER]: <LinkIcon className={classNames(iconPadding, 'w-full h-full')} />,
   }
 
   const bg = TYPE_COLOR_MAP[recommendation.type] || TYPE_COLOR_MAP[RecommendationType.OTHER]

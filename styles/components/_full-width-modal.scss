@@ -16,7 +16,7 @@
     margin-top: 30px !important;
 
     & .content {
-      height: calc(100vh - 160px);
+      height: calc(var(--vh) * 100 - 150px);
       @apply overflow-y-auto;
     }
   }
@@ -31,7 +31,7 @@
   &.noFooter {
     @include mobile {
       & .content {
-        height: calc(100vh - 60px);
+        height: calc(var(--vh) * 100 - 70px);
       }
     }
 

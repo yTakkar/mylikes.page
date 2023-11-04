@@ -351,11 +351,13 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
               ) : null}
               {onManageDeleteClick && (
                 <Tooltip content="Delete">
-                  <div
-                    className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
-                    onClick={onManageDeleteClick}>
-                    <TrashIcon className="w-4 " />
-                  </div>
+                  <span>
+                    <div
+                      className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
+                      onClick={() => onManageDeleteClick()}>
+                      <TrashIcon className="w-4 " />
+                    </div>
+                  </span>
                 </Tooltip>
               )}
               {onManageEditClick && (

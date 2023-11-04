@@ -426,21 +426,20 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
             )}
             {listDetail.clonedListId && (
               <Tooltip content={`This is a cloned list. Click to view the original list.`}>
-                <span>
-                  <CoreLink
-                    url={getListPageUrl(listDetail.clonedListId!)}
-                    onClick={() => {
-                      appAnalytics.sendEvent({
-                        action: AnalyticsEventType.LIST_CLONED_VIEW_ORIGINAL,
-                        extra: {
-                          originalListId: listDetail.clonedListId,
-                          listId: listDetail.id,
-                        },
-                      })
-                    }}>
+                <button
+                  onClick={() => {
+                    appAnalytics.sendEvent({
+                      action: AnalyticsEventType.LIST_CLONED_VIEW_ORIGINAL,
+                      extra: {
+                        originalListId: listDetail.clonedListId,
+                        listId: listDetail.id,
+                      },
+                    })
+                  }}>
+                  <CoreLink url={getListPageUrl(listDetail.clonedListId!)}>
                     <ReplyIcon className="w-5 ml-2 transition-transform transform hover:scale-110" />
                   </CoreLink>
-                </span>
+                </button>
               </Tooltip>
             )}
           </div>

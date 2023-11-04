@@ -205,6 +205,7 @@ module.exports = {
       amaranth: '#ea3e5c',
       mediumPurple: '#af4adc',
       beige: '#FFF9ED',
+      aliceBlue: '#f7fbff',
     }),
     columns: {
       auto: 'auto',
@@ -567,7 +568,7 @@ module.exports = {
       '4/6': '66.666667%',
       '5/6': '83.333333%',
       full: '100%',
-      screen: '100vh',
+      screen: 'calc(var(--vh) * 100)',
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',

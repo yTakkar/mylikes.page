@@ -32,6 +32,8 @@ import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import { prepareMorePageSeo } from '../utils/seo/pages/more'
 import appConfig from '../config/appConfig'
+import CoreImage from '../components/core/CoreImage'
+import { APP_LOGO } from '../constants/constants'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
@@ -162,6 +164,12 @@ const MorePage: NextPage<IProps> = () => {
             )
           })}
         </div>
+
+        <MobileView>
+          <div className="absolute left-[50%] transform translate-x-[-50%] bottom-5">
+            <CoreImage url={APP_LOGO.DEFAULT_LABEL_INLINE} alt="Login promt" className="h-6" disableLazyload />
+          </div>
+        </MobileView>
       </PageContainer>
     </div>
   )

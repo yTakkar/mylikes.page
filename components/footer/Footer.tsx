@@ -13,7 +13,7 @@ const Footer: React.FC<IFooterProps> = () => {
     <footer>
       <div className="bg-white h-8 md:h-10"></div>
 
-      <div className="bg-whisper px-4 py-6 lg:py-8 shadow-inner">
+      <div className="bg-aliceBlue px-4 py-6 lg:py-8 shadow-inner">
         <div className="container mx-auto">
           <div className="lg:flex justify-between items-start">
             <div className="flex flex-col">
@@ -71,11 +71,11 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
+          {/* <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
             This website is a participant in the Amazon Services LLC Associates Program, an affiliate advertising
             program designed to provide a means for sites to earn advertising fees by advertising and linking to
             Amazon.com.
-          </div>
+          </div> */}
 
           {appConfig.footer.copyrightText ? (
             <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">

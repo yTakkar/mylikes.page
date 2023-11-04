@@ -118,7 +118,7 @@ const MorePage: NextPage<IProps> = () => {
   return (
     <div>
       <MobileView>
-        <Snackbar title="Explore" />
+        <Snackbar title="Menu" showMenuIcon={false} />
       </MobileView>
 
       <PageContainer>

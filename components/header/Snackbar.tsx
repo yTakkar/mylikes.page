@@ -10,11 +10,12 @@ import { ArrowLeftIcon, MenuIcon, PlusIcon } from '@heroicons/react/outline'
 interface ISnackbarProps {
   title?: React.ReactNode
   showBackIcon?: boolean
+  showMenuIcon?: boolean
   backUrl?: string
 }
 
 const Snackbar: React.FC<ISnackbarProps> = props => {
-  const { title, showBackIcon = true, backUrl } = props
+  const { title, showBackIcon = true, showMenuIcon = true, backUrl } = props
 
   const router = useRouter()
   const { showPWAInstall, showPWAInstallPrompt } = usePWAInstall()
@@ -57,9 +58,11 @@ const Snackbar: React.FC<ISnackbarProps> = props => {
           </CoreLink>
         )} */}
 
-        <CoreLink url={getMorePageUrl()} className="text-typo-paragraph">
-          <MenuIcon className="w-6" />
-        </CoreLink>
+        {showMenuIcon && (
+          <CoreLink url={getMorePageUrl()} className="text-typo-paragraph">
+            <MenuIcon className="w-6" />
+          </CoreLink>
+        )}
       </div>
     </div>
   )

@@ -353,7 +353,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             </div>
           ),
           disableOutsideClick: true,
-          showCrossIcon: panel === 'add',
+          showCrossIcon: true,
         }}>
         {showSelectMessage ? (
           <div

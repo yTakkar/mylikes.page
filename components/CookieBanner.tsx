@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { isCookieBannerShown, setCookieBannerShown } from '../utils/cookieBanner'
-import CoreButton, { CoreButtonSize, CoreButtonType } from './core/CoreButton'
-import { getPrivacyPageUrl } from '../utils/routes'
+import classNames from 'classnames'
+import { CheckIcon } from '@heroicons/react/outline'
 
 interface ICookieBannerProps {}
 
@@ -20,9 +20,19 @@ const CookieBanner: React.FC<ICookieBannerProps> = () => {
   }
 
   return (
-    <div className="fixed bottom-4 left-[2%] md:left-0 right-[2%] md:right-0 md:mx-auto bg-white border border-gray-300 w-[96%] md:w-[600px] lg:w-[900px] shadow-md md:shadow-headerUserAddress rounded-md p-4 md:p-5 flex flex-col justify-between lg:flex-row lg:items-center">
-      <div>We use cookies to enhance the site experience and serve you well.</div>
-      <div className="text-right mt-3 md:mt-0">
+    <div className="fixed bottom-0 left-0 md:left-0 right-0 bg-tautara text-white w-full shadow-md md:shadow-headerUserAddress p-4 flex justify-center">
+      <span>
+        We use cookies to enhance the site experience and serve you well.
+        <span
+          className={classNames('bg-brand-primary font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2')}
+          onClick={() => {
+            setCookieBannerShown(true)
+            toggle(false)
+          }}>
+          Okay <CheckIcon className="w-4 h-4 inline-block" />
+        </span>
+      </span>
+      {/* <div className="text-right mt-3 md:mt-0">
         <CoreButton
           label="Learn More"
           size={CoreButtonSize.MEDIUM}
@@ -42,7 +52,7 @@ const CookieBanner: React.FC<ICookieBannerProps> = () => {
             toggle(false)
           }}
         />
-      </div>
+      </div> */}
     </div>
   )
 }

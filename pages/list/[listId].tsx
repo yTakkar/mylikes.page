@@ -367,7 +367,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         </Tooltip>
       ),
       onClick: () => toggleBoostAlert(true),
-      show: true,
+      show: sessionUser,
     },
   ].filter(action => action.show)
 

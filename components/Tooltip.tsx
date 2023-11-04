@@ -17,7 +17,7 @@ const Tooltip: React.FC<ITooltipProps> = props => {
   }
 
   return (
-    <Tippy content={content} maxWidth={500}>
+    <Tippy content={content} maxWidth={500} trigger="mouseenter focus click">
       {children as any}
     </Tippy>
   )

@@ -4,6 +4,7 @@ import MetaTags from '../scriptTemplates/meta'
 import PreconnectUrls from '../scriptTemplates/preConnects'
 import { AnalyticsScripts } from '../scriptTemplates/analytics'
 import InternalScripts from '../scriptTemplates/internal'
+import AdScripts from '../scriptTemplates/ads'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -18,6 +19,7 @@ class MyDocument extends Document {
           <InternalScripts />
           <PreconnectUrls />
           <AnalyticsScripts />
+          <AdScripts />
           <MetaTags />
         </Head>
         <body>

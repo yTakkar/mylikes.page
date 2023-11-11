@@ -132,6 +132,10 @@ const appConfig = {
       enabled: process.env.ENV_INTEGRATION_SENTRY_ENABLED === 'true',
       dsn: process.env.ENV_INTEGRATION_SENTRY_DSN,
     },
+    moneTagAds: {
+      enabled: process.env.ENV_INTEGRATION_MONETAG_ADS_ENABLED === 'true',
+      siteId: process.env.ENV_INTEGRATION_MONETAG_ADS_SITE_ID,
+    },
     imageTransformation: {
       enabled: process.env.ENV_INTEGRATION_CLOUDINARY_ENABLED === 'true',
       variants: {

@@ -110,7 +110,7 @@ const MorePage: NextPage<IProps> = () => {
       icon: LogoutIcon,
       show: !!user,
       onClick: () => {
-        methods.updateUser(null)
+        methods.logout()
         toastSuccess('Logged out')
         router.push(getHomePageUrl())
       },

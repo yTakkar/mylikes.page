@@ -6,7 +6,6 @@ import { IGAEventParams, IGAPageViewParams, IMixPanel } from './interface'
 
 class MixPanelAnalytics implements IMixPanel {
   mixPanel: OverridedMixpanel | null = null
-  initDone = false
 
   private async _loadMixPanel(): Promise<any> {
     const mixPanel = await dynamicMixPanel()
@@ -14,10 +13,6 @@ class MixPanelAnalytics implements IMixPanel {
   }
 
   public async init(): Promise<void> {
-    if (this.initDone) {
-      return
-    }
-
     await this._loadMixPanel()
 
     if (this.mixPanel) {
@@ -25,7 +20,6 @@ class MixPanelAnalytics implements IMixPanel {
         debug: appConfig.isDev,
         track_pageview: false,
       })
-      this.initDone = true
     }
   }
 

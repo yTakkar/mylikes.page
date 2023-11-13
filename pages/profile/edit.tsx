@@ -421,6 +421,14 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
       analytics: null,
+      ads: {
+        stickyBanner: {
+          show: {
+            desktop: false,
+            mobile: false,
+          },
+        },
+      },
     },
   }
 }

@@ -28,7 +28,7 @@ function useFeaturedAds() {
       if (list) {
         setShelf(list)
         ls.set(CACHE_KEY, list, {
-          ttl: appConfig.ads.featured.listsRevalidateTimeInSec,
+          ttl: appConfig.featured.listsRevalidateTimeInSec,
         })
       }
     } catch (e) {

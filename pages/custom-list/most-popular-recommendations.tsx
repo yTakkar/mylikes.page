@@ -153,6 +153,14 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
       analytics: null,
+      ads: {
+        stickyBanner: {
+          show: {
+            desktop: false,
+            mobile: true,
+          },
+        },
+      },
     },
     revalidate: PAGE_REVALIDATE_TIME.CUSTOM.MOST_POPULAR_RECOMMENDATIONS,
   }

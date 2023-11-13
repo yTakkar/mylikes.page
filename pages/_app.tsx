@@ -22,6 +22,7 @@ import GeneralFeedbackFormButton from '../components/GeneralFeedbackFormButton'
 import { DesktopView } from '../components/ResponsiveViews'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import useFeaturedAds from '../hooks/useFeaturedAds'
+import StickyBannerAd from '../components/ads/StickyBannerAd'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -47,11 +48,21 @@ export interface IPageLayoutData {
   }
 }
 
+export interface IPageAdProps {
+  stickyBanner: {
+    show: {
+      mobile: boolean
+      desktop: boolean
+    }
+  }
+}
+
 export interface IGlobalLayoutProps {
   pageData: any
   seo: IAppSeoProps
   layoutData: IPageLayoutData
   analytics: any
+  ads: IPageAdProps
 }
 
 interface IProps {
@@ -61,10 +72,12 @@ interface IProps {
 
 const MyApp: NextPage<IProps> = props => {
   const { Component, pageProps } = props
-  const { seo, layoutData } = pageProps || {}
+  const { seo, layoutData, ads } = pageProps || {}
 
   const { header, footer } = layoutData || {}
   const { hideTopNav } = header || {}
+
+  const { desktop: stickyBannerDesktop, mobile: stickyBannerMobile } = ads?.stickyBanner?.show || {}
 
   const { applicationContext } = useApplicationContext()
   const router = useRouter()
@@ -125,6 +138,7 @@ const MyApp: NextPage<IProps> = props => {
             {footer?.show ? <Footer /> : null}
           </main>
 
+          <StickyBannerAd showOnDesktop={stickyBannerDesktop} showOnMobile={stickyBannerMobile} />
           <CookieBanner />
           <Toaster />
           {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}

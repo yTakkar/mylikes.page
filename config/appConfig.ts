@@ -199,11 +199,15 @@ const appConfig = {
     users: ['admin@mylikes.page', 'faiyaz@mylikes.page', 'team@mylikes.page', 'mylikescontact@gmail.com'],
   },
   ads: {
-    featured: {
-      listsRevalidateTimeInSec: 10 * 60,
-      recommendationsFrequency: 5,
-      listsFrequency: 3,
+    adsTerra: {
+      stickyBannerKey: '1168ad3ee842e4f7b4bdc66311229c20',
+      domain: 'extracthorizontaldashing.com',
     },
+  },
+  featured: {
+    listsRevalidateTimeInSec: 10 * 60,
+    recommendationsFrequency: 5,
+    listsFrequency: 3,
   },
   customLists: {
     mostPopularRecommendationsCount: 100,

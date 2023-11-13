@@ -70,7 +70,7 @@ export const getFeaturedRecommendationPositions = (
   list: IListDetail,
   _featuredLists: IListDetail[]
 ): IArrayPositionItemsConfig => {
-  const index = appConfig.ads.featured.recommendationsFrequency
+  const index = appConfig.featured.recommendationsFrequency
   let positions: IArrayPositionItemsConfig = {}
 
   const featuredLists = shuffle(_featuredLists.filter(featuredList => featuredList.id !== list.id).filter(Boolean))
@@ -137,7 +137,7 @@ export const getFeaturedListPositions = (
   lists: IListDetail[],
   _featuredLists: IListDetail[]
 ): IArrayPositionItemsConfig => {
-  const index = appConfig.ads.featured.listsFrequency
+  const index = appConfig.featured.listsFrequency
   let positions: IArrayPositionItemsConfig = {}
 
   const initialFeaturedLists = shuffle(

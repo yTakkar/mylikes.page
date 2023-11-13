@@ -197,6 +197,14 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
         },
       },
       analytics: null,
+      ads: {
+        stickyBanner: {
+          show: {
+            desktop: false,
+            mobile: true,
+          },
+        },
+      },
     },
     revalidate: PAGE_REVALIDATE_TIME.PROFILE,
   }

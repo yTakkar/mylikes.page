@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import { IListDetail } from '../../interface/list'
 import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
@@ -7,6 +7,7 @@ import ListAnalyticsLibrarySaves from '../list/analytics/ListAnalyticsLibrarySav
 import ListAnalyticsAddedToList from '../list/analytics/ListAnalyticsAddedToList'
 import CoreDivider from '../core/CoreDivider'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
+import { loadWindowJavascript } from '../../utils/window'
 
 const options: ICoreSelectInputOption[] = [
   {
@@ -38,6 +39,10 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
   const { listDetail, onClose } = props
 
   const [selectedOption, setSelectedOption] = useState(options[0].value)
+
+  useEffect(() => {
+    loadWindowJavascript('//lungicko.net/1?z=6592184', 'popup_ad')
+  }, [])
 
   const renderAnalyticsComponent = () => {
     if (selectedOption === options[0].value) {

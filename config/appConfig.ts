@@ -205,7 +205,8 @@ const appConfig = {
       directLink: 'https://extracthorizontaldashing.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
     },
     monetag: {
-      directLink: 'https://greewepi.net/4/6592143',
+      directLink: 'https://oulsools.com/4/6592186',
+      popupSrc: '//lungicko.net/1?z=6592184',
     },
   },
   featured: {

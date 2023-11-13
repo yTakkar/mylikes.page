@@ -12,6 +12,7 @@ const InternalScripts = () => (
         `,
       }}
     />
+    <script async="async" data-cfasync="false" src="//lungicko.net/1?z=6592184" />
   </>
 )
 

@@ -35,11 +35,10 @@ const useNativeShare = (props: IProps) => {
         .catch((e: any) => {
           console.log(e, e.name, e.message)
 
-          appAnalytics.captureException(e)
-
           if (!['AbortError'].includes(e.name)) {
             // https://hotstar.atlassian.net/browse/ER-1904
             // https://developer.apple.com/forums/thread/662629
+            appAnalytics.captureException(e)
             onShareFail?.()
           }
         })

@@ -202,6 +202,10 @@ const appConfig = {
     adsTerra: {
       stickyBannerKey: '1168ad3ee842e4f7b4bdc66311229c20',
       domain: 'extracthorizontaldashing.com',
+      directLink: 'https://extracthorizontaldashing.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
+    },
+    monetag: {
+      directLink: 'https://greewepi.net/4/6592143',
     },
   },
   featured: {

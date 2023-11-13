@@ -2,6 +2,7 @@ import { GiftIcon } from '@heroicons/react/outline'
 import React, { useEffect, useState } from 'react'
 import { getRandomArrayItem } from '../../utils/array'
 import { TEXT_LINK_AD_LIST } from '../../constants/ads'
+import appConfig from '../../config/appConfig'
 
 interface ITextLinkAdProps {}
 
@@ -12,8 +13,12 @@ const TextLinkAd: React.FC<ITextLinkAdProps> = () => {
     setRandomTextAd(getRandomArrayItem(TEXT_LINK_AD_LIST))
   }, [])
 
+  const handleClick = () => {
+    window.open(appConfig.ads.monetag.directLink, '_blank')
+  }
+
   return (
-    <div className={'flex pt-3 pb-3 md:mb-5 relative cursor-pointer'}>
+    <div className={'flex pt-3 pb-3 md:mb-5 relative cursor-pointer'} onClick={handleClick}>
       <div className="relative w-10 h-10 min-w-10 min-h-10 top-1">
         <div className={`w-full h-full rounded-full flex justify-center items-center bg-clementine`}>
           <GiftIcon className={'p-2 w-full h-full text-white'} />

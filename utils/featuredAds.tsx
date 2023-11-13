@@ -10,6 +10,7 @@ import { AnalyticsEventType } from '../constants/analytics'
 import appConfig from '../config/appConfig'
 import ListInfo from '../components/list/ListInfo'
 import { IUserInfo } from '../interface/user'
+import TextLinkAd from '../components/ads/TextLinkAd'
 
 export const getFeaturedRecommendations = (lists: IListDetail[]): IListRecommendationInfo[] => {
   const recommendations = lists.reduce((acc, list) => {
@@ -51,18 +52,27 @@ const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationI
     })
   }
 
+  // return (
+  //   <div>
+  //     <TextLinkAd />
+  //     <div className="w-full h-[1px] bg-gallery" />
+  //   </div>
+  // )
+
   return (
-    <RecommendationInfo
-      key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}
-      layout={RecommendationInfoLayoutType.INLINE}
-      source={RecommendationInfoSourceType.LIST}
-      recommendationInfo={recommendationInfo}
-      recommendationOwner={recommendationInfo.__sponsoredMeta?.list?.owner || undefined}
-      list={recommendationInfo.__sponsoredMeta?.list || undefined}
-      sponsored
-      onLinkClick={() => onLinkClick(recommendationInfo)}
-      showListName
-    />
+    <div key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}>
+      <RecommendationInfo
+        layout={RecommendationInfoLayoutType.INLINE}
+        source={RecommendationInfoSourceType.LIST}
+        recommendationInfo={recommendationInfo}
+        recommendationOwner={recommendationInfo.__sponsoredMeta?.list?.owner || undefined}
+        list={recommendationInfo.__sponsoredMeta?.list || undefined}
+        sponsored
+        onLinkClick={() => onLinkClick(recommendationInfo)}
+        showListName
+      />
+      <div className="w-full h-[1px] bg-gallery" />
+    </div>
   )
 }
 

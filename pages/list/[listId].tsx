@@ -398,6 +398,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
             onAddToList={!sessionUser ? () => handleAddToList(recommendationInfo) : undefined}
             onRemoveFromList={sessionUser ? () => onRemoveFromList(index) : undefined}
           />
+          <div className="w-full h-[1px] bg-gallery" />
         </div>
       )
     })

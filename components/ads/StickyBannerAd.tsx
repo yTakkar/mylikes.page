@@ -20,16 +20,16 @@ const StickyBannerAd: React.FC<IStickBannerAdProps> = props => {
       <div
         className="fixed bottom-0 w-full h-[50px] bg-gray-200 flex justify-center items-center"
         suppressHydrationWarning>
-        <iframe
-          src={`//${appConfig.ads.adsTerra.domain}/watchnew?key=${appConfig.ads.adsTerra.stickyBannerKey}`}
-          width={'320'}
-          height={'50'}></iframe>
+        {appConfig.isDev ? null : (
+          <iframe
+            src={`//${appConfig.ads.adsTerra.domain}/watchnew?key=${appConfig.ads.adsTerra.stickyBannerKey}`}
+            width={320}
+            height={50}
+            frameBorder={0}
+            scrolling="no"></iframe>
+        )}
       </div>
     )
-  }
-
-  if (appConfig.isDev) {
-    return null
   }
 
   if (showOnMobile && isMobile) {

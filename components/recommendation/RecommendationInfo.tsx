@@ -334,13 +334,13 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
           {showCtaContainer && (
             <div
               className={classNames('flex items-center justify-end mt-2', {
-                'mt-0 absolute right-1 top-1': source === RecommendationInfoSourceType.LIST,
+                'mt-0 absolute right-1 top-1': source === RecommendationInfoSourceType.LIST && isDesktop,
               })}>
               {onRemoveFromList ? (
                 <Tooltip content="Remove from list">
                   <span>
                     <CoreButton
-                      label={null}
+                      label={isDesktop ? null : 'Remove'}
                       icon={XIcon}
                       size={CoreButtonSize.SMALL}
                       type={CoreButtonType.OUTLINE_SECONDARY}

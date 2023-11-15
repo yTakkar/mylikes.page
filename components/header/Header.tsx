@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import { MenuIcon as MenuIconSolid, DownloadIcon as DownloadIconSolid } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,

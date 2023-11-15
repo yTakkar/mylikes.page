@@ -156,7 +156,7 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
       ads: {
         stickyBanner: {
           show: {
-            desktop: false,
+            desktop: true,
             mobile: true,
           },
         },

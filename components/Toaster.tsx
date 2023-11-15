@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import ApplicationContext from './ApplicationContext'
 import { DynamicToaster } from './dynamicComponents'
 import { dynamicToast } from './dynamicModules'
+import { ToastPosition } from 'react-hot-toast'
 
 export const toastSuccess = (message: string) => {
   dynamicToast().then(mod => mod.success(message))
@@ -13,6 +14,27 @@ export const toastError = (message: string) => {
 
 export const toastDismiss = () => {
   dynamicToast().then(mod => mod.dismiss())
+}
+
+export const customToast = (
+  message: string,
+  {
+    duration,
+    icon,
+    position,
+  }: {
+    duration?: number
+    icon?: JSX.Element
+    position?: ToastPosition
+  }
+) => {
+  dynamicToast().then(mod =>
+    mod(message, {
+      duration,
+      icon,
+      position,
+    })
+  )
 }
 
 interface IToasterProps {}

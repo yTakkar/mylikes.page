@@ -84,6 +84,8 @@ const Footer: React.FC<IFooterProps> = () => {
           ) : null}
         </div>
       </div>
+
+      <div className="bg-aliceBlue h-[50px]"></div>
     </footer>
   )
 }

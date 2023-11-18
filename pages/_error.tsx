@@ -4,40 +4,25 @@ import { GetStaticProps, NextPage } from 'next'
 import PageContainer from '../components/PageContainer'
 import Error from '../components/error/Error'
 import { prepareErrorPageSeo } from '../utils/seo/pages/error'
-import { IShelfDetail } from '../interface/shelf'
-import { getShelfById } from '../firebase/store/shelf'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 
 interface IProps extends IGlobalLayoutProps {
-  pageData: {
-    shelf: IShelfDetail | null
-  }
+  pageData: {}
 }
 
-const ErrorPage: NextPage<IProps> = props => {
-  const {
-    pageData: { shelf },
-  } = props
-
+const ErrorPage: NextPage<IProps> = () => {
   return (
     <div>
       <PageContainer>
-        <Error shelf={shelf || null} />
+        <Error />
       </PageContainer>
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  const shelf = await getShelfById('featured-lists', {
-    limit: 4,
-  })
-
   return {
     props: {
-      pageData: {
-        shelf,
-      },
+      pageData: {},
       seo: prepareErrorPageSeo(),
       layoutData: {
         header: {},
@@ -55,7 +40,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
     },
-    revalidate: PAGE_REVALIDATE_TIME.ERROR,
   }
 }
 

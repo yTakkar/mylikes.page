@@ -14,7 +14,7 @@ const features = {
   enablePWAPromotions: process.env.ENV_ENABLE_PWA_PROMOTIONS === 'true',
   enableAppPromotions: process.env.ENV_ENABLE_APP_PROMOTIONS === 'true',
   enablePagesPrefetching: process.env.ENV_ENABLE_PAGES_PREFETCHING === 'true',
-  enableFeaturedLists: process.env.ENV_ENABLE_FEATURED_LISTS === 'true',
+  enableStickyBannerAd: process.env.ENV_ENABLE_STICKY_BANNER_AD === 'true',
 }
 
 const appConfig = {
@@ -102,11 +102,8 @@ const appConfig = {
   },
   build: {
     pageRevalidateTimeInSec: {
-      HOME: 60 * 60,
       PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
       TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
-      404: 60 * 60,
-      ERROR: 60 * 60,
       PROFILE: 30 * 60,
       LIST: 30 * 60,
       SHELF: 30 * 60,
@@ -190,7 +187,7 @@ const appConfig = {
   footer: {
     links: [
       { label: 'Privacy Policy', url: '/privacy-policy' },
-      { ...(features.enableFeaturedLists && { label: 'Featured Lists', url: '/featured-lists' }) },
+      { label: 'Featured Lists', url: '/featured-lists' },
       { label: 'Popular recommendations', url: '/most-popular-recommendations' },
     ].filter(Boolean),
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,

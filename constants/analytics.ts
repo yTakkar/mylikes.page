@@ -58,6 +58,7 @@ export enum AnalyticsEventType {
   // ads
   AD_FEATURED_LIST_VISIT = 'ad_featured_list_visit',
   AD_FEATURED_RECOMMENDATION_VISIT = 'ad_featured_recommendation_visit',
+  AD_TEXT_LINK_VISIT = 'ad_text_link_visit',
 
   // pwa
   PWA_INSTALL_SUCCESS = 'pwa_install_success',

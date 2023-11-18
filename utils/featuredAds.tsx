@@ -11,7 +11,6 @@ import appConfig from '../config/appConfig'
 import ListInfo from '../components/list/ListInfo'
 import { IUserInfo } from '../interface/user'
 import TextLinkAd from '../components/ads/TextLinkAd'
-import FeaturedListsWidget from '../components/FeaturedListsWidget'
 
 export const getFeaturedRecommendations = (lists: IListDetail[]): IListRecommendationInfo[] => {
   const recommendations = lists.reduce((acc, list) => {
@@ -24,6 +23,24 @@ export const getFeaturedRecommendations = (lists: IListDetail[]): IListRecommend
     return [...acc, ...listRecommendations]
   }, [] as IListRecommendationInfo[])
   return shuffle(recommendations)
+}
+
+const _renderTextLinkAd = (sourceList: IListDetail) => {
+  const onLinkClick = () => {
+    appAnalytics.sendEvent({
+      action: AnalyticsEventType.AD_TEXT_LINK_VISIT,
+      extra: {
+        listId: sourceList.id,
+      },
+    })
+  }
+
+  return (
+    <div>
+      <TextLinkAd onLinkClick={onLinkClick} />
+      <div className="w-full h-[1px] bg-gallery" />
+    </div>
+  )
 }
 
 const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationInfo, sourceList: IListDetail) => {
@@ -52,13 +69,6 @@ const _renderSponsoredRecommendation = (recommendationInfo: IListRecommendationI
       },
     })
   }
-
-  // return (
-  //   <div>
-  //     <TextLinkAd />
-  //     <div className="w-full h-[1px] bg-gallery" />
-  //   </div>
-  // )
 
   return (
     <div key={`${recommendationInfo.id}-${recommendationInfo.addedAt}`}>
@@ -119,7 +129,33 @@ export const getFeaturedRecommendationPositions = (
     }
   }
 
-  positions[Math.floor(listRecommendations.length / 2)] = <FeaturedListsWidget />
+  // if (listRecommendations.length < 10) {
+  //   positions[-1] = [positions[-1], <FeaturedListsWidget />]
+  // } else {
+  //   positions[Math.floor(listRecommendations.length / 2)] = <FeaturedListsWidget />
+  // }
+
+  return positions
+}
+
+export const getTextLinkAdPositions = (list: IListDetail): IArrayPositionItemsConfig => {
+  const index = appConfig.featured.recommendationsFrequency
+  let positions: IArrayPositionItemsConfig = {}
+
+  const listRecommendations = list.recommendations
+
+  if (listRecommendations.length <= index) {
+    positions = {
+      '-1': _renderTextLinkAd(list),
+    }
+  } else if (listRecommendations.length >= index) {
+    Array.from({ length: listRecommendations.length }).forEach((_, i) => {
+      const position = i % index
+      if (position === 0 && i !== 0) {
+        positions[i] = _renderTextLinkAd(list)
+      }
+    })
+  }
 
   return positions
 }

@@ -8,6 +8,7 @@ import ListAnalyticsAddedToList from '../list/analytics/ListAnalyticsAddedToList
 import CoreDivider from '../core/CoreDivider'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import StickyBannerAd from '../ads/StickyBannerAd'
+import appConfig from '../../config/appConfig'
 
 const options: ICoreSelectInputOption[] = [
   {
@@ -77,9 +78,9 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
         <CoreSelectInput value={selectedOption} onChange={setSelectedOption} options={options} />
         <CoreDivider className="my-4" />
         <div>{renderAnalyticsComponent()}</div>
-        <div className="h-[50px]"></div>
+        {appConfig.features.enableStickyBannerAd && <div className="h-[50px]"></div>}
       </div>
-      <StickyBannerAd showOnDesktop showOnMobile />
+      {appConfig.features.enableStickyBannerAd && <StickyBannerAd showOnDesktop showOnMobile />}
     </FullWidthModal>
   )
 }

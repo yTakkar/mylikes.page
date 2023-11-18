@@ -83,7 +83,7 @@ const MorePage: NextPage<IProps> = () => {
       subTitle: 'Check out our handpicked lists',
       url: getFeaturedListsPageUrl(),
       icon: SpeakerphoneIcon,
-      show: appConfig.features.enableFeaturedLists,
+      show: true,
     },
     {
       label: 'Popular recommendations',

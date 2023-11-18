@@ -85,7 +85,7 @@ const Footer: React.FC<IFooterProps> = () => {
         </div>
       </div>
 
-      <div className="bg-aliceBlue h-[50px]"></div>
+      {appConfig.features.enableStickyBannerAd && <div className="bg-aliceBlue h-[50px]"></div>}
     </footer>
   )
 }

@@ -7,29 +7,23 @@ import PageContainer from '../components/PageContainer'
 import CoreImage, { ImageSourceType } from '../components/core/CoreImage'
 import { prepareImageUrl } from '../utils/image'
 import { DesktopView } from '../components/ResponsiveViews'
-import { getShelfById } from '../firebase/store/shelf'
-import { IShelfDetail } from '../interface/shelf'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
 import ShelfLists from '../components/list/ShelfLists'
 import CoreLink from '../components/core/CoreLink'
 import { getFeaturedListsPageUrl, getProfilePageUrl } from '../utils/routes'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
-import appConfig from '../config/appConfig'
 
 interface IProps extends IGlobalLayoutProps {
-  pageData: {
-    shelf: IShelfDetail | null
-  }
+  pageData: {}
 }
 
-const Home: NextPage<IProps> = props => {
-  const {
-    pageData: { shelf },
-  } = props
-
+const Home: NextPage<IProps> = () => {
   const applicationContext = useContext(ApplicationContext)
-  const { user, methods } = applicationContext
+  const {
+    user,
+    methods,
+    ads: { featuredListsShelf },
+  } = applicationContext
 
   const router = useRouter()
 
@@ -274,11 +268,11 @@ const Home: NextPage<IProps> = props => {
         </div>
 
         {/* Featured lists */}
-        {shelf && (
+        {featuredListsShelf && (
           <div className="mt-12">
             <div className="font-bold text-black text-3xl text-center">Featured lists</div>
             <div className="mt-10 px-3">
-              <ShelfLists shelf={shelf} source="home" showHeader={false} />
+              <ShelfLists shelf={featuredListsShelf} source="home" showHeader={false} />
               <div className="flex justify-center">
                 <CoreLink
                   url={getFeaturedListsPageUrl()}
@@ -320,19 +314,9 @@ const Home: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  let shelf = null
-
-  if (appConfig.features.enableFeaturedLists) {
-    shelf = await getShelfById('featured-lists', {
-      limit: 4,
-    })
-  }
-
   return {
     props: {
-      pageData: {
-        shelf,
-      },
+      pageData: {},
       seo: prepareHomePageSeo(),
       layoutData: {
         header: {},
@@ -350,7 +334,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
     },
-    revalidate: PAGE_REVALIDATE_TIME.HOME,
   }
 }
 

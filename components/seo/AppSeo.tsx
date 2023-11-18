@@ -5,9 +5,10 @@ import {
   prepareWebpageStructuredData,
   prepareWebsiteStructuredData,
 } from '../../utils/seo/structuredData'
-import { APP_LOGO } from '../../constants/constants'
+import { SOCIAL_SHARE_BANNERS } from '../../constants/constants'
 import appConfig from '../../config/appConfig'
 import { prepareHomePageSeo } from '../../utils/seo/pages/home'
+import { getRandomArrayItem } from '../../utils/array'
 
 export interface IAppSeoProps {
   title: string
@@ -38,7 +39,7 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
     noIndex,
     openGraph,
     twitter,
-    imageUrl: _imageUrl,
+    // imageUrl: _imageUrl,
   } = props
 
   const defaultSeoData = prepareHomePageSeo()
@@ -46,7 +47,11 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
   const title = _title || defaultSeoData.title
   const description = _description || defaultSeoData.description
 
-  const imageUrl = _imageUrl || APP_LOGO.DEFAULT_WHITE
+  const shareBannerKeys = Object.keys(SOCIAL_SHARE_BANNERS)
+  const randomKey = Number(getRandomArrayItem<string>(shareBannerKeys))
+  const shareBanner = SOCIAL_SHARE_BANNERS[randomKey]
+
+  const imageUrl = shareBanner
 
   const defaultKeywords = [
     appConfig.global.app.name,
@@ -106,7 +111,7 @@ const AppSeo: React.FC<IAppSeoProps> = props => {
 
       {/* Twitter */}
       <meta name="twitter:site" content={appConfig.seo.twitter.username} />
-      <meta key="twitter:card" name="twitter:card" content={twitter?.card || 'summary'} />
+      <meta key="twitter:card" name="twitter:card" content={twitter?.card || 'summary_large_image'} />
       <meta name="twitter:app:name:iphone" content={appConfig.app.iOS.name} />
       <meta name="twitter:app:id:iphone" content={appConfig.app.iOS.id} />
       <meta name="twitter:app:name:googleplay" content={appConfig.app.android.name} />

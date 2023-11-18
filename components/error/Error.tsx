@@ -2,23 +2,16 @@ import React, { useContext } from 'react'
 import { prepareImageUrl } from '../../utils/image'
 import CoreImage, { ImageSourceType } from '../core/CoreImage'
 import ShelfLists from '../list/ShelfLists'
-import { IShelfDetail } from '../../interface/shelf'
 import ApplicationContext from '../ApplicationContext'
 import CoreButton, { CoreButtonSize, CoreButtonType } from '../core/CoreButton'
 
-interface IErrorProps {
-  shelf: IShelfDetail | null
-}
+interface IErrorProps {}
 
-const Error: React.FC<IErrorProps> = props => {
-  const { shelf: serverShelf } = props
-
+const Error: React.FC<IErrorProps> = () => {
   const applicationContext = useContext(ApplicationContext)
   const {
     ads: { featuredListsShelf },
   } = applicationContext
-
-  const shelf = serverShelf || featuredListsShelf
 
   return (
     <div>
@@ -47,9 +40,9 @@ const Error: React.FC<IErrorProps> = props => {
         </div>
       </div>
 
-      {shelf && (
+      {featuredListsShelf && (
         <div className="mt-10 px-3">
-          <ShelfLists shelf={shelf} source="error" />
+          <ShelfLists shelf={featuredListsShelf} source="error" />
         </div>
       )}
     </div>

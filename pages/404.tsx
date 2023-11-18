@@ -1,33 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IGlobalLayoutProps } from './_app'
 import { GetStaticProps, NextPage } from 'next'
 import PageContainer from '../components/PageContainer'
 import { prepareNotFoundPageSeo } from '../utils/seo/pages/error'
 import NotFound from '../components/NotFound'
-import { getShelfById } from '../firebase/store/shelf'
-import { IShelfDetail } from '../interface/shelf'
 import ShelfLists from '../components/list/ShelfLists'
-import { PAGE_REVALIDATE_TIME } from '../constants/constants'
+import ApplicationContext from '../components/ApplicationContext'
 
 interface IProps extends IGlobalLayoutProps {
-  pageData: {
-    shelf: IShelfDetail | null
-  }
+  pageData: {}
 }
 
-const NotFoundPage: NextPage<IProps> = props => {
+const NotFoundPage: NextPage<IProps> = () => {
+  const applicationContext = useContext(ApplicationContext)
   const {
-    pageData: { shelf },
-  } = props
+    ads: { featuredListsShelf },
+  } = applicationContext
 
   return (
     <div>
       <PageContainer>
         <NotFound />
 
-        {shelf && (
+        {featuredListsShelf && (
           <div className="mt-10 px-3">
-            <ShelfLists shelf={shelf} source="404" />
+            <ShelfLists shelf={featuredListsShelf} source="404" />
           </div>
         )}
       </PageContainer>
@@ -36,15 +33,9 @@ const NotFoundPage: NextPage<IProps> = props => {
 }
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-  const shelf = await getShelfById('featured-lists', {
-    limit: 4,
-  })
-
   return {
     props: {
-      pageData: {
-        shelf,
-      },
+      pageData: {},
       seo: prepareNotFoundPageSeo(),
       layoutData: {
         header: {},
@@ -62,7 +53,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
     },
-    revalidate: PAGE_REVALIDATE_TIME[404],
   }
 }
 

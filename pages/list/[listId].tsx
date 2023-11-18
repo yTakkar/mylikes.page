@@ -48,8 +48,9 @@ import Alert from '../../components/modal/Alert'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
-import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
+import { getTextLinkAdPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
+import ShelfLists from '../../components/list/ShelfLists'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -366,11 +367,11 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   ].filter(action => action.show)
 
   const featuredPositions = useMemo(() => {
-    if (sessionUser) {
-      return []
-    }
-    return getFeaturedRecommendationPositions(listDetail, ads.featuredListsShelf?.listInfos || [])
-  }, [listDetail, ads.featuredListsShelf])
+    // if (sessionUser) {
+    //   return []
+    // }
+    return getTextLinkAdPositions(listDetail)
+  }, [listDetail])
 
   const renderContent = () => {
     if (!sessionUser && listDetail.visibility === ListVisibilityType.PRIVATE) {
@@ -517,6 +518,12 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
             />
           )}
         </div>
+
+        {ads.featuredListsShelf && (
+          <div className="mt-10">
+            <ShelfLists shelf={ads.featuredListsShelf} source="list" />
+          </div>
+        )}
       </div>
     )
   }

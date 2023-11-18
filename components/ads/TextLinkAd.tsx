@@ -4,9 +4,13 @@ import { getRandomArrayItem } from '../../utils/array'
 import { TEXT_LINK_AD_LIST } from '../../constants/ads'
 import appConfig from '../../config/appConfig'
 
-interface ITextLinkAdProps {}
+interface ITextLinkAdProps {
+  onLinkClick?: () => void
+}
 
-const TextLinkAd: React.FC<ITextLinkAdProps> = () => {
+const TextLinkAd: React.FC<ITextLinkAdProps> = props => {
+  const { onLinkClick } = props
+
   const [randomTextAd, setRandomTextAd] = useState({ title: '', description: '' })
 
   useEffect(() => {
@@ -14,6 +18,7 @@ const TextLinkAd: React.FC<ITextLinkAdProps> = () => {
   }, [])
 
   const handleClick = () => {
+    onLinkClick?.()
     window.open(appConfig.ads.monetag.directLink, '_blank')
   }
 

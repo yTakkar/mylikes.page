@@ -15,7 +15,6 @@ import BackTitle from '../../components/BackTitle'
 import ListInfo from '../../components/list/ListInfo'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
-import { shuffle } from '../../utils/array'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -34,21 +33,23 @@ const Shelf: NextPage<IProps> = (props: IProps) => {
     pageData: { shelf },
   } = props
 
+  const title = `${shelf.name} (${shelf.listInfos.length})`
+
   return (
     <div>
       <MobileView>
-        <Snackbar title={shelf.name} />
+        <Snackbar title={title} />
       </MobileView>
 
       <PageContainer>
         <div className="px-3">
           <DesktopView>
-            <BackTitle title={shelf.name} />
+            <BackTitle title={title} />
           </DesktopView>
 
           <div className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 mt-4 lg:mt-0">
-              {shuffle(shelf.listInfos).map(list => {
+              {shelf.listInfos.map(list => {
                 return (
                   <ListInfo
                     key={list.id}

@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect } from 'react'
+import React, { useContext } from 'react'
 import { MenuIcon as MenuIconSolid, DownloadIcon as DownloadIconSolid } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
@@ -14,7 +14,6 @@ import ApplicationContext from '../ApplicationContext'
 import HeaderProfileIcon from './HeaderProfileIcon'
 import CoreImage from '../core/CoreImage'
 import { APP_LOGO } from '../../constants/constants'
-import appConfig from '../../config/appConfig'
 import { useRouter } from 'next/router'
 
 interface INavbarProps {
@@ -58,7 +57,7 @@ const Header: React.FC<INavbarProps> = props => {
       iconClassName: null,
       count: null,
       onClick: null,
-      show: !isMobile && !user && appConfig.features.enableFeaturedLists,
+      show: !isMobile && !user,
     },
     {
       label: isMobile ? null : user?.name || '',

@@ -12,7 +12,7 @@ import AppSeo, { IAppSeoProps } from '../components/seo/AppSeo'
 import classNames from 'classnames'
 import Header from '../components/header/Header'
 import CookieBanner from '../components/CookieBanner'
-import Toaster, { toastSuccess } from '../components/Toaster'
+import Toaster from '../components/Toaster'
 import Footer from '../components/footer/Footer'
 import OrientationLock from '../components/OrientationLock'
 import PopupRenderer from '../components/popup/PopupRenderer'
@@ -138,7 +138,9 @@ const MyApp: NextPage<IProps> = props => {
             {footer?.show ? <Footer /> : null}
           </main>
 
-          <StickyBannerAd showOnDesktop={stickyBannerDesktop} showOnMobile={stickyBannerMobile} />
+          {appConfig.features.enableStickyBannerAd && (
+            <StickyBannerAd showOnDesktop={stickyBannerDesktop} showOnMobile={stickyBannerMobile} />
+          )}
           <CookieBanner />
           <Toaster />
           {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}

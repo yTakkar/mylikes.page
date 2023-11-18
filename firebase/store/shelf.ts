@@ -3,8 +3,8 @@ import firebaseStore from '.'
 import { IGetShelfByIdParams, IShelfDetail, IShelfInfo } from '../../interface/shelf'
 import { listCollection } from './list'
 import { IListDetail } from '../../interface/list'
-import { shuffle } from '../../utils/array'
 import { getBulkUsers } from './users'
+import { shuffle } from '../../utils/array'
 
 const shelfCollection = collection(firebaseStore, 'shelves')
 

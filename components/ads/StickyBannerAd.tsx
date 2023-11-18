@@ -17,12 +17,12 @@ const StickyBannerAd: React.FC<IStickBannerAdProps> = props => {
 
   const [key, setKey] = useState<number | null>(null)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setKey(new Date().getTime())
-    }, appConfig.ads.refreshAdsIntervalInSec * 1000)
-    return () => clearInterval(interval)
-  }, [])
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setKey(new Date().getTime())
+  //   }, appConfig.ads.refreshAdsIntervalInSec * 1000)
+  //   return () => clearInterval(interval)
+  // }, [])
 
   const renderAd = () => {
     return (

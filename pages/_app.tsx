@@ -138,7 +138,9 @@ const MyApp: NextPage<IProps> = props => {
             {footer?.show ? <Footer /> : null}
           </main>
 
-          <StickyBannerAd showOnDesktop={stickyBannerDesktop} showOnMobile={stickyBannerMobile} />
+          {appConfig.features.enableStickyBannerAd && (
+            <StickyBannerAd showOnDesktop={stickyBannerDesktop} showOnMobile={stickyBannerMobile} />
+          )}
           <CookieBanner />
           <Toaster />
           {/* {appConfig.features.enableScrollToTop ? <ScrollToTop /> : null} */}

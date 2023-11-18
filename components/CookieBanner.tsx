@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 import { isCookieBannerShown, setCookieBannerShown } from '../utils/cookieBanner'
 import { customToast } from './Toaster'
 import { ShieldCheckIcon } from '@heroicons/react/solid'
@@ -19,7 +19,7 @@ const CookieBanner: React.FC<ICookieBannerProps> = () => {
   //   return null
   // }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const bannerShown = isCookieBannerShown()
     if (!bannerShown) {
       setTimeout(() => {

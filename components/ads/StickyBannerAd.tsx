@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import ApplicationContext from '../ApplicationContext'
 import appConfig from '../../config/appConfig'
 
@@ -15,7 +15,7 @@ const StickyBannerAd: React.FC<IStickBannerAdProps> = props => {
     device: { isMobile },
   } = applicationContext
 
-  const [key, setKey] = useState<number | null>(null)
+  // const [key, setKey] = useState<number | null>(null)
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -31,7 +31,6 @@ const StickyBannerAd: React.FC<IStickBannerAdProps> = props => {
         suppressHydrationWarning>
         {appConfig.isDev ? null : (
           <iframe
-            key={key}
             src={`//${appConfig.ads.adsTerra.domain}/watchnew?key=${appConfig.ads.adsTerra.stickyBannerKey}`}
             width={320}
             height={50}

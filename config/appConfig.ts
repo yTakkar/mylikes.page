@@ -195,9 +195,7 @@ const appConfig = {
     ].filter(Boolean),
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
-  admin: {
-    users: ['admin@mylikes.page', 'faiyaz@mylikes.page', 'team@mylikes.page', 'mylikescontact@gmail.com'],
-  },
+  admin: {},
   ads: {
     adsTerra: {
       stickyBannerKey: '1168ad3ee842e4f7b4bdc66311229c20',
@@ -208,6 +206,7 @@ const appConfig = {
       directLink: 'https://oulsools.com/4/6592186',
       popupSrc: '//lungicko.net/1?z=6592184',
     },
+    refreshAdsIntervalInSec: 60,
   },
   featured: {
     listsRevalidateTimeInSec: 10 * 60,

@@ -6,10 +6,9 @@ import { IContextMethods } from '../interface/applicationContext'
 import { deleteLocalUserInfo, getLocalUserInfo, prepareUserInfo, setLocalUserInfo } from '../utils/user'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../constants/analytics'
-import appConfig from '../config/appConfig'
 import { signInWithGoogle } from '../firebase/auth/auth'
 import { addUser } from '../firebase/store/users'
-import { vibrate } from '../utils/common'
+import { isAdminUser, vibrate } from '../utils/common'
 import { toastError, toastSuccess } from '../components/Toaster'
 
 const useApplicationContext = () => {
@@ -36,7 +35,7 @@ const useApplicationContext = () => {
   const updateUser: IContextMethods['updateUser'] = _userInfo => {
     const userInfo = _userInfo
     if (userInfo !== null) {
-      if (appConfig.admin.users.includes(userInfo.email)) {
+      if (isAdminUser(userInfo.email)) {
         userInfo!._isAdmin = true
       }
     }

@@ -168,3 +168,7 @@ export const copyToClipboard = (secretInfo: string) => {
   document.execCommand('copy')
   body.removeChild(tempInput)
 }
+
+export const isAdminUser = (email: string) => {
+  return email?.endsWith('@mylikes.page') || email === 'mylikescontact@gmail.com'
+}

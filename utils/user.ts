@@ -54,10 +54,3 @@ export const prepareUserInfo = async (user: User): Promise<IUserInfo> => {
 export const isSessionUser = (user: IUserInfo | null, profileInfo: IUserInfo | null) => {
   return user?.email === profileInfo?.email
 }
-
-export const isAdminProfile = (user: IUserInfo | null) => {
-  if (!user) {
-    return false
-  }
-  return appConfig.admin.users.includes(user.email)
-}

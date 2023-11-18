@@ -18,6 +18,7 @@ import ListInfos from '../../components/list/ListInfos'
 import { listListsByUser } from '../../firebase/store/list'
 import { IListDetail } from '../../interface/list'
 import classNames from 'classnames'
+import { isAdminUser } from '../../utils/common'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -171,7 +172,7 @@ export const getStaticProps: GetStaticProps<IProps> = async context => {
   }
 
   if (profileInfo) {
-    if (appConfig.admin.users.includes(profileInfo.email)) {
+    if (isAdminUser(profileInfo.email)) {
       profileInfo!._isAdmin = true
     }
   }

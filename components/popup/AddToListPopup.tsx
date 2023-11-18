@@ -12,6 +12,7 @@ import { revalidateUrls } from '../../utils/revalidate'
 import { trackAddToList } from '../../firebase/store/addToListTracking'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
+import { pluralize } from '../../utils/common'
 
 interface IAddToListPopupProps {
   listDetail: IListDetail
@@ -107,7 +108,7 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         <div className="flex items-center">
           <div className="flex-1">
             <div className="font-semibold">{list.name}</div>
-            <div className="text-sm text-gray-600">{list.recommendations.length} recommendations</div>
+            <div className="text-sm text-gray-600">{pluralize('recommendation', list.recommendations.length)}</div>
           </div>
           <div className="ml-4">
             <CoreButton

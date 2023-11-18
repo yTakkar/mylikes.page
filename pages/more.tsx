@@ -7,7 +7,7 @@ import {
   BookmarkIcon,
   HomeIcon,
   SpeakerphoneIcon,
-  SparklesIcon,
+  FireIcon,
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
@@ -89,7 +89,7 @@ const MorePage: NextPage<IProps> = () => {
       label: 'Popular recommendations',
       subTitle: 'Check out the recommendations that are making waves',
       url: getMostPopularRecommendationsPageUrl(),
-      icon: SparklesIcon,
+      icon: FireIcon,
       show: true,
     },
     {

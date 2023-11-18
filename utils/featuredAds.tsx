@@ -11,6 +11,7 @@ import appConfig from '../config/appConfig'
 import ListInfo from '../components/list/ListInfo'
 import { IUserInfo } from '../interface/user'
 import TextLinkAd from '../components/ads/TextLinkAd'
+import FeaturedListsWidget from '../components/FeaturedListsWidget'
 
 export const getFeaturedRecommendations = (lists: IListDetail[]): IListRecommendationInfo[] => {
   const recommendations = lists.reduce((acc, list) => {
@@ -117,6 +118,8 @@ export const getFeaturedRecommendationPositions = (
       })
     }
   }
+
+  positions[Math.floor(listRecommendations.length / 2)] = <FeaturedListsWidget />
 
   return positions
 }

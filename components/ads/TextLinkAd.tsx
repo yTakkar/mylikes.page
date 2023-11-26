@@ -17,9 +17,11 @@ const TextLinkAd: React.FC<ITextLinkAdProps> = props => {
     setRandomTextAd(getRandomArrayItem(TEXT_LINK_AD_LIST))
   }, [])
 
+  const directLinks = [appConfig.ads.adsTerra.directLink, appConfig.ads.monetag.directLink]
+
   const handleClick = () => {
     onLinkClick?.()
-    window.open(appConfig.ads.monetag.directLink, '_blank')
+    window.open(getRandomArrayItem(directLinks), '_blank')
   }
 
   return (

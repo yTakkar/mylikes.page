@@ -63,14 +63,14 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   assetPrefix: process.env.ENV_ASSETS_BASE_URL,
-  // async headers() {
-  //   return [
-  //     {
-  //       source: '/(.*)',
-  //       headers: [...securityHeaders],
-  //     },
-  //   ]
-  // },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [...securityHeaders],
+      },
+    ]
+  },
   async rewrites() {
     return [
       {

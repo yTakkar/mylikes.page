@@ -18,7 +18,7 @@ const QuotesWrapper: React.FC<IQuotesWrapperProps> = props => {
         &nbsp;&nbsp;&nbsp;&nbsp;{text}&nbsp;&nbsp;{' '}
       </span>
       {allowEdit && (
-        <Tooltip content="Edit note">
+        <Tooltip content="Edit note" disableOnMobile>
           <button onClick={onClick}>
             <PencilIcon className="w-4 ml-4 text-typo-paragraphLight cursor-pointer inline relative" />
           </button>

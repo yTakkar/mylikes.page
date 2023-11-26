@@ -53,7 +53,7 @@ const ShelfLists: React.FC<IShelfListsProps> = props => {
           {shelf.name}
 
           <CoreLink url={shelf.id === 'featured-lists' ? getFeaturedListsPageUrl() : getShelfPageUrl(shelf.id)}>
-            <Tooltip content="View more">
+            <Tooltip content="View more" disableOnMobile>
               <span>
                 <ArrowRightIcon className="w-5 ml-2" />
               </span>

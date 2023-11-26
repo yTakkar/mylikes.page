@@ -456,7 +456,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
               const isLast = index === actions.length - 1
 
               return (
-                <Tooltip key={index} content={action.tooltipContent}>
+                <Tooltip key={index} content={action.tooltipContent} disableOnMobile>
                   <span>
                     <button
                       className={classNames(

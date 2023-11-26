@@ -337,7 +337,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                 'mt-0 absolute right-1 top-1': source === RecommendationInfoSourceType.LIST && isDesktop,
               })}>
               {onRemoveFromList ? (
-                <Tooltip content="Remove from list">
+                <Tooltip content="Remove from list" disableOnMobile>
                   <span>
                     <CoreButton
                       label={isDesktop ? null : 'Remove'}
@@ -350,7 +350,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                 </Tooltip>
               ) : null}
               {onManageDeleteClick && (
-                <Tooltip content="Delete">
+                <Tooltip content="Delete" disableOnMobile>
                   <span>
                     <button
                       className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"
@@ -361,7 +361,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
                 </Tooltip>
               )}
               {onManageEditClick && (
-                <Tooltip content="Edit">
+                <Tooltip content="Edit" disableOnMobile>
                   <span>
                     <button
                       className="bg-gallery font-semibold text-sm cursor-pointer py-1 px-2 rounded ml-2"

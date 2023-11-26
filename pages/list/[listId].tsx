@@ -10,10 +10,10 @@ import {
   ChartBarIcon,
   CogIcon,
   DocumentDuplicateIcon,
+  LightningBoltIcon,
   LinkIcon,
   PlusIcon,
   ShareIcon,
-  SpeakerphoneIcon,
 } from '@heroicons/react/outline'
 import CoreDivider from '../../components/core/CoreDivider'
 import { DesktopView } from '../../components/ResponsiveViews'
@@ -356,7 +356,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     {
       label: (
         <div className="flex">
-          <SpeakerphoneIcon className="w-4 mr-1" />
+          <LightningBoltIcon className="w-4 mr-1" />
           Boost
         </div>
       ),

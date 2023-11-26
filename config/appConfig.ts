@@ -201,7 +201,7 @@ const appConfig = {
     },
     monetag: {
       directLink: 'https://oulsools.com/4/6592186',
-      popupSrc: '//lungicko.net/1?z=6592184',
+      popupSrc: '//thubanoa.com/1?z=6592184',
     },
     refreshAdsIntervalInSec: 60,
   },

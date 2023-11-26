@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { MenuIcon as MenuIconSolid, DownloadIcon as DownloadIconSolid } from '@heroicons/react/solid'
+import { DownloadIcon as DownloadIconSolid, XIcon } from '@heroicons/react/solid'
 import {
   MenuIcon as MenuIconOutline,
   DownloadIcon as DownloadIconOutline,
@@ -32,6 +32,8 @@ const Header: React.FC<INavbarProps> = props => {
   } = applicationContext
 
   const router = useRouter()
+
+  const isMenuPage = router.pathname === getMorePageUrl()
 
   const pwaInstallLink: IHeaderLink = {
     label: isMobile ? null : 'Install',
@@ -87,12 +89,18 @@ const Header: React.FC<INavbarProps> = props => {
     },
     {
       label: null,
-      url: getMorePageUrl(),
-      iconComponent: MenuIconOutline,
-      activeIconComponent: MenuIconSolid,
+      url: null,
+      iconComponent: isMenuPage ? XIcon : MenuIconOutline,
+      activeIconComponent: null,
       iconClassName: null,
       count: null,
-      onClick: null,
+      onClick: () => {
+        if (isMenuPage) {
+          router.back()
+        } else {
+          router.push(getMorePageUrl())
+        }
+      },
       show: true,
     },
   ]

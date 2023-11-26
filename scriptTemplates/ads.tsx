@@ -17,13 +17,6 @@ const AdScripts: React.FC = () => {
   return (
     <>
       <MoneTag />
-      <script
-        src="https://richinfo.co/richpartners/pops/js/richads-pu-ob.js"
-        data-pubid="903647"
-        data-siteid="338512"
-        async
-        data-cfasync="false"
-      />
     </>
   )
 }

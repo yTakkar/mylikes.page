@@ -16,6 +16,13 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <script
+            type="text/javascript"
+            src="https://richinfo.co/richpartners/pops/js/richads-pu-ob.js"
+            data-pubid="903647"
+            data-siteid="338512"
+            async
+            data-cfasync="false"></script>
           <InternalScripts />
           <PreconnectUrls />
           <AnalyticsScripts />

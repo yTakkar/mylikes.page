@@ -9,8 +9,6 @@ import { PopupType } from '../../interface/popup'
 import { IUserInfo } from '../../interface/user'
 import { isSessionUser } from '../../utils/user'
 import { pluralize } from '../../utils/common'
-import { insertArrayPositionItems } from '../../utils/array'
-import { getFeaturedListPositions } from '../../utils/featuredAds'
 
 interface IListInfoProps {
   lists: IListDetail[]
@@ -37,7 +35,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
     // if (sessionUser) {
     //   return []
     // }
-    return getFeaturedListPositions(profileUser, listsToShow, ads.featuredListsShelf?.listInfos || [])
+    // return getFeaturedListPositions(profileUser, listsToShow, ads.featuredListsShelf?.listInfos || [])
   }, [profileUser, listsToShow, ads.featuredListsShelf])
 
   if (listsToShow.length === 0) {
@@ -88,7 +86,7 @@ const ListInfos: React.FC<IListInfoProps> = props => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-6 mt-4 lg:mt-0">
-        {insertArrayPositionItems(mappedLists, featuredPositions)}
+        {mappedLists}
       </div>
     </div>
   )

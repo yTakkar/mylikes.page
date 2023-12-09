@@ -48,9 +48,8 @@ import Alert from '../../components/modal/Alert'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
-import { getTextLinkAdPositions } from '../../utils/featuredAds'
+import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
-import ShelfLists from '../../components/list/ShelfLists'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -370,7 +369,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
     // if (sessionUser) {
     //   return []
     // }
-    return getTextLinkAdPositions(listDetail)
+    return getFeaturedRecommendationPositions(listDetail, ads.featuredListsShelf?.listInfos || [])
   }, [listDetail])
 
   const renderContent = () => {
@@ -519,11 +518,11 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           )}
         </div>
 
-        {ads.featuredListsShelf && (
+        {/* {ads.featuredListsShelf && (
           <div className="mt-10">
             <ShelfLists shelf={ads.featuredListsShelf} source="list" />
           </div>
-        )}
+        )} */}
       </div>
     )
   }

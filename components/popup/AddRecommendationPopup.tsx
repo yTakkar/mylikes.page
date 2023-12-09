@@ -324,7 +324,9 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
   const getTitle = () => {
     if (panel === 'saved') {
-      return 'Select from saved recommendations'
+      return `Select from saved recommendations ${
+        initialSavedRecommendations.length > 0 ? `(${initialSavedRecommendations.length})` : ''
+      }`
     }
     if (panel === 'add') {
       return recommendationToEdit ? 'Edit saved recommendation' : 'Add a new recommendation'

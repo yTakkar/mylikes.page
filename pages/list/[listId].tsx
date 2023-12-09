@@ -50,6 +50,7 @@ import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
 import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
+import ShelfLists from '../../components/list/ShelfLists'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -518,11 +519,11 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
           )}
         </div>
 
-        {/* {ads.featuredListsShelf && (
+        {ads.featuredListsShelf && (
           <div className="mt-10">
             <ShelfLists shelf={ads.featuredListsShelf} source="list" />
           </div>
-        )} */}
+        )}
       </div>
     )
   }

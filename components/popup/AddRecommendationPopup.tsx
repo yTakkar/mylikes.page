@@ -59,6 +59,8 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
 
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const [listRecommendations, setListRecommendations] = useState<IListRecommendationInfo[]>(list.recommendations)
+
   const [initialSavedRecommendations, setInitialSavedRecommendations] = useState<IRecommendationInfo[]>([])
   const [savedRecommendations, setSavedRecommendations] = useState<IRecommendationInfo[]>([])
 
@@ -177,7 +179,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         ...recommendation,
         addedAt: new Date().getTime(),
       }
-      const updatedList = [listRecommendation, ...list.recommendations]
+      const updatedList = [listRecommendation, ...listRecommendations]
 
       try {
         await updateList(list.id, {
@@ -195,6 +197,7 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             type: recommendation.type,
           },
         })
+        setListRecommendations(updatedList)
         handleOnSuccess()
       } catch (e) {
         appAnalytics.captureException(e)

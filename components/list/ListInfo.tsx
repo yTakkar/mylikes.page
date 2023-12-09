@@ -48,8 +48,8 @@ const ListInfo: React.FC<IListInfoProps> = props => {
       </div>
 
       <div className="bg-alabaster py-3 px-4 flex items-center justify-between">
-        <div>
-          <div className="font-bold">{list.name}</div>
+        <div className="w-full">
+          <div className="font-bold overflow-hidden whitespace-nowrap text-ellipsis">{list.name}</div>
           <div className=" text-typo-paragraphLight text-sm">{list.recommendations.length} recommendations</div>
         </div>
 

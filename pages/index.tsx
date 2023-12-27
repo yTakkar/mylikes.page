@@ -70,7 +70,8 @@ const Home: NextPage<IProps> = () => {
             </div>
 
             <div className="mt-4 lg:mt-6 font-bold text-black  text-lg lg:text-xl">
-              Tell the world about the things you like. Your recommendations matter, and MyLikes is your megaphone.
+              Tell the world about the things you like. Your recommendations matter, and MyLikes is your{' '}
+              <span className="border-b-mediumPurple border-b-4">forever-free</span> megaphone.
             </div>
 
             <div

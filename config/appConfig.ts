@@ -174,13 +174,13 @@ const appConfig = {
       //   isExternal: true,
       //   username: 'mylikesFB',
       // },
-      {
-        type: 'LINKEDIN',
-        url: 'https://www.linkedin.com/company/mylikes-page/',
-        name: 'LinkedIn',
-        isExternal: true,
-        username: 'mylikes-page',
-      },
+      // {
+      //   type: 'LINKEDIN',
+      //   url: 'https://www.linkedin.com/company/mylikes-page/',
+      //   name: 'LinkedIn',
+      //   isExternal: true,
+      //   username: 'mylikes-page',
+      // },
 
       // {
       //   type: 'YOUTUBE',

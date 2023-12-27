@@ -154,26 +154,34 @@ const appConfig = {
     contactEmail: 'team@mylikes.page',
     socialLinks: [
       {
-        type: 'TWITTER',
-        url: 'https://twitter.com/mylikespage',
-        name: 'Twitter',
-        isExternal: true,
-        username: 'mylikespage',
-      },
-      {
-        type: 'FACEBOOK',
-        url: 'https://www.facebook.com/mylikesFB',
-        name: 'Facebook',
-        isExternal: true,
-        username: 'mylikesFB',
-      },
-      {
         type: 'INSTAGRAM',
         url: 'https://www.instagram.com/mylikes.page',
         name: 'Instagram',
         isExternal: true,
         username: 'mylikes.page',
       },
+      {
+        type: 'TWITTER',
+        url: 'https://twitter.com/mylikespage',
+        name: 'Twitter',
+        isExternal: true,
+        username: 'mylikespage',
+      },
+      // {
+      //   type: 'FACEBOOK',
+      //   url: 'https://www.facebook.com/mylikesFB',
+      //   name: 'Facebook',
+      //   isExternal: true,
+      //   username: 'mylikesFB',
+      // },
+      {
+        type: 'LINKEDIN',
+        url: 'https://www.linkedin.com/company/mylikes-page/',
+        name: 'LinkedIn',
+        isExternal: true,
+        username: 'mylikes-page',
+      },
+
       // {
       //   type: 'YOUTUBE',
       //   url: 'https://www.youtube.com/channel/UCp7xl0E-JtFQamoZNBO8yGw',

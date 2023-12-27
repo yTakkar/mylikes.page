@@ -26,7 +26,7 @@ const CoreLink: React.FC<ICoreLinkProps> = props => {
         href={url || 'javascript:;'}
         className={className}
         target={isExternal ? '_blank' : '_parent'}
-        rel={isExternal ? 'noopener noreferrer' : ''}
+        rel={isExternal ? 'noopener' : ''}
         style={style}
         title={title}
         onClick={handleClick}>
@@ -41,7 +41,7 @@ const CoreLink: React.FC<ICoreLinkProps> = props => {
       prefetch={appConfig.features.enablePagesPrefetching}
       className={className}
       target={isExternal ? '_blank' : '_self'}
-      rel={isExternal ? 'noopener noreferrer' : ''}
+      rel={isExternal ? 'noopener' : ''}
       style={style}
       title={title}
       onClick={handleClick}

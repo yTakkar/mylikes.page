@@ -117,7 +117,12 @@ const Header: React.FC<INavbarProps> = props => {
             <div className="flex justify-between w-full items-center">
               <div className="flex items-center w-7/12 md:w-10/12 lg:w-auto">
                 <CoreLink url={getHomePageUrl()} className="mr-6">
-                  <CoreImage url={APP_LOGO.DEFAULT_LABEL_INLINE} alt="Login promt" className="h-6" disableLazyload />
+                  <CoreImage
+                    url={APP_LOGO.DEFAULT_LABEL_INLINE}
+                    alt="Login promt"
+                    className="h-6 cursor-pointer"
+                    disableLazyload
+                  />
                 </CoreLink>
 
                 {/* <DesktopView useCSS>

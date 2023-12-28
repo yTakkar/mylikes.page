@@ -66,10 +66,10 @@ const AboutPage: NextPage<IProps> = () => {
               <p>
                 {`Sure, existing platforms allowed sharing, but none were designed specifically for recommendations.
                 That's where MyLikes steps in—it does one thing exceptionally well: it lets users share recommendations
-                with a wealth of features. And here's the kicker—it's free forever.`}
+                with a wealth of features. And here's the kicker — it's free forever.`}
               </p>
 
-              <p>{`We're all about recommendations—pure and simple. 🌐`}</p>
+              <p>{`We're all about recommendations — pure and simple. 🌐`}</p>
 
               <p>
                 {`Please don't hesitate to `}

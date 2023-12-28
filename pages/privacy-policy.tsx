@@ -266,7 +266,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
     },
-    revalidate: PAGE_REVALIDATE_TIME.PRIVACY_POLICY,
   }
 }
 

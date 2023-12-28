@@ -264,7 +264,6 @@ export const getStaticProps: GetStaticProps<IProps> = async () => {
         },
       },
     },
-    revalidate: PAGE_REVALIDATE_TIME.TERMS_CONDITIONS,
   }
 }
 

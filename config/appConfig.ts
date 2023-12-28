@@ -102,8 +102,6 @@ const appConfig = {
   },
   build: {
     pageRevalidateTimeInSec: {
-      PRIVACY_POLICY: 3 * 60 * 60, // 3 hours
-      TERMS_CONDITIONS: 3 * 60 * 60, // 3 hours
       PROFILE: 30 * 60,
       LIST: 30 * 60,
       SHELF: 30 * 60,
@@ -194,9 +192,11 @@ const appConfig = {
   },
   footer: {
     links: [
-      { label: 'Privacy Policy', url: '/privacy-policy' },
       { label: 'Featured Lists', url: '/featured-lists' },
       { label: 'Popular recommendations', url: '/most-popular-recommendations' },
+      { label: 'Privacy Policy', url: '/privacy-policy' },
+      { label: 'Terms of Use', url: '/terms-conditions' },
+      { label: 'About Us', url: '/about' },
     ].filter(Boolean),
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },

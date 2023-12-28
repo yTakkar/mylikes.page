@@ -18,6 +18,10 @@ export const getTnCPageUrl = () => {
   return '/terms-conditions'
 }
 
+export const getAboutPageUrl = () => {
+  return '/about'
+}
+
 export const getProfilePageUrl = (username: string) => {
   return `/profile/${username}`
 }

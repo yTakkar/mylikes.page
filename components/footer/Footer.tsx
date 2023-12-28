@@ -51,7 +51,7 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
 
             <div className="mt-6 lg:mt-0">
-              <div className="flex">
+              <div className="flex justify-center lg:justify-normal">
                 {appConfig.company.socialLinks.map((socialLink, index) => {
                   const socialIconSrc = SOCIAL_ICONS_SRC_MAP[socialLink.type] || SOCIAL_ICONS_SRC_MAP.GLOBE
 

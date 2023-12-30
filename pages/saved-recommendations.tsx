@@ -158,7 +158,7 @@ const Home: NextPage<IProps> = () => {
               </div>
             </div>
 
-            <Tooltip content="Save a new recommendation">
+            <Tooltip content="Save a new recommendation" disableOnMobile>
               <div
                 className="bg-brand-primary text-white font-semibold cursor-pointer py-1 px-1 rounded "
                 onClick={handleNewRecommendation}>

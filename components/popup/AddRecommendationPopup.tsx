@@ -221,8 +221,6 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
             setValue={setSearchTerm}
             autoComplete="off"
             inputClassName={'!py-1 !pr-8 !pl-2'}
-            showClearIcon
-            onClearClick={() => setSearchTerm('')}
           />
           <SearchIcon className="w-5 absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500" />
         </div>

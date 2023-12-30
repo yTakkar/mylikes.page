@@ -21,30 +21,40 @@ import { PlusIcon } from '@heroicons/react/solid'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../constants/analytics'
 import Alert from '../components/modal/Alert'
+import CoreTextInput, { CoreTextInputType } from '../components/core/CoreInput'
+import { SearchIcon } from '@heroicons/react/outline'
+import Tooltip from '../components/Tooltip'
+import { dynamicFuseJs } from '../components/dynamicModules'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
 }
 
 const Home: NextPage<IProps> = () => {
+  const [initialRecommendations, setInitialRecommendations] = useState<IRecommendationInfo[]>([])
   const [recommendations, setRecommendations] = useState<IRecommendationInfo[]>([])
 
   const [loading, toggleLoading] = useState(false)
 
   const [recommendationToDelete, setRecommendationToDelete] = useState<IRecommendationInfo | null>(null)
   const [deleteLoading, toggleDeleteLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const applicationContext = useContext(ApplicationContext)
   const { user, methods } = applicationContext
 
+  useEffect(() => {
+    setRecommendations(initialRecommendations)
+  }, [initialRecommendations])
+
   const fetchRecommendations = () => {
-    if (!recommendations?.length) {
+    if (!initialRecommendations?.length) {
       toggleLoading(true)
     }
 
     listSavedRecommendationsByEmail(user!.email)
       .then(recommendations => {
-        setRecommendations(recommendations.sort((a, b) => b.createdAt - a.createdAt))
+        setInitialRecommendations(recommendations.sort((a, b) => b.createdAt - a.createdAt))
       })
       .catch(e => {
         toastError('Error fetching saved recommendations')
@@ -60,6 +70,26 @@ const Home: NextPage<IProps> = () => {
       fetchRecommendations()
     }
   }, [user])
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch()
+    } else {
+      setRecommendations(initialRecommendations)
+    }
+  }, [searchTerm, initialRecommendations])
+
+  const handleSearch = () => {
+    dynamicFuseJs().then(mod => {
+      const result = new mod.default(initialRecommendations, {
+        keys: ['title', 'url'],
+        includeScore: true,
+        minMatchCharLength: 1,
+      }).search(searchTerm)
+      const results = result.filter(resultItem => resultItem.score! <= 0.5).map(resultItem => resultItem.item)
+      setRecommendations(results)
+    })
+  }
 
   const handleManageEditClick = (recommendation: IRecommendationInfo) => {
     methods.togglePopup(PopupType.EDIT_RECOMMENDATION, {
@@ -105,17 +135,6 @@ const Home: NextPage<IProps> = () => {
     })
   }
 
-  const renderAddNewButton = () => {
-    return (
-      <div className="bg-gallery font-semibold cursor-pointer py-2 px-3 rounded" onClick={handleNewRecommendation}>
-        <div className="flex">
-          <PlusIcon className="w-6 mr-1" />
-          Add new
-        </div>
-      </div>
-    )
-  }
-
   const renderContent = () => {
     if (loading) {
       return <Loader type={LoaderType.ELLIPSIS} />
@@ -123,15 +142,37 @@ const Home: NextPage<IProps> = () => {
 
     return (
       <div className="px-3 py-3">
-        <MobileView>
-          <div className="flex items-center justify-end mb-4">{renderAddNewButton()}</div>
-        </MobileView>
+        {initialRecommendations.length > 0 ? (
+          <div className="flex items-center justify-end mb-4">
+            <div className="flex items-center flex-grow mr-2">
+              <div className="flex-grow relative">
+                <CoreTextInput
+                  type={CoreTextInputType.TEXT}
+                  placeholder="Search by title or URL"
+                  value={searchTerm}
+                  setValue={setSearchTerm}
+                  autoComplete="off"
+                  inputClassName={'!py-1 !pr-8 !pl-2'}
+                />
+                <SearchIcon className="w-5 absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-500" />
+              </div>
+            </div>
 
-        {recommendations.length === 0 ? (
+            <Tooltip content="Save a new recommendation">
+              <div
+                className="bg-brand-primary text-white font-semibold cursor-pointer py-1 px-1 rounded "
+                onClick={handleNewRecommendation}>
+                <PlusIcon className="w-6" />
+              </div>
+            </Tooltip>
+          </div>
+        ) : null}
+
+        {initialRecommendations.length === 0 ? (
           <NoContent message="You have no saved recommendations." imageClassName="w-full lg:w-[600px]" />
         ) : (
           recommendations.map((recommendationInfo, index) => {
-            const isLast = index === recommendations.length - 1
+            const isLast = index === initialRecommendations.length - 1
             return (
               <div key={`${recommendationInfo.id}`}>
                 <RecommendationInfo
@@ -153,7 +194,7 @@ const Home: NextPage<IProps> = () => {
     )
   }
 
-  const title = `Saved recommendations ${recommendations.length > 0 ? `(${recommendations.length})` : ''}`
+  const title = `Saved recommendations ${initialRecommendations.length > 0 ? `(${initialRecommendations.length})` : ''}`
 
   return (
     <div>
@@ -163,7 +204,7 @@ const Home: NextPage<IProps> = () => {
 
       <PageContainer>
         <DesktopView>
-          <BackTitle title={title} rhsContent={renderAddNewButton()} />
+          <BackTitle title={title} />
         </DesktopView>
 
         {renderContent()}

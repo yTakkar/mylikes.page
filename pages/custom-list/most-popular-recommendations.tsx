@@ -22,6 +22,7 @@ import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
 import appConfig from '../../config/appConfig'
+import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -44,6 +45,10 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
   const title = 'Most popular recommendations'
 
   const onLinkClick = (popularRecommendation: IMostPopularRecommendation) => {
+    if (shouldOpenRecommendationLinkAd()) {
+      window.open(getLinkAd(), '_blank')
+    }
+
     const basePayload = {
       listId: popularRecommendation.list?.id,
       recommendationId: popularRecommendation.listRecommendation?.id,

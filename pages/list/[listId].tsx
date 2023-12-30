@@ -51,6 +51,7 @@ import { insertArrayPositionItems } from '../../utils/array'
 import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
 import ShelfLists from '../../components/list/ShelfLists'
+import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -232,21 +233,31 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   }
 
   const onLinkClick = async (listRecommendation: IListRecommendationInfo) => {
+    const analyticsParams = {
+      listId: listDetail.id,
+      recommendationId: listRecommendation.id,
+      url: listRecommendation.url,
+      title: listRecommendation.title,
+      type: listRecommendation.type,
+    }
+
     if (!sessionUser) {
       trackRecommendationClick({
         listId: listDetail.id,
         listRecommendationId: listRecommendation.id,
       })
+      if (shouldOpenRecommendationLinkAd()) {
+        window.open(getLinkAd(), '_blank')
+        appAnalytics.sendEvent({
+          action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
+          extra: analyticsParams,
+        })
+      }
     }
+
     appAnalytics.sendEvent({
       action: AnalyticsEventType.RECOMMENDATION_VISIT,
-      extra: {
-        listId: listDetail.id,
-        recommendationId: listRecommendation.id,
-        url: listRecommendation.url,
-        title: listRecommendation.title,
-        type: listRecommendation.type,
-      },
+      extra: analyticsParams,
     })
   }
 

@@ -55,12 +55,18 @@ const AboutPage: NextPage<IProps> = () => {
 
           <div className="mt-4">
             <div className="html-body">
-              <p>Built with love on weekends by Faiyaz!</p>
+              <p>
+                Built with love on weekends by{' '}
+                <CoreLink url={appConfig.author.website} isExternal>
+                  Faiyaz
+                </CoreLink>
+                !
+              </p>
 
               <p>
-                {`In the closing months of 2022, a simple desire sparked the creation of MyLikes. I wanted to share my
+                {`In the closing months of 2022, a simple idea led to the creation of MyLikes. I wanted to share my
                 classical music playlist with friends, giving them a chance to engage with it, and most importantly, to
-                track how each recommendation resonated.`}
+                track how each recommendation performed.`}
               </p>
 
               <p>
@@ -70,6 +76,11 @@ const AboutPage: NextPage<IProps> = () => {
               </p>
 
               <p>{`We're all about recommendations — pure and simple. 🌐`}</p>
+
+              <p>
+                <b>How do we make money?</b> Whenever you click on a recommendation, we open a link ad in a new tab on
+                every 5th click. This helps us pay for the servers and keep the lights on.
+              </p>
 
               <p>
                 {`Please don't hesitate to `}

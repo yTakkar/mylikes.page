@@ -8,6 +8,7 @@ import {
   HomeIcon,
   SpeakerphoneIcon,
   FireIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/outline'
 import { ChevronRightIcon } from '@heroicons/react/solid'
 import { GetStaticProps, NextPage } from 'next'
@@ -18,6 +19,7 @@ import PageContainer from '../components/PageContainer'
 import CoreLink from '../components/core/CoreLink'
 import { toastSuccess } from '../components/Toaster'
 import {
+  getAboutPageUrl,
   getFeaturedListsPageUrl,
   getHomePageUrl,
   getMostPopularRecommendationsPageUrl,
@@ -31,7 +33,6 @@ import Snackbar from '../components/header/Snackbar'
 import ApplicationContext from '../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import { prepareMorePageSeo } from '../utils/seo/pages/more'
-import appConfig from '../config/appConfig'
 import CoreImage from '../components/core/CoreImage'
 import { APP_LOGO } from '../constants/constants'
 
@@ -103,6 +104,12 @@ const MorePage: NextPage<IProps> = () => {
       url: getTnCPageUrl(),
       icon: ShieldCheckIcon,
       show: !user,
+    },
+    {
+      label: 'About Us',
+      url: getAboutPageUrl(),
+      icon: InformationCircleIcon,
+      show: true,
     },
     {
       label: 'Logout',

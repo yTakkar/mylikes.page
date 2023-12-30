@@ -28,7 +28,7 @@ export const getFeaturedRecommendations = (lists: IListDetail[]): IListRecommend
 const _renderTextLinkAd = (sourceList: IListDetail) => {
   const onLinkClick = () => {
     appAnalytics.sendEvent({
-      action: AnalyticsEventType.AD_TEXT_LINK_VISIT,
+      action: AnalyticsEventType.AD_FEATURED_RECOMMENDATION_TEXT_LINK_VISIT,
       extra: {
         listId: sourceList.id,
       },

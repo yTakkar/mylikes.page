@@ -172,14 +172,13 @@ const appConfig = {
       //   isExternal: true,
       //   username: 'mylikesFB',
       // },
-      // {
-      //   type: 'LINKEDIN',
-      //   url: 'https://www.linkedin.com/company/mylikes-page/',
-      //   name: 'LinkedIn',
-      //   isExternal: true,
-      //   username: 'mylikes-page',
-      // },
-
+      {
+        type: 'LINKEDIN',
+        url: 'https://www.linkedin.com/company/mylikes-page/',
+        name: 'LinkedIn',
+        isExternal: true,
+        username: 'mylikes-page',
+      },
       // {
       //   type: 'YOUTUBE',
       //   url: 'https://www.youtube.com/channel/UCp7xl0E-JtFQamoZNBO8yGw',
@@ -201,17 +200,21 @@ const appConfig = {
     copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
   },
   admin: {},
+  author: {
+    website: 'https://faiyaztakkar.dev',
+  },
   ads: {
     adsTerra: {
       stickyBannerKey: '1168ad3ee842e4f7b4bdc66311229c20',
       domain: 'extracthorizontaldashing.com',
-      directLink: 'https://extracthorizontaldashing.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
+      directLink: 'https://www.toprevenuegate.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
     },
     monetag: {
-      directLink: 'https://oulsools.com/4/6592186',
+      directLink: 'https://atservineor.com/4/6592143',
       popupSrc: '//thubanoa.com/1?z=6592184',
     },
     refreshAdsIntervalInSec: 60,
+    recommendationLinkAdFrequency: 5,
   },
   featured: {
     listsRevalidateTimeInSec: 10 * 60,

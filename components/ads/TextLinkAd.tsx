@@ -2,7 +2,7 @@ import { GiftIcon } from '@heroicons/react/outline'
 import React, { useEffect, useState } from 'react'
 import { getRandomArrayItem } from '../../utils/array'
 import { TEXT_LINK_AD_LIST } from '../../constants/ads'
-import appConfig from '../../config/appConfig'
+import { getLinkAd } from '../../utils/ads'
 
 interface ITextLinkAdProps {
   onLinkClick?: () => void
@@ -19,7 +19,7 @@ const TextLinkAd: React.FC<ITextLinkAdProps> = props => {
 
   const handleClick = () => {
     onLinkClick?.()
-    window.open(appConfig.ads.monetag.directLink, '_blank')
+    window.open(getLinkAd(), '_blank')
   }
 
   return (

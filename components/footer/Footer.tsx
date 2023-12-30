@@ -5,6 +5,7 @@ import CoreImage, { ImageSourceType } from '../core/CoreImage'
 import EscapeHTML from '../EscapeHTML'
 import { SOCIAL_ICONS_SRC_MAP } from '../../constants/constants'
 import { prepareImageUrl } from '../../utils/image'
+import { MobileView } from '../ResponsiveViews'
 
 interface IFooterProps {}
 
@@ -25,6 +26,16 @@ const Footer: React.FC<IFooterProps> = () => {
                       {link.label}
                     </CoreLink>
                   ))}
+                  <MobileView>
+                    <CoreLink url={appConfig.feedback.generalFeedbackForm} isExternal className="py-1 hover:underline">
+                      Feedback
+                    </CoreLink>
+                  </MobileView>
+                  <CoreLink
+                    url={`mailto:${appConfig.company.contactEmail}?subject=Advertise with us`}
+                    className="py-1 lg:py-0 lg:mr-2 hover:underline">
+                    Advertise with us?
+                  </CoreLink>
                 </div>
               </div>
 
@@ -51,7 +62,8 @@ const Footer: React.FC<IFooterProps> = () => {
             </div>
 
             <div className="mt-6 lg:mt-0">
-              <div className="flex justify-center lg:justify-normal">
+              <div className="font-bold mb-2">Stay connected</div>
+              <div className="flex ">
                 {appConfig.company.socialLinks.map((socialLink, index) => {
                   const socialIconSrc = SOCIAL_ICONS_SRC_MAP[socialLink.type] || SOCIAL_ICONS_SRC_MAP.GLOBE
 

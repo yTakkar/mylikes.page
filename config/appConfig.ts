@@ -207,7 +207,7 @@ const appConfig = {
     adsTerra: {
       stickyBannerKey: '1168ad3ee842e4f7b4bdc66311229c20',
       domain: 'extracthorizontaldashing.com',
-      directLink: 'https://www.toprevenuegate.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
+      directLink: 'https://outrightsham.com/ns56frsf6v?key=a5a99341804058550519a63438ffec78',
     },
     monetag: {
       directLink: 'https://atservineor.com/4/6592143',

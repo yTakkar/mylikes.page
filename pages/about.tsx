@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { GetStaticProps, NextPage } from 'next'
 import { IGlobalLayoutProps } from './_app'
 import { DesktopView, MobileView } from '../components/ResponsiveViews'
@@ -10,15 +10,14 @@ import CoreImage from '../components/core/CoreImage'
 import CoreLink from '../components/core/CoreLink'
 import CoreDivider from '../components/core/CoreDivider'
 import appConfig from '../config/appConfig'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {}
 }
 
 const AboutPage: NextPage<IProps> = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  useScrollToTop()
 
   const links = [
     {

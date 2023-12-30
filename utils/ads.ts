@@ -15,7 +15,7 @@ export const shouldOpenRecommendationLinkAd = () => {
 
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value + 1))
 
-  if (value === 0 || value % (FREQUENCY - 1) === 0) {
+  if (value !== 0 && value % (FREQUENCY - 1) === 0) {
     return true
   }
 

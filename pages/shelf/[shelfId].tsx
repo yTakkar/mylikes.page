@@ -15,6 +15,7 @@ import BackTitle from '../../components/BackTitle'
 import ListInfo from '../../components/list/ListInfo'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -28,6 +29,8 @@ const Shelf: NextPage<IProps> = (props: IProps) => {
   if (router.isFallback || !props.pageData) {
     return <PageLoader />
   }
+
+  useScrollToTop()
 
   const {
     pageData: { shelf },

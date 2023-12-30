@@ -23,6 +23,7 @@ import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
 import appConfig from '../../config/appConfig'
 import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -35,6 +36,8 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
   const {
     pageData: { mostPopularRecommendations: _mostPopularRecommendations, profileInfoMap },
   } = props
+
+  useScrollToTop()
 
   const mostPopularRecommendations = _mostPopularRecommendations.filter(
     popularRecommendation => !!popularRecommendation.listRecommendation

@@ -52,6 +52,7 @@ import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
 import ShelfLists from '../../components/list/ShelfLists'
 import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -108,6 +109,8 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   const { shouldshowNativeShare, handleNativeShare } = useNativeShare({
     onShareFail: handleURLCopy,
   })
+
+  useScrollToTop()
 
   useEffect(() => {
     if (initialListDetail) {

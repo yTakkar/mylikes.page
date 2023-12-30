@@ -19,6 +19,7 @@ import { listListsByUser } from '../../firebase/store/list'
 import { IListDetail } from '../../interface/list'
 import classNames from 'classnames'
 import { isAdminUser } from '../../utils/common'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -40,6 +41,8 @@ const ProfilePage: NextPage<IProps> = (props: IProps) => {
 
   const applicationContext = useContext(ApplicationContext)
   const { user } = applicationContext
+
+  useScrollToTop()
 
   const DEFAULT_BIO = 'This bio is super empty at the moment.'
 

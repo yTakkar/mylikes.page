@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GetStaticProps, NextPage } from 'next'
 import { IGlobalLayoutProps } from './_app'
 import { DesktopView, MobileView } from '../components/ResponsiveViews'
@@ -16,6 +16,10 @@ interface IProps extends IGlobalLayoutProps {
 }
 
 const AboutPage: NextPage<IProps> = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const links = [
     {
       url: 'https://faiyaztakkar.dev',

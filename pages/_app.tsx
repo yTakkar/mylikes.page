@@ -93,11 +93,8 @@ const MyApp: NextPage<IProps> = props => {
   }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [router.asPath])
-
-  useEffect(() => {
     if (analyticsLoaded) {
+      window.scrollTo(0, 0)
       appAnalytics.sendPageView({
         pageTitle: router.asPath,
         pagePath: router.asPath,

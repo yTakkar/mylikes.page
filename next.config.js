@@ -45,7 +45,7 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: `upgrade-insecure-requests; object-src 'none'; frame-ancestors 'none'; form-action 'none'; font-src https://fonts.googleapis.com https://fonts.gstatic.com 'self' data:; script-src 'self' 'nonce-eXFBngjwfBsaKvk2tWSS' 'nonce--Jv3vXWEec5rT0Unhie_' blob: ${
       isLocal ? "'unsafe-eval'" : ''
-    } www.googletagmanager.com ajax.googleapis.com https://apis.google.com; base-uri 'self'; report-uri https://o4505702857637888.ingest.sentry.io/api/4505702860914688/security/?sentry_key=d9a5a3ca87c60b11a9ad14a2d07043c6; report-to endpoint;`,
+    } www.googletagmanager.com ajax.googleapis.com https://apis.google.com https://s.skimresources.com; base-uri 'self'; report-uri https://o4505702857637888.ingest.sentry.io/api/4505702860914688/security/?sentry_key=d9a5a3ca87c60b11a9ad14a2d07043c6; report-to endpoint;`,
   },
 ]
 

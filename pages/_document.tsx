@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import React from 'react'
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import MetaTags from '../scriptTemplates/meta'
@@ -25,6 +26,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script type="text/javascript" src="https://s.skimresources.com/js/257655X1741944.skimlinks.js"></script>
         </body>
       </Html>
     )

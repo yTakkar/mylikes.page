@@ -26,7 +26,7 @@ import Loader, { LoaderType } from '../loader/Loader'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
-import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
+import { getListPageUrl } from '../../utils/routes'
 import { revalidateUrls } from '../../utils/revalidate'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
@@ -185,7 +185,11 @@ const AddRecommendationPopup: React.FC<IAddRecommendationPopupProps> = props => 
         await updateList(list.id, {
           recommendations: updatedList,
         })
-        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner!.username)])
+        // invalidate profile page cache?
+        await revalidateUrls([
+          getListPageUrl(list.id),
+          // getProfilePageUrl(list.owner!.username)
+        ])
         toastSuccess('Added to the list')
         appAnalytics.sendEvent({
           action: AnalyticsEventType.RECOMMENDATION_ADD_FROM_LIST,

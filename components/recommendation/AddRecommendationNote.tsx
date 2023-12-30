@@ -7,7 +7,7 @@ import { IRecommendationInfo } from '../../interface/recommendation'
 import { updateList } from '../../firebase/store/list'
 import { toastError, toastSuccess } from '../Toaster'
 import { revalidateUrls } from '../../utils/revalidate'
-import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
+import { getListPageUrl } from '../../utils/routes'
 import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 
@@ -51,7 +51,7 @@ const AddRecommendationNote: React.FC<IAddRecommendationNoteProps> = props => {
         await updateList(list!.id, {
           recommendations: recommendations,
         })
-        await revalidateUrls([getListPageUrl(list!.id), getProfilePageUrl(list!.owner!.username)])
+        await revalidateUrls([getListPageUrl(list!.id)])
         toastSuccess('Note updated successfully')
         appAnalytics.sendEvent({
           action: AnalyticsEventType.RECOMMENDATION_ADD_UPDATE_NOTE,

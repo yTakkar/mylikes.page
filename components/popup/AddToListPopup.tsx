@@ -73,7 +73,11 @@ const AddToListPopup: React.FC<IAddToListPopupProps> = props => {
         await updateList(list.id, {
           recommendations: updatedList,
         })
-        await revalidateUrls([getListPageUrl(list.id), getProfilePageUrl(list.owner!.username)])
+        // invalidate profile page cache?
+        await revalidateUrls([
+          getListPageUrl(list.id),
+          // getProfilePageUrl(list.owner!.username)
+        ])
         await fetchLists()
         trackAddToList({
           listId: listDetail.id,

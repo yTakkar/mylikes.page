@@ -208,7 +208,11 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
       await updateList(listDetail.id, {
         recommendations: updatedList,
       })
-      await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner!.username)])
+      // invalidate profile page cache?
+      await revalidateUrls([
+        getListPageUrl(listDetail.id),
+        // getProfilePageUrl(listDetail.owner!.username)
+      ])
       toastSuccess('Removed from list!')
       appAnalytics.sendEvent({
         action: AnalyticsEventType.RECOMMENDATION_REMOVE,

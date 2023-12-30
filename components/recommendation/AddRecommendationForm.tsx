@@ -21,7 +21,7 @@ import appConfig from '../../config/appConfig'
 import { IListDetail, IListRecommendationInfo } from '../../interface/list'
 import { updateList } from '../../firebase/store/list'
 import { revalidateUrls } from '../../utils/revalidate'
-import { getListPageUrl, getProfilePageUrl } from '../../utils/routes'
+import { getListPageUrl } from '../../utils/routes'
 
 enum FieldKeyType {
   URL = 'URL',
@@ -126,7 +126,11 @@ const AddRecommendationForm: React.FC<IAddRecommendationFormProps> = props => {
     await updateList(listDetail.id, {
       recommendations: updatedList,
     })
-    await revalidateUrls([getListPageUrl(listDetail.id), getProfilePageUrl(listDetail.owner!.username)])
+    // invalidate profile page cache?
+    await revalidateUrls([
+      getListPageUrl(listDetail.id),
+      // getProfilePageUrl(listDetail.owner!.username)
+    ])
     toastSuccess('Added to the list')
     appAnalytics.sendEvent({
       action: AnalyticsEventType.RECOMMENDATION_ADD,

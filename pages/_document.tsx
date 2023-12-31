@@ -26,7 +26,6 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script type="text/javascript" src="https://s.skimresources.com/js/257655X1741944.skimlinks.js"></script>
         </body>
       </Html>
     )

@@ -48,10 +48,6 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
   const title = 'Most popular recommendations'
 
   const onLinkClick = (popularRecommendation: IMostPopularRecommendation) => {
-    if (shouldOpenRecommendationLinkAd()) {
-      window.open(getLinkAd(), '_blank')
-    }
-
     const basePayload = {
       listId: popularRecommendation.list?.id,
       recommendationId: popularRecommendation.listRecommendation?.id,
@@ -59,6 +55,15 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
       title: popularRecommendation.listRecommendation?.title,
       type: popularRecommendation.listRecommendation?.type,
     }
+
+    if (shouldOpenRecommendationLinkAd()) {
+      window.open(getLinkAd(), '_blank')
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
+        extra: basePayload,
+      })
+    }
+
     appAnalytics.sendEvent({
       action: AnalyticsEventType.RECOMMENDATION_VISIT,
       extra: basePayload,

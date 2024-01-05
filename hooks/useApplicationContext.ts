@@ -65,9 +65,11 @@ const useApplicationContext = () => {
       })
       toastSuccess(newUser ? 'Signup successful!' : 'Login successful!')
       onSuccess?.(userInfo)
-    } catch (e) {
-      appAnalytics.captureException(e)
-      toastError('Failed to login!')
+    } catch (e: any) {
+      if (e.code !== 'auth/popup-closed-by-user') {
+        appAnalytics.captureException(e)
+        toastError('Failed to login!')
+      }
     }
   }
 

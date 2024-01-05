@@ -3,19 +3,20 @@ import { IUserInfo } from '../interface/user'
 import appConfig from '../config/appConfig'
 import { getRandomAvatar } from './avatars'
 import { dynamicUniqueNamesGenerator } from '../components/dynamicModules'
+import { decode, encode } from './storage'
 
-const key = `${appConfig.global.app.key}-USER-INFO`
+const key = `${appConfig.global.app.key}-USER-INFO__V2`
 
 export const getLocalUserInfo = (): IUserInfo | null => {
   const data = localStorage.getItem(key)
   if (data) {
-    return JSON.parse(window.atob(data))
+    return JSON.parse(decode(data))
   }
   return null
 }
 
 export const setLocalUserInfo = (userInfo: IUserInfo) => {
-  localStorage.setItem(key, window.btoa(JSON.stringify(userInfo)))
+  localStorage.setItem(key, encode(JSON.stringify(userInfo)))
 }
 
 export const deleteLocalUserInfo = () => {

@@ -23,7 +23,6 @@ import { DesktopView } from '../components/ResponsiveViews'
 import appAnalytics from '../lib/analytics/appAnalytics'
 import useFeaturedAds from '../hooks/useFeaturedAds'
 import StickyBannerAd from '../components/ads/StickyBannerAd'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 
 Router.events.on('routeChangeStart', () => {
   dynamicNprogress().then(mod => mod.start())
@@ -153,8 +152,6 @@ const MyApp: NextPage<IProps> = props => {
           </DesktopView>
 
           {!appConfig.isDev && <Analytics />}
-
-          <SpeedInsights />
         </ErrorBoundary>
       </ApplicationContext.Provider>
     </>

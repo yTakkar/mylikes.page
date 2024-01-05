@@ -6,6 +6,7 @@ export enum PopupType {
   EDIT_RECOMMENDATION = 'EDIT_RECOMMENDATION',
   ADD_TO_LIST = 'ADD_TO_LIST',
   LIST_ANALYTICS = 'LIST_ANALYTICS',
+  AD_NOTIFICATION = 'AD_NOTIFICATION',
 }
 
 export type PopupParams = any

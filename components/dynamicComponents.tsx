@@ -66,3 +66,10 @@ export const DynamicListAnalyticsPopup = dynamic(
     ssr: false,
   }
 )
+
+export const DynamicAdNotificationPopup = dynamic(
+  () => import(/* webpackChunkName: "AdNotificationPopup" */ 'components/popup/AdNotificationPopup'),
+  {
+    ssr: false,
+  }
+)

@@ -41,10 +41,10 @@ const AdNotificationPopup: React.FC<IAdNotificationProps> = props => {
         </div>
       </div>
 
-      <div className={'px-4 pb-3 flex justify-end'}>
+      <div className={'px-4 lg:px-6 pb-3 flex justify-end'}>
         <CoreButton
           type={CoreButtonType.SOLID_PRIMARY}
-          label="Close"
+          label="Got it"
           size={CoreButtonSize.MEDIUM}
           onClick={() => {
             onSeen?.()

@@ -31,6 +31,9 @@ import CoreImage from '../core/CoreImage'
 import { RECOMMENDATION_FALLBACK_IMAGE_URL } from '../../constants/constants'
 import appConfig from '../../config/appConfig'
 import RecommendationTypeIcon from './RecommendationTypeIcon'
+import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
+import appAnalytics from '../../lib/analytics/appAnalytics'
+import { AnalyticsEventType } from '../../constants/analytics'
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 dayjs.extend(localizedFormat)
 
@@ -60,6 +63,7 @@ interface IRecommendationInfoProps {
   loading?: boolean
   disabled?: boolean
   showListName?: boolean
+  openLinkAd?: boolean
 }
 
 const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
@@ -78,6 +82,7 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
     loading = false,
     disabled = false,
     showListName = false,
+    openLinkAd = false,
   } = props
 
   const applicationContext = useContext(ApplicationContext)
@@ -115,6 +120,26 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
       .finally(() => {
         toggleRemoveLoading(false)
       })
+  }
+
+  const openUrl = () => {
+    const linkAd = !openLinkAd ? false : shouldOpenRecommendationLinkAd()
+
+    if (linkAd) {
+      window.open(getLinkAd(), '_blank', 'noopener')
+      appAnalytics.sendEvent({
+        action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
+        extra: {
+          listId: list?.id,
+          recommendationId: recommendationInfo.id,
+          url: recommendationInfo.url,
+          title: recommendationInfo.title,
+          type: recommendationInfo.type,
+        },
+      })
+    } else {
+      window.open(recommendationInfo.url, '_blank', 'noopener')
+    }
   }
 
   const showCtaContainer = sponsored
@@ -221,7 +246,8 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             underline: source === RecommendationInfoSourceType.LIST,
             'cursor-auto': source !== RecommendationInfoSourceType.LIST,
           })}>
-          {recommendationOwner!.name} {sameUser ? '(You)' : null}
+          {recommendationOwner!.name}
+          {sameUser ? ' (You)' : null}
         </CoreLink>
       </>
     )
@@ -288,9 +314,14 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
         })}>
         <div className="relative w-10 h-10 min-w-10 min-h-10 top-1">
           {source === RecommendationInfoSourceType.LIST ? (
-            <CoreLink url={recommendationInfo.url} isExternal onClick={onLinkClick}>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                openUrl()
+                onLinkClick?.()
+              }}>
               {renderTypeIcon()}
-            </CoreLink>
+            </div>
           ) : (
             renderTypeIcon()
           )}
@@ -308,9 +339,14 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
             {source === RecommendationInfoSourceType.ADD ? (
               <span className="font-bold">{recommendationInfo.title}</span>
             ) : (
-              <CoreLink url={recommendationInfo.url} isExternal className="font-bold" onClick={onLinkClick}>
+              <div
+                className="font-bold cursor-pointer"
+                onClick={() => {
+                  openUrl()
+                  onLinkClick?.()
+                }}>
                 {recommendationInfo.title}
-              </CoreLink>
+              </div>
             )}
           </div>
 

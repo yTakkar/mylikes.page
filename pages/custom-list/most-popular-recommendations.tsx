@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { IGlobalLayoutProps } from '../_app'
 import PageContainer from '../../components/PageContainer'
 import { GetStaticProps, NextPage } from 'next'
@@ -22,8 +22,10 @@ import appAnalytics from '../../lib/analytics/appAnalytics'
 import { AnalyticsEventType } from '../../constants/analytics'
 import { insertArrayPositionItems } from '../../utils/array'
 import appConfig from '../../config/appConfig'
-import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
 import useScrollToTop from '../../hooks/useScrollToTop'
+import { isAdNotificationShown, setAdNotificationShown } from '../../utils/adNotification'
+import { PopupType } from '../../interface/popup'
+import ApplicationContext from '../../components/ApplicationContext'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -37,7 +39,21 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
     pageData: { mostPopularRecommendations: _mostPopularRecommendations, profileInfoMap },
   } = props
 
+  const applicationContext = useContext(ApplicationContext)
+  const { methods } = applicationContext
+
   useScrollToTop()
+
+  useEffect(() => {
+    const bannerShown = isAdNotificationShown()
+    if (!bannerShown) {
+      methods.togglePopup(PopupType.AD_NOTIFICATION, {
+        onSeen: () => {
+          setAdNotificationShown(true)
+        },
+      })
+    }
+  }, [])
 
   const mostPopularRecommendations = _mostPopularRecommendations.filter(
     popularRecommendation => !!popularRecommendation.listRecommendation
@@ -54,14 +70,6 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
       url: popularRecommendation.listRecommendation?.url,
       title: popularRecommendation.listRecommendation?.title,
       type: popularRecommendation.listRecommendation?.type,
-    }
-
-    if (shouldOpenRecommendationLinkAd()) {
-      window.open(getLinkAd(), '_blank')
-      appAnalytics.sendEvent({
-        action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
-        extra: basePayload,
-      })
     }
 
     appAnalytics.sendEvent({
@@ -95,6 +103,7 @@ const MostPopularRecommendations: NextPage<IProps> = (props: IProps) => {
         list={popularRecommendation.list || undefined}
         onLinkClick={() => onLinkClick(popularRecommendation)}
         showListName
+        openLinkAd
       />
     )
   })

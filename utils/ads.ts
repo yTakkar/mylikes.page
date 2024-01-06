@@ -7,15 +7,17 @@ export const getLinkAd = () => {
 }
 
 export const shouldOpenRecommendationLinkAd = () => {
-  const LOCAL_STORAGE_KEY = `SHOULD_OPEN_RECOMMENDATION_LINK_AD__V1`
+  const LOCAL_STORAGE_KEY = `SHOULD_OPEN_RECOMMENDATION_LINK_AD__V2`
   const FREQUENCY = appConfig.ads.recommendationLinkAdFrequency
 
   const localValue = localStorage.getItem(LOCAL_STORAGE_KEY)
   const value: number = localValue ? JSON.parse(localValue) : 0
 
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value + 1))
+  const newValue = value + 1
 
-  if (value !== 0 && value % (FREQUENCY - 1) === 0) {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue))
+
+  if (value === 0 || newValue % FREQUENCY === 0) {
     return true
   }
 

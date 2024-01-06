@@ -214,7 +214,7 @@ const appConfig = {
       popupSrc: '//thubanoa.com/1?z=6592184',
     },
     refreshAdsIntervalInSec: 60,
-    recommendationLinkAdFrequency: 5,
+    recommendationLinkAdFrequency: 4, // on every 4th click
   },
   featured: {
     listsRevalidateTimeInSec: 10 * 60,

@@ -16,6 +16,7 @@ export interface IModalProps extends PropsWithChildren {
   showCrossIcon?: boolean
   disableOutsideClick?: boolean
   wrapInContainer?: boolean
+  showHeader?: boolean
 }
 
 const Modal: React.FC<IModalProps> = props => {
@@ -28,6 +29,7 @@ const Modal: React.FC<IModalProps> = props => {
     children,
     disableOutsideClick = false,
     wrapInContainer = false,
+    showHeader = true,
   } = props
 
   const ref = useRef<HTMLDivElement | null>(null)
@@ -75,7 +77,7 @@ const Modal: React.FC<IModalProps> = props => {
             className
           )}
           ref={ref}>
-          {wrapInContainer ? <Container>{renderHeader()}</Container> : renderHeader()}
+          {showHeader ? wrapInContainer ? <Container>{renderHeader()}</Container> : renderHeader() : null}
           {wrapInContainer ? (
             <Container className="modal-body">
               <div>{children}</div>

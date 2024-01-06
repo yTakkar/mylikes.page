@@ -19,9 +19,9 @@ const LoginPopup: React.FC<ILoginPopupProps> = props => {
     <Modal dismissModal={() => onClose()} className="loginPopupOverrides">
       <div className="flex flex-col items-center px-4 pb-10">
         <CoreImage
-          url={prepareImageUrl('/images/ribbon.png', ImageSourceType.ASSET)}
+          url={prepareImageUrl('/images/intensify-honor.gif', ImageSourceType.ASSET)}
           alt="Login promt"
-          className="w-32 min-h-32 mb-4"
+          className="w-44 mb-4"
           disableLazyload
         />
         <div className="text-primaryText text-base mb-6 text-center">

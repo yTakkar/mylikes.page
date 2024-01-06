@@ -19,7 +19,7 @@ const TextLinkAd: React.FC<ITextLinkAdProps> = props => {
 
   const handleClick = () => {
     onLinkClick?.()
-    window.open(getLinkAd(), '_blank')
+    window.open(getLinkAd(), '_blank', 'noopener')
   }
 
   return (

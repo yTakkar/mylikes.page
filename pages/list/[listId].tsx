@@ -51,8 +51,8 @@ import { insertArrayPositionItems } from '../../utils/array'
 import { getFeaturedRecommendationPositions } from '../../utils/featuredAds'
 import { addListBoostInvite } from '../../firebase/store/list-boost-invites'
 import ShelfLists from '../../components/list/ShelfLists'
-import { getLinkAd, shouldOpenRecommendationLinkAd } from '../../utils/ads'
 import useScrollToTop from '../../hooks/useScrollToTop'
+import { isAdNotificationShown, setAdNotificationShown } from '../../utils/adNotification'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -111,6 +111,17 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
   })
 
   useScrollToTop()
+
+  useEffect(() => {
+    const bannerShown = isAdNotificationShown()
+    if (!bannerShown && !sessionUser) {
+      methods.togglePopup(PopupType.AD_NOTIFICATION, {
+        onSeen: () => {
+          setAdNotificationShown(true)
+        },
+      })
+    }
+  }, [sessionUser])
 
   useEffect(() => {
     if (initialListDetail) {
@@ -249,13 +260,6 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
         listId: listDetail.id,
         listRecommendationId: listRecommendation.id,
       })
-      if (shouldOpenRecommendationLinkAd()) {
-        window.open(getLinkAd(), '_blank')
-        appAnalytics.sendEvent({
-          action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
-          extra: analyticsParams,
-        })
-      }
     }
 
     appAnalytics.sendEvent({
@@ -416,6 +420,7 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
             onLinkClick={() => onLinkClick(recommendationInfo)}
             onAddToList={!sessionUser ? () => handleAddToList(recommendationInfo) : undefined}
             onRemoveFromList={sessionUser ? () => onRemoveFromList(index) : undefined}
+            openLinkAd
           />
           <div className="w-full h-[1px] bg-gallery" />
         </div>
@@ -573,8 +578,8 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
       {showBoostAlert ? (
         <Alert
           dismissModal={() => toggleBoostAlert(false)}
-          title="Unlock List Recommendation Boosting"
-          subTitle="Request an invite to unlock the powerful 'Recommendation Boosting' feature. Supercharge your list's influence today!"
+          title="Boost your list 🚀"
+          subTitle="Do you want your recommendations to appear in other lists too? You can boost your list to get more views."
           cta={{
             primary: {
               show: true,

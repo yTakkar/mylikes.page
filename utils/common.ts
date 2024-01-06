@@ -172,3 +172,5 @@ export const copyToClipboard = (secretInfo: string) => {
 export const isAdminUser = (email: string) => {
   return email?.endsWith('@mylikes.page') || email === 'mylikescontact@gmail.com'
 }
+
+export const withHttp = (url: string) => (!/^https?:\/\//i.test(url) ? `http://${url}` : url)

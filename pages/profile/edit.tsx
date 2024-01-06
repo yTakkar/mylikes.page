@@ -114,7 +114,7 @@ const ProfileEdit: NextPage<IProps> = () => {
       optional: true,
     },
     [FieldKeyType.WEBSITE]: {
-      regex: REGEX_MAP.NOT_EMPTY,
+      regex: REGEX_MAP.URL,
       error: 'Invalid Website',
       value: fields.WEBSITE,
       key: FieldKeyType.WEBSITE,

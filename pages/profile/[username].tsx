@@ -10,7 +10,6 @@ import { INITIAL_PAGE_BUILD_COUNT, PAGE_REVALIDATE_TIME, SOCIAL_ICONS_SRC_MAP } 
 import { prepareProfilePageSeo } from '../../utils/seo/pages/profile'
 import CoreImage from '../../components/core/CoreImage'
 import appConfig from '../../config/appConfig'
-import CoreLink from '../../components/core/CoreLink'
 import ApplicationContext from '../../components/ApplicationContext'
 import { useRouter } from 'next/router'
 import PageLoader from '../../components/loader/PageLoader'
@@ -18,8 +17,9 @@ import ListInfos from '../../components/list/ListInfos'
 import { listListsByUser } from '../../firebase/store/list'
 import { IListDetail } from '../../interface/list'
 import classNames from 'classnames'
-import { isAdminUser } from '../../utils/common'
+import { isAdminUser, withHttp } from '../../utils/common'
 import useScrollToTop from '../../hooks/useScrollToTop'
+import CoreLink from '../../components/core/CoreLink'
 
 interface IProps extends IGlobalLayoutProps {
   pageData: {
@@ -48,7 +48,7 @@ const ProfilePage: NextPage<IProps> = (props: IProps) => {
 
   const socialLinks = [
     {
-      url: profileInfo.websiteUrl,
+      url: profileInfo.websiteUrl ? withHttp(profileInfo.websiteUrl) : null,
       name: 'Website',
       iconSrc: SOCIAL_ICONS_SRC_MAP.GLOBE,
       show: !!profileInfo.websiteUrl,

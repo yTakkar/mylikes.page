@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FullWidthModal from '../modal/FullWidthModal'
 import { IListDetail } from '../../interface/list'
 import CoreSelectInput, { ICoreSelectInputOption } from '../core/CoreSelectInput'
@@ -9,6 +9,7 @@ import CoreDivider from '../core/CoreDivider'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import StickyBannerAd from '../ads/StickyBannerAd'
 import appConfig from '../../config/appConfig'
+import { loadWindowJavascript } from '../../utils/window'
 
 const options: ICoreSelectInputOption[] = [
   {
@@ -42,9 +43,9 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
   const [selectedOption, setSelectedOption] = useState(options[0].value)
 
   // TODO: Inject and remove on every mount
-  // useEffect(() => {
-  //   loadWindowJavascript('//thubanoa.com/1?z=6592184', 'popup_ad')
-  // }, [])
+  useEffect(() => {
+    loadWindowJavascript('//thubanoa.com/1?z=6592184', 'popup_ad')
+  }, [])
 
   const renderAnalyticsComponent = () => {
     if (selectedOption === options[0].value) {
@@ -67,7 +68,9 @@ const ListAnalyticsPopup: React.FC<IListAnalyticsPopupProps> = props => {
           <div className={'flex items-center'}>
             <div
               className="w-5 mr-3 cursor-pointer relative transform transition-transform hover:scale-110"
-              onClick={onClose}>
+              onClick={() => {
+                onClose()
+              }}>
               <ArrowLeftIcon />
             </div>
             <div>List Analytics</div>

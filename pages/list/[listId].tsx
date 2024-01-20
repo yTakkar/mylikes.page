@@ -112,16 +112,16 @@ const ListPage: NextPage<IProps> = (props: IProps) => {
 
   useScrollToTop()
 
-  useEffect(() => {
-    const bannerShown = isAdNotificationShown()
-    if (!bannerShown && !sessionUser) {
-      methods.togglePopup(PopupType.AD_NOTIFICATION, {
-        onSeen: () => {
-          setAdNotificationShown(true)
-        },
-      })
-    }
-  }, [sessionUser])
+  // useEffect(() => {
+  //   const bannerShown = isAdNotificationShown()
+  //   if (!bannerShown && !sessionUser) {
+  //     methods.togglePopup(PopupType.AD_NOTIFICATION, {
+  //       onSeen: () => {
+  //         setAdNotificationShown(true)
+  //       },
+  //     })
+  //   }
+  // }, [sessionUser])
 
   useEffect(() => {
     if (initialListDetail) {

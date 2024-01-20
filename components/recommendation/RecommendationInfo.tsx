@@ -123,23 +123,23 @@ const RecommendationInfo: React.FC<IRecommendationInfoProps> = props => {
   }
 
   const openUrl = () => {
-    const linkAd = !openLinkAd ? false : shouldOpenRecommendationLinkAd()
+    const _linkAd = !openLinkAd ? false : shouldOpenRecommendationLinkAd()
 
-    if (linkAd) {
-      window.open(getLinkAd(), '_blank', 'noopener')
-      appAnalytics.sendEvent({
-        action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
-        extra: {
-          listId: list?.id,
-          recommendationId: recommendationInfo.id,
-          url: recommendationInfo.url,
-          title: recommendationInfo.title,
-          type: recommendationInfo.type,
-        },
-      })
-    } else {
-      window.open(recommendationInfo.url, '_blank', 'noopener')
-    }
+    // if (linkAd) {
+    //   window.open(getLinkAd(), '_blank', 'noopener')
+    //   appAnalytics.sendEvent({
+    //     action: AnalyticsEventType.AD_RECOMMENDATION_TEXT_LINK_VISIT,
+    //     extra: {
+    //       listId: list?.id,
+    //       recommendationId: recommendationInfo.id,
+    //       url: recommendationInfo.url,
+    //       title: recommendationInfo.title,
+    //       type: recommendationInfo.type,
+    //     },
+    //   })
+    // } else {
+    window.open(recommendationInfo.url, '_blank', 'noopener')
+    // }
   }
 
   const showCtaContainer = sponsored

@@ -80,10 +80,10 @@ const AboutPage: NextPage<IProps> = () => {
 
               <p>{`We're all about recommendations — pure and simple. 🌐`}</p>
 
-              <p>
+              {/* <p>
                 <b>How do we make money?</b> Whenever you click on a recommendation, we open a link ad in a new tab on
                 every 5th click. This helps us pay for the servers and keep the lights on.
-              </p>
+              </p> */}
 
               <p>
                 {`Please don't hesitate to `}

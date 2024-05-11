@@ -197,7 +197,7 @@ const appConfig = {
       { label: 'Terms of Use', url: '/terms-conditions' },
       { label: 'About Us', url: '/about' },
     ].filter(Boolean),
-    copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved`,
+    copyrightText: `&copy; ${new Date().getFullYear()} ${app.name}. All rights reserved.`,
   },
   admin: {},
   author: {

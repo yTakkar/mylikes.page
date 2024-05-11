@@ -31,11 +31,6 @@ const Footer: React.FC<IFooterProps> = () => {
                       Feedback
                     </CoreLink>
                   </MobileView>
-                  <CoreLink
-                    url={`mailto:${appConfig.company.contactEmail}?subject=Advertise with us`}
-                    className="py-1 lg:py-0 lg:mr-2 hover:underline">
-                    Advertise with us?
-                  </CoreLink>
                 </div>
               </div>
 
@@ -88,12 +83,20 @@ const Footer: React.FC<IFooterProps> = () => {
             Amazon.com.
           </div> */}
 
-          {appConfig.footer.copyrightText ? (
+          {/* {appConfig.footer.copyrightText ? (
             <div className="mt-10 lg:mt-8 text-typo-paragraphLight text-sm">
               <EscapeHTML html={appConfig.footer.copyrightText} element="span" />
             </div>
-          ) : null}
+          ) : null} */}
         </div>
+      </div>
+
+      <div className="flex flex-row items-center justify-center py-4 px-6 bg-aliceBlue text-typo-paragraphLight">
+        ~ A weekend project by
+        <CoreLink url={appConfig.author.website} className="flex items-center underline" isExternal>
+          <CoreImage url={'/images/author.jpeg'} alt="Faiyaz" className="w-5 mr-1 ml-2 rounded-full" />
+          <div className="font-bold leading-4">Faiyaz</div>
+        </CoreLink>
       </div>
 
       {appConfig.features.enableStickyBannerAd && <div className="bg-aliceBlue h-[50px]"></div>}

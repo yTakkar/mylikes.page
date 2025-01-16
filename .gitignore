@@ -50,3 +50,4 @@ public/fallback-*.js
 public/fallback-*.js.map
 
 env/production.env
+env/local.env
